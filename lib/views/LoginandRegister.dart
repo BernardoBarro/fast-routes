@@ -16,28 +16,30 @@ class _LoginandRegisterState extends State<LoginandRegister> {
         body: SafeArea(
       child: Container(
         padding: EdgeInsets.all(16),
-        color: Color.fromRGBO(57, 57, 57, 1),
-        child: Column(
+        height: double.infinity,
+        width: double.infinity,
+        color: Color.fromRGBO(69, 69, 85, 1),
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(
-                  top: 25.0, left: 16.0, right: 16.0, bottom: 30.0),
+                  top: 0.0, left: 16.0, right: 16.0, bottom: 50.0),
               child: Image.asset(
                 "assets/images/logo.png",
                 fit: BoxFit.cover,
-                width: 350,
-                height: 450,
               ),
             ),
             Padding(
               padding: const EdgeInsets.only(
-                  top: 35.0, left: 16.0, right: 16.0, bottom: 15.0),
+                  top: 50.0, left: 16.0, right: 16.0, bottom: 15.0),
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   primary: Color.fromRGBO(51, 101, 229, 1),
                   onPrimary: Colors.white,
                   elevation: 0,
-                  fixedSize: Size(200.0, 50.0),
+                  fixedSize: Size(300.0, 50.0),
                 ),
                 onPressed: () {
                   Navigator.push(context,
@@ -57,7 +59,7 @@ class _LoginandRegisterState extends State<LoginandRegister> {
                   primary: Color.fromRGBO(51, 101, 229, 1),
                   onPrimary: Colors.white,
                   elevation: 0,
-                  fixedSize: Size(200.0, 50.0),
+                  fixedSize: Size(300.0, 50.0),
                 ),
                 onPressed: () {
                   Navigator.push(context,
@@ -72,7 +74,7 @@ class _LoginandRegisterState extends State<LoginandRegister> {
               ),
             ),
           ],
-        ),
+        )),
       ),
     ));
   }
