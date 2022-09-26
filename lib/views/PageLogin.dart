@@ -35,6 +35,20 @@ class _PageLoginState extends State<PageLogin> {
     }
   }
 
+  _verifyUserLoggedIn() {
+    User? LoggedInUser = FirebaseAuth.instance.currentUser;
+    if(LoggedInUser != null) {
+      setState(() {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Splash()));
+      });
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _verifyUserLoggedIn();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
