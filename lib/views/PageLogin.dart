@@ -2,7 +2,7 @@
 
 import 'dart:ffi';
 
-import 'package:fast_routes/views/Splash.dart';
+import 'package:fast_routes/views/Home.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +29,7 @@ class _PageLoginState extends State<PageLogin> {
         FirebaseAuth auth = FirebaseAuth.instance;
         auth.signInWithEmailAndPassword(email: email, password: password).then((value) => {
           setState((){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Splash()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
           }),
         });
     }
@@ -39,7 +39,7 @@ class _PageLoginState extends State<PageLogin> {
     User? LoggedInUser = FirebaseAuth.instance.currentUser;
     if(LoggedInUser != null) {
       setState(() {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Splash()));
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
       });
     }
   }
@@ -69,6 +69,7 @@ class _PageLoginState extends State<PageLogin> {
               height: 55,
             ),
             TextFormField(
+              controller: _controllerEmail,
               // autofocus: true,
               keyboardType: TextInputType.emailAddress,
               style: TextStyle(color: Colors.white),
@@ -112,6 +113,7 @@ class _PageLoginState extends State<PageLogin> {
               height: 20,
             ),
             TextFormField(
+              controller: _controllerPassword,
               // autofocus: true,
               keyboardType: TextInputType.streetAddress,
               style: TextStyle(color: Colors.white),
