@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fast_routes/views/PageLogin.dart';
-import 'package:fast_routes/views/PageRegister.dart';
+import 'package:fast_routes/views/PageRegisterMotorista.dart';
 
 class LoginandRegister extends StatefulWidget {
   const LoginandRegister({Key? key}) : super(key: key);
@@ -60,8 +60,10 @@ class _LoginandRegisterState extends State<LoginandRegister> {
                   fixedSize: Size(200.0, 50.0),
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PageRegister()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PageRegisterMotorista()));
                 },
                 child: Text(
                   "CADASTRAR",
