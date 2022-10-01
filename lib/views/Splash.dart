@@ -27,9 +27,10 @@ class _SplashState extends State<Splash> {
             color: Color.fromRGBO(69, 69, 85, 1),
             child: Center(
                 child: Container(
-              child: Image.asset(
-                "assets/images/logo.png",
-                fit: BoxFit.cover,
+              child: SizedBox(
+                width: 300,
+                height: 300,
+                child: Image.asset("assets/images/logo.png"),
               ),
             ))),
       ),
