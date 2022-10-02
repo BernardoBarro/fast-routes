@@ -1,7 +1,6 @@
 import 'package:fast_routes/controllers/MapsController.dart';
 import 'package:fast_routes/models/Directions.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -15,10 +14,10 @@ class Maps extends StatefulWidget {
 }
 
 class _MapsState extends State<Maps> {
-  static const _initialCameraPosition = CameraPosition(
-    target: LatLng(-27.6357848, -52.2745583),
-    zoom: 13,
-  );
+  // static const _initialCameraPosition = CameraPosition(
+  //   target: LatLng(-27.6623247, -52.2648324),
+  //   zoom: 11.5,
+  // );
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -97,16 +96,16 @@ class _MapsState extends State<Maps> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
-        onPressed: () => _googleMapController.animateCamera(
-          _info != null
-              ? CameraUpdate.newLatLngBounds(_info!.bounds, 100.0)
-              : CameraUpdate.newCameraPosition(_initialCameraPosition),
-        ),
-        child: const Icon(Icons.center_focus_strong),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.white,
+      //   foregroundColor: Colors.black,
+      //   onPressed: () => _googleMapController.animateCamera(
+      //     _info != null
+      //         ? CameraUpdate.newLatLngBounds(_info!.bounds, 100.0)
+      //         : CameraUpdate.newCameraPosition(_initialCameraPosition),
+      //   ),
+      //   child: const Icon(Icons.center_focus_strong),
+      // ),
     );
   }
 
