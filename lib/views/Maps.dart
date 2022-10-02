@@ -14,10 +14,6 @@ class Maps extends StatefulWidget {
 }
 
 class _MapsState extends State<Maps> {
-  // static const _initialCameraPosition = CameraPosition(
-  //   target: LatLng(-27.6623247, -52.2648324),
-  //   zoom: 11.5,
-  // );
 
   late GoogleMapController _googleMapController;
   Marker? _origin;
@@ -96,16 +92,6 @@ class _MapsState extends State<Maps> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.white,
-      //   foregroundColor: Colors.black,
-      //   onPressed: () => _googleMapController.animateCamera(
-      //     _info != null
-      //         ? CameraUpdate.newLatLngBounds(_info!.bounds, 100.0)
-      //         : CameraUpdate.newCameraPosition(_initialCameraPosition),
-      //   ),
-      //   child: const Icon(Icons.center_focus_strong),
-      // ),
     );
   }
 

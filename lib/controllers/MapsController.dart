@@ -51,44 +51,4 @@ class MapsController extends GetxController {
       }
     });
   }
-
-  // Future<Position> _currentPosition() async {
-  //   LocationPermission permission;
-  //   bool ativado = await Geolocator.isLocationServiceEnabled();
-  //
-  //   if (!ativado) {
-  //     return Future.error('Por favor habilite a localização no smartphone.');
-  //   }
-  //
-  //   permission = await Geolocator.checkPermission();
-  //   if (permission == LocationPermission.denied) {
-  //     permission = await Geolocator.requestPermission();
-  //
-  //     if (permission == LocationPermission.denied) {
-  //       return Future.error('Você precisa autorizar o acesso à localização');
-  //     }
-  //   }
-  //
-  //   if (permission == LocationPermission.deniedForever) {
-  //     return Future.error('Autorize o acesso à localização nas configurações.');
-  //   }
-  //
-  //   return await Geolocator.getCurrentPosition();
-  // }
-  //
-  // getPosition() async {
-  //   try {
-  //     final position = await _currentPosition();
-  //     latitude.value = position.latitude;
-  //     longitude.value = position.longitude;
-  //     _mapsController.animateCamera(
-  //         CameraUpdate.newLatLng(LatLng(latitude.value, longitude.value)));
-  //   } catch (e) {
-  //     Get.snackbar(
-  //       'Erro',
-  //       e.toString(),
-  //       snackPosition: SnackPosition.BOTTOM,
-  //     );
-  //   }
-  // }
 }
