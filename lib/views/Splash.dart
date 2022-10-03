@@ -24,14 +24,13 @@ class _SplashState extends State<Splash> {
       body: SafeArea(
         child: Container(
             padding: EdgeInsets.all(16),
-            color: Color.fromRGBO(57, 57, 57, 1),
+            color: Color.fromRGBO(69, 69, 85, 1),
             child: Center(
                 child: Container(
-              child: Image.asset(
-                "assets/images/logo.png",
-                fit: BoxFit.cover,
+              child: SizedBox(
                 width: 300,
-                height: 400,
+                height: 300,
+                child: Image.asset("assets/images/logo.png"),
               ),
             ))),
       ),
