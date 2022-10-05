@@ -19,6 +19,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   bool feminino = false;
   bool masculino = false;
   bool pcd = false;
+  bool teste = false;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
@@ -399,6 +400,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     onChanged: (bool? checked) {
                       setState(() {
                         pcd = !pcd;
+
+                        if (pcd == true) {
+                          teste = true;
+                        } else if (pcd == false) {
+                          teste = false;
+                        }
                       });
                     }),
                 const Text(
@@ -408,6 +415,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
               ]),
 
               TextFormField(
+                enabled: teste,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
