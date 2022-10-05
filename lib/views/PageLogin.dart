@@ -2,7 +2,7 @@
 
 import 'dart:ffi';
 
-import 'package:fast_routes/views/Home.dart';
+import 'package:fast_routes/views/PageHome.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +29,7 @@ class _PageLoginState extends State<PageLogin> {
         FirebaseAuth auth = FirebaseAuth.instance;
         auth.signInWithEmailAndPassword(email: email, password: password).then((value) => {
           setState((){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PageHome()));
           }),
         });
     }
