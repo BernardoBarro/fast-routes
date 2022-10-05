@@ -2,6 +2,7 @@
 
 import 'dart:ffi';
 
+import 'package:fast_routes/views/PageHome.dart';
 import 'package:flutter/material.dart';
 
 class PageLogin extends StatefulWidget {
@@ -155,7 +156,12 @@ class _PageLoginState extends State<PageLogin> {
                         onPrimary: Colors.white,
                         elevation: 0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PageHome()));
+                      },
                       child: Text(
                         "ENTRAR",
                         style: TextStyle(
