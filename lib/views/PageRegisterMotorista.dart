@@ -400,6 +400,9 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       onChanged: (bool? checked) {
                         setState(() {
                           masculino = !masculino;
+                          if (masculino == true) {
+                            feminino = false;
+                          }
                         });
                       }),
                   const Text(
@@ -414,6 +417,10 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                         onChanged: (bool? checked) {
                           setState(() {
                             feminino = !feminino;
+
+                            if (feminino == true) {
+                              masculino = false;
+                            }
                           });
                         }),
                   ),
