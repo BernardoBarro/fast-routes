@@ -19,7 +19,6 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   bool passageiro = false;
   bool feminino = false;
   bool masculino = false;
-  bool pcd = false;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
@@ -400,6 +399,9 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       onChanged: (bool? checked) {
                         setState(() {
                           masculino = !masculino;
+                          if (masculino == true) {
+                            feminino = false;
+                          }
                         });
                       }),
                   const Text(
@@ -414,6 +416,10 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                         onChanged: (bool? checked) {
                           setState(() {
                             feminino = !feminino;
+
+                            if (feminino == true) {
+                              masculino = false;
+                            }
                           });
                         }),
                   ),
