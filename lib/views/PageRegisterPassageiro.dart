@@ -19,7 +19,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   bool feminino = false;
   bool masculino = false;
   bool pcd = false;
-  bool teste = false;
+  bool fieldPCD = false;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
@@ -402,9 +402,9 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                         pcd = !pcd;
 
                         if (pcd == true) {
-                          teste = true;
+                          fieldPCD = true;
                         } else if (pcd == false) {
-                          teste = false;
+                          fieldPCD = false;
                         }
                       });
                     }),
@@ -415,7 +415,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
               ]),
 
               TextFormField(
-                enabled: teste,
+                enabled: fieldPCD,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -462,6 +462,9 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       onChanged: (bool? checked) {
                         setState(() {
                           masculino = !masculino;
+                          if (masculino == true) {
+                            feminino = false;
+                          }
                         });
                       }),
                   const Text(
@@ -476,6 +479,9 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                         onChanged: (bool? checked) {
                           setState(() {
                             feminino = !feminino;
+                            if (feminino == true) {
+                              masculino = false;
+                            }
                           });
                         }),
                   ),
