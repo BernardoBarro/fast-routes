@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fast_routes/views/PageLogin.dart';
-import 'package:fast_routes/views/PageRegister.dart';
+import 'package:fast_routes/views/PageRegisterMotorista.dart';
+
+import 'package:fast_routes/views/Home.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginandRegister extends StatefulWidget {
   const LoginandRegister({Key? key}) : super(key: key);
@@ -10,6 +13,20 @@ class LoginandRegister extends StatefulWidget {
 }
 
 class _LoginandRegisterState extends State<LoginandRegister> {
+
+    _verifyUserLoggedIn() {
+    User? LoggedInUser = FirebaseAuth.instance.currentUser;
+    if(LoggedInUser != null) {
+      setState(() {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+      });
+    }
+  }
+
+  void initState() {
+    super.initState();
+    _verifyUserLoggedIn();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +86,7 @@ class _LoginandRegisterState extends State<LoginandRegister> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PageRegister()));
+                                    builder: (context) => PageRegisterMotorista()));
                           },
                           child: Text(
                             "CADASTRAR",

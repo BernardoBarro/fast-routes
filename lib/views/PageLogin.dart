@@ -5,6 +5,8 @@ import 'dart:ffi';
 import 'package:fast_routes/views/PageHome.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+
 class PageLogin extends StatefulWidget {
   const PageLogin({Key? key}) : super(key: key);
 
@@ -14,6 +16,26 @@ class PageLogin extends StatefulWidget {
 
 class _PageLoginState extends State<PageLogin> {
   bool _showPassword = false;
+
+  TextEditingController _controllerEmail = TextEditingController();
+  TextEditingController _controllerPassword = TextEditingController();
+
+  _login() {
+    String email = _controllerEmail.text;
+    String password = _controllerPassword.text;
+
+    if(email.isNotEmpty && email.contains("@")){
+      if(password.isNotEmpty && password.length >= 6);
+        FirebaseAuth auth = FirebaseAuth.instance;
+        auth.signInWithEmailAndPassword(email: email, password: password).then((value) => {
+          setState((){
+            Navigator.push(context, MaterialPageRoute(builder: (context) => PageHome()));
+          }),
+        });
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -42,6 +64,7 @@ class _PageLoginState extends State<PageLogin> {
                   height: 100,
                 ),
                 TextFormField(
+                  controller: _controllerEmail,
                   // autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.white),
@@ -85,6 +108,7 @@ class _PageLoginState extends State<PageLogin> {
                   height: 20,
                 ),
                 TextFormField(
+                  controller: _controllerPassword,
                   // autofocus: true,
                   keyboardType: TextInputType.streetAddress,
                   style: TextStyle(color: Colors.white),
@@ -156,12 +180,7 @@ class _PageLoginState extends State<PageLogin> {
                         onPrimary: Colors.white,
                         elevation: 0,
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PageHome()));
-                      },
+                      onPressed: _login,
                       child: Text(
                         "ENTRAR",
                         style: TextStyle(
