@@ -35,6 +35,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   mask_text_input_formatter: ^2.4.0
+  dio: ^4.0.0
+  flutter_polyline_points: ^0.2.6
+  google_maps_flutter: ^2.0.2
+  geolocator: ^7.0.0
+  geocoding: ^2.0.5
+  get:
 
 dev_dependencies:
   flutter_test:
