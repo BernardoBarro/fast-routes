@@ -35,19 +35,7 @@ class _PageLoginState extends State<PageLogin> {
     }
   }
 
-  _verifyUserLoggedIn() {
-    User? LoggedInUser = FirebaseAuth.instance.currentUser;
-    if(LoggedInUser != null) {
-      setState(() {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
-      });
-    }
-  }
 
-  void initState() {
-    super.initState();
-    _verifyUserLoggedIn();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +108,7 @@ class _PageLoginState extends State<PageLogin> {
                   height: 20,
                 ),
                 TextFormField(
-                  controller: _controllerPassword
+                  controller: _controllerPassword,
                   // autofocus: true,
                   keyboardType: TextInputType.streetAddress,
                   style: TextStyle(color: Colors.white),
