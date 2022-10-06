@@ -120,7 +120,7 @@ class _PageLoginState extends State<PageLogin> {
                   height: 20,
                 ),
                 TextFormField(
-                  controller: _controllerPassword
+                  controller: _controllerPassword,
                   // autofocus: true,
                   keyboardType: TextInputType.streetAddress,
                   style: TextStyle(color: Colors.white),
