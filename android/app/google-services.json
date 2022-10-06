@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "882363688975",
+    "project_id": "fastroutes-db",
+    "storage_bucket": "fastroutes-db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:882363688975:android:69a5a3b74d775047b71b7a",
+        "android_client_info": {
+          "package_name": "br.com.fastroutes.fast_routes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "882363688975-7vktk22a277pq7gjf294a8pvicpn2i4r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIP5tFJ-IgshlA9sOvf3FEqprOpPtVYXs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "882363688975-7vktk22a277pq7gjf294a8pvicpn2i4r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
