@@ -24,6 +24,13 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
   bool _showPassword = false;
 
+  _registerPassageiro() {
+
+    
+
+    Navigator.push(context,MaterialPageRoute(builder: ((context) => const LoginandRegister())));
+  }
+
   @override
   Widget build(BuildContext context) {
     // ignore: prefer_typing_uninitialized_variables
@@ -494,14 +501,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                         onPrimary: Colors.white,
                         elevation: 0,
                       ),
-                      onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    const LoginandRegister())),
-                            (route) => false);
-                      },
+                      onPressed: _registerPassageiro,
                       child: Text(
                         "ENVIAR",
                         style: TextStyle(
