@@ -6,6 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:fast_routes/views/PageRegisterMotorista.dart';
+import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class PageRegisterMotorista extends StatefulWidget {
   const PageRegisterMotorista({Key? key}) : super(key: key);
@@ -24,10 +27,57 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
   bool _showPassword = false;
 
+  TextEditingController _controllerNome = TextEditingController();
+  TextEditingController _controllerCPF = TextEditingController();
+  TextEditingController _controllerTelefone = TextEditingController();
+  TextEditingController _controllerDataNascimento = TextEditingController();
+  TextEditingController _controllerEmail = TextEditingController();
+  TextEditingController _controllerSenha = TextEditingController();
+
+  String _errorMessage = " ";
+
+  _registerMotorista(String nome, String cpf, String telefone, String dataNascimento, String email, String senha) {
+      FirebaseDatabase db = FirebaseDatabase.instance;
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      var dateFormat = new DateFormat('yyyy-MM-dd');
+      //String dataFormatada = dateFormat.format(dataNascimento);
+      DateFormat dataFormatada = DateFormat(dataNascimento);
+
+
+
+
+    Navigator.push(context,MaterialPageRoute(builder: ((context) => const LoginandRegister())));
+
+  }
+
+  _validateFieldsMotorista() {
+    String nome = _controllerNome.text;
+    String cpf = _controllerCPF.text;
+    String telefone = _controllerTelefone.text;
+    String dataNascimento = _controllerDataNascimento.text;
+    String email = _controllerEmail.text;
+    String senha = _controllerSenha.text;
+
+    if(nome.isNotEmpty) {
+      if(cpf.isNotEmpty && cpf.length == 11) {
+          if(telefone.isNotEmpty) {
+            if(dataNascimento.isNotEmpty) {
+              if(email.isNotEmpty) {
+                if(senha.isNotEmpty && senha.length >= 6) {
+                  _registerMotorista(nome, cpf, telefone, dataNascimento, email, senha);
+                } else {
+                  _errorMessage = "Erro";
+                }
+              }
+            }
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_typing_uninitialized_variables
-
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -444,13 +494,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       onPrimary: Colors.white,
                       elevation: 0,
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => const LoginandRegister())),
-                      );
-                    },
+                    onPressed: _validateFieldsMotorista,
                     child: Text(
                       "ENVIAR",
                       style: TextStyle(
