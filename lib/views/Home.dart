@@ -11,42 +11,35 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
-  // _logout() async {
-  //   FirebaseAuth auth = FirebaseAuth.instance;
-  //   auth.signOut();
-  //   setState(() {
-  //     Navigator.pushAndRemoveUntil(context, 
-  //     MaterialPageRoute(builder: (context) => const LoginandRegister()), 
-  //     (route) => false);
-  //   });
-  // }
-
-   _logout() async {
+  _logout() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     auth.signOut();
     setState(() {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginandRegister()));
-      });
-   }
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginandRegister()),
+          (route) => false);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
+    return Scaffold(
       body: Container(
         child: Center(
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.all(7),
-              child: ElevatedButton(
-                onPressed: _logout,
-                child: Text("Sair"),
+              Padding(
+                padding: EdgeInsets.all(7),
+                child: ElevatedButton(
+                  onPressed: _logout,
+                  child: Text("Sair"),
                 ),
               ),
             ],
           ),
         ),
       ),
-    ); 
+    );
   }
 }
