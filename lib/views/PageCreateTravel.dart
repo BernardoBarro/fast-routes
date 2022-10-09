@@ -21,14 +21,23 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
   TextEditingController _controllerOrigemVolta = TextEditingController();
   String _mensagemErro = "";
 
+  String _getDate() {
+    var now = new DateTime.now();
+    var dateFormat = new DateFormat('yyyy-MM-dd hh:mm:ss');
+    String dataFormatada = dateFormat.format(now);
+    return dataFormatada;
+  }
+
   _criaViagem(String nome, String numPassageiros, String horarioIda,
       String origemIda, String horarioVolta, String origemVolta) {
     FirebaseDatabase db = FirebaseDatabase.instance;
     User? usuarioLogado = FirebaseAuth.instance.currentUser;
+    String dataFormatada = _getDate();
 
     Map<String, dynamic> viagem = {
       'nome': nome,
       'numPassageiros': numPassageiros,
+      'data': dataFormatada
     };
 
     Map<String, dynamic> ida = {'horario': horarioIda, 'origem': origemIda};
@@ -42,14 +51,14 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
         .ref("usuarios")
         .child(usuarioLogado!.uid)
         .child("viagens")
-        .child(nome)
+        .child(dataFormatada)
         .set(viagem)
         .then((value) => {
               db
                   .ref("usuarios")
                   .child(usuarioLogado!.uid)
                   .child("viagens")
-                  .child(nome)
+                  .child(dataFormatada)
                   .child("ida")
                   .set(ida)
                   .then((value) => {
@@ -57,7 +66,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                             .ref("usuarios")
                             .child(usuarioLogado!.uid)
                             .child("viagens")
-                            .child(nome)
+                            .child(dataFormatada)
                             .child("volta")
                             .set(volta)
                       })
@@ -67,7 +76,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
         MaterialPageRoute(builder: (context) => const PageHome()),
         (route) => false);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
