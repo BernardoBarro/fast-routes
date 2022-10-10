@@ -44,14 +44,8 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
     return dataFormatada;
   }
 
-  _validateFieldsPassageiro() {
-    String nome = _controllerNome.text;
-    String cpf = _controllerCPF.text;
-    String telefone = _controllerTelefone.text;
-    String dataNascimento = _controllerDataNascimento.text;                     
-    String email = _controllerEmail.text;
-    String senha = _controllerSenha.text;
-    String pcdDesc = _controllerPcdDesc.text;
+  _validateFieldsPassageiro(String nome, String cpf, String telefone, String dataNascimento,
+      String email, String senha, [String? pcdDesc]) {
 
     if(passageiro == true) {
       if(nome.isNotEmpty) {
@@ -61,7 +55,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
               if(email.isNotEmpty && email.contains("@")) {
                 if(senha.isNotEmpty && senha.length >= 6) {
                   if(pcd == true) {
-                    if(pcdDesc.isNotEmpty) {
+                    if(pcdDesc!.isNotEmpty) {
                       _registerPassageiro(nome, cpf, telefone, dataNascimento, email, senha, pcd, pcdDesc);
                     } else {
                       _mensagemErro = "Erro";
@@ -95,7 +89,9 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
         'email':email,
         'senha':senha,
         'pdc':pcd,
-        'descricao PCD' : pcdDesc
+        'descricao PCD' : pcdDesc,
+        'masculino':masculino,
+        'feminino':feminino
       };
 
       auth.createUserWithEmailAndPassword(email: email, password: senha)
@@ -191,6 +187,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
               //TEXT NOME
               TextFormField(
+                controller: _controllerNome,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   //Style Label
@@ -235,6 +232,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
               //TEXT CPF
               TextFormField(
+                controller: _controllerCPF,
                 inputFormatters: [maskCPF],
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
@@ -281,6 +279,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
               //TEXT TELEFONE
               TextFormField(
+                controller: _controllerTelefone,
                 inputFormatters: [maskPhone],
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
@@ -327,6 +326,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
               //TEXT DATA
               TextFormField(
+                controller: _controllerDataNascimento,
                 inputFormatters: [maskDate],
                 keyboardType: TextInputType.number,
                 //validator: _validateDate,
@@ -375,6 +375,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
               //TEXT EMAIL
               TextFormField(
+                controller: _controllerEmail,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -422,6 +423,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
               //TEXT SENHA
               TextFormField(
+                controller: _controllerSenha,
                 keyboardType: TextInputType.streetAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -482,7 +484,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                 height: 10.0,
               ),
 
-              //NECESSIDADE ESPECIAL
+              //NECESSIDADE ESPECIAL bool
               Row(children: [
                 Checkbox(
                     side: BorderSide(color: Colors.white),
@@ -504,7 +506,9 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                 ),
               ]),
 
+              //TEXT DESCRICAO_PCD
               TextFormField(
+                controller: _controllerPcdDesc,
                 enabled: fieldPCD,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
@@ -599,7 +603,15 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                         elevation: 0,
                       ),
                       onPressed: () {
-                        _validateFieldsPassageiro();
+                        _validateFieldsPassageiro(
+                            _controllerNome.text,
+                            _controllerCPF.text,
+                            _controllerTelefone.text,
+                            _controllerDataNascimento.text,                     
+                            _controllerEmail.text,
+                            _controllerSenha.text,
+                            _controllerPcdDesc.text
+                        );
                       },
                       child: Text(
                         "ENVIAR",

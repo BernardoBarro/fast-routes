@@ -43,15 +43,10 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   }
 
     //_validateFieldsMotorista(String nome, String cpf, String telefone, String dataNascimento, String email, String senha)
-    _validateFieldsMotorista() {
+    _validateFieldsMotorista(String nome, String cpf, String telefone, String dataNascimento,
+        String email, String senha) {
 
-      String nome = _controllerNome.text;
-      String cpf = _controllerCPF.text;
-      String telefone = _controllerTelefone.text;
-      String dataNascimento = _controllerDataNascimento.text;                     
-      String email = _controllerEmail.text;
-      String senha = _controllerSenha.text;
-
+      print(nome);
       if(motorista == true) {
         if(nome.isNotEmpty) {
           if(cpf.isNotEmpty && cpf.length == 11) {
@@ -90,8 +85,13 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
         'feminino':feminino
       };
 
-      auth.createUserWithEmailAndPassword(email: email, password: senha).then((firebaseUser) => {
-        db.ref("motoristas")
+      print(dataMotorista);
+
+
+      auth.createUserWithEmailAndPassword(email: email, password: senha)
+      .then((firebaseUser) => {
+        db
+        .ref("motoristas")
         .child(firebaseUser.user!.uid)
         .set(dataMotorista),
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
@@ -176,6 +176,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT NOME
               TextFormField(
+                controller: _controllerNome,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   //Style Label
@@ -220,6 +221,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT CPF
               TextFormField(
+                controller: _controllerCPF,
                 inputFormatters: [maskCPF],
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
@@ -266,6 +268,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT TELEFONE
               TextFormField(
+                controller: _controllerTelefone,
                 inputFormatters: [maskPhone],
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
@@ -312,6 +315,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT DATA
               TextFormField(
+                controller: _controllerDataNascimento,
                 inputFormatters: [maskDate],
                 keyboardType: TextInputType.number,
                 //validator: _validateDate,
@@ -360,6 +364,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT EMAIL
               TextFormField(
+                controller: _controllerEmail,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -407,6 +412,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT SENHA
               TextFormField(
+                controller: _controllerSenha,
                 keyboardType: TextInputType.streetAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -523,12 +529,12 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     ),
                     onPressed: () {
                       _validateFieldsMotorista(
-                        // _controllerNome.text,
-                        // _controllerCPF.text,
-                        // _controllerTelefone.text,
-                        // _controllerDataNascimento.text,                     
-                        // _controllerEmail.text,
-                        // _controllerSenha.text
+                        _controllerNome.text,
+                        _controllerCPF.text,
+                        _controllerTelefone.text,
+                        _controllerDataNascimento.text,                     
+                        _controllerEmail.text,
+                        _controllerSenha.text
                       );
                     },
                     child: Text(
