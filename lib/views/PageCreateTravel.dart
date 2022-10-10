@@ -1,9 +1,11 @@
 import 'package:fast_routes/views/PageHome.dart';
-import 'package:fast_routes/views/PageMap.dart';
+import 'package:fast_routes/views/PagePerfil.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
+
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class PageCreateTravel extends StatefulWidget {
   const PageCreateTravel({Key? key}) : super(key: key);
@@ -20,6 +22,14 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
   TextEditingController _controllerHorarioVolta = TextEditingController();
   TextEditingController _controllerOrigemVolta = TextEditingController();
   String _mensagemErro = "";
+  bool seg = false;
+  bool ter = false;
+  bool qua = false;
+  bool qui = false;
+  bool sex = false;
+  bool sab = false;
+  bool dom = false;
+  var maskTime = MaskTextInputFormatter(mask: '##:##');
 
   String _getDate() {
     var now = new DateTime.now();
@@ -56,7 +66,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
         .then((value) => {
               db
                   .ref("usuarios")
-                  .child(usuarioLogado!.uid)
+                  .child(usuarioLogado.uid)
                   .child("viagens")
                   .child(dataFormatada)
                   .child("ida")
@@ -64,166 +74,481 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                   .then((value) => {
                         db
                             .ref("usuarios")
-                            .child(usuarioLogado!.uid)
+                            .child(usuarioLogado.uid)
                             .child("viagens")
                             .child(dataFormatada)
                             .child("volta")
                             .set(volta)
                       })
             });
+
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const PageHome()),
+        MaterialPageRoute(
+          builder: (context) => PageHome(),
+        ),
         (route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(69, 69, 85, 1),
+        elevation: 0,
+      ),
       body: SafeArea(
         child: Container(
-          padding: const EdgeInsets.all(16),
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8, top: 10),
-                    child: TextField(
-                      controller: _controllerNome,
-                      //autofocus: true,
-                      keyboardType: TextInputType.name,
-                      style: const TextStyle(fontSize: 16),
-                      autocorrect: false,
-                      decoration: InputDecoration(
-                          contentPadding:
-                              const EdgeInsets.fromLTRB(32, 16, 32, 16),
-                          hintText: "Insira o nome da viagem",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
-                  ),
-                  //cpf text
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: TextField(
-                      controller: _controllerNumPassageiros,
-                      //autofocus: true,
-                      keyboardType: TextInputType.phone,
-                      autocorrect: false,
-                      style: TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                          hintText: "Insira número de passageiros",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
-                  ),
-                  //senha Text
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: TextField(
-                      controller: _controllerHorarioIda,
-                      autocorrect: false,
-                      keyboardType: TextInputType.visiblePassword,
-                      style: TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                          hintText: "Insira horario de ida",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
-                  ),
-                  //senha Text
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: TextField(
-                      controller: _controllerOrigemIda,
-                      autocorrect: false,
-                      keyboardType: TextInputType.visiblePassword,
-                      style: TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                          hintText: "Insira origem de ida",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: TextField(
-                      controller: _controllerHorarioVolta,
-                      autocorrect: false,
-                      keyboardType: TextInputType.visiblePassword,
-                      style: TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                          hintText: "Insira horario de volta",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(bottom: 8),
-                    child: TextField(
-                      controller: _controllerOrigemVolta,
-                      autocorrect: false,
-                      keyboardType: TextInputType.visiblePassword,
-                      style: TextStyle(fontSize: 16),
-                      decoration: InputDecoration(
-                          contentPadding: EdgeInsets.fromLTRB(32, 16, 32, 16),
-                          hintText: "Insira origem de volta",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          )),
-                    ),
-                  ),
+          height: double.infinity,
+          width: double.infinity,
+          color: const Color.fromRGBO(69, 69, 85, 1),
+          padding: const EdgeInsets.only(top: 40, right: 16, left: 16),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 50, top: 10),
+                  child: TextField(
+                    controller: _controllerNome,
+                    //autofocus: true,
+                    keyboardType: TextInputType.name,
+                    autocorrect: false,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      //Style Label
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
 
-                  Padding(
-                    padding: EdgeInsets.only(top: 20, bottom: 20),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          _criaViagem(
-                              _controllerNome.text,
-                              _controllerNumPassageiros.text,
-                              _controllerHorarioIda.text,
-                              _controllerOrigemIda.text,
-                              _controllerHorarioVolta.text,
-                              _controllerOrigemVolta.text);
-                        },
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.black54,
-                            elevation: 0,
-                            padding: EdgeInsets.all(12),
-                            shape: new RoundedRectangleBorder(
-                                borderRadius: new BorderRadius.circular(20))),
-                        child: Text(
-                          "Criar Conta",
-                          style: TextStyle(
-                            fontSize: 18,
+                      //Style Hint
+                      hintStyle: const TextStyle(
+                        color: const Color.fromRGBO(255, 255, 255, 0.4),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
+
+                      //Style borders
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
                           ),
-                        )),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                      labelText: "Nome da viagem",
+                      hintText: "Insira o nome da viagem",
+                    ),
                   ),
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      children: [
+                        const Text(
+                          "Seg",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Checkbox(
+                            side: BorderSide(color: Colors.white),
+                            value: seg,
+                            onChanged: (bool? checked) {
+                              setState(() {
+                                seg = !seg;
+                              });
+                            }),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Ter",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Checkbox(
+                            side: BorderSide(color: Colors.white),
+                            value: ter,
+                            onChanged: (bool? checked) {
+                              setState(() {
+                                ter = !ter;
+                              });
+                            }),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Qua",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Checkbox(
+                            side: BorderSide(color: Colors.white),
+                            value: qua,
+                            onChanged: (bool? checked) {
+                              setState(() {
+                                qua = !qua;
+                              });
+                            }),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Qui",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Checkbox(
+                            side: BorderSide(color: Colors.white),
+                            value: qui,
+                            onChanged: (bool? checked) {
+                              setState(() {
+                                qui = !qui;
+                              });
+                            }),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Sex",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Checkbox(
+                            side: BorderSide(color: Colors.white),
+                            value: sex,
+                            onChanged: (bool? checked) {
+                              setState(() {
+                                sex = !sex;
+                              });
+                            }),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Sáb",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Checkbox(
+                            side: BorderSide(color: Colors.white),
+                            value: sab,
+                            onChanged: (bool? checked) {
+                              setState(() {
+                                sab = !sab;
+                              });
+                            }),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const Text(
+                          "Dom",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Checkbox(
+                            side: BorderSide(color: Colors.white),
+                            value: dom,
+                            onChanged: (bool? checked) {
+                              setState(() {
+                                dom = !dom;
+                              });
+                            }),
+                      ],
+                    ),
+                  ],
+                ),
 
-                  //mensagem de erro
-                  Center(
+                const SizedBox(
+                  height: 40.0,
+                ),
+
+                TextField(
+                  controller: _controllerNumPassageiros,
+                  //autofocus: true,
+                  keyboardType: TextInputType.phone,
+                  autocorrect: false,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    //Style Label
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
+
+                    //Style Hint
+                    hintStyle: const TextStyle(
+                      color: const Color.fromRGBO(255, 255, 255, 0.4),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
+
+                    //Style borders
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(20.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                        )),
+                    enabledBorder: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(20.0),
+                        ),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                        )),
+                    labelText: "Número de passageiros",
+                    hintText: "Insira o número de passageiros",
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                //HORÁRIO DE IDA E VOLTA
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, bottom: 13),
+                      child: Text(
+                        "Horários",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 160,
+                          child: TextField(
+                            controller: _controllerHorarioIda,
+                            autocorrect: false,
+                            keyboardType: TextInputType.datetime,
+                            inputFormatters: [maskTime],
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                              //Style Hint
+                              hintStyle: const TextStyle(
+                                color: const Color.fromRGBO(255, 255, 255, 0.4),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13,
+                              ),
+
+                              //Style borders
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+
+                              hintText: "Insira o horário de ida",
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 160,
+                          child: TextField(
+                            controller: _controllerHorarioVolta,
+                            autocorrect: false,
+                            keyboardType: TextInputType.datetime,
+                            inputFormatters: [maskTime],
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                              //Style Hint
+                              hintStyle: const TextStyle(
+                                color: const Color.fromRGBO(255, 255, 255, 0.4),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13,
+                              ),
+
+                              //Style borders
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+
+                              hintText: "Insira horário de volta",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(
+                  height: 40,
+                ),
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 5, bottom: 13),
+                      child: Text(
+                        "Origem",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 160,
+                          child: TextField(
+                            controller: _controllerOrigemIda,
+                            autocorrect: false,
+                            keyboardType: TextInputType.visiblePassword,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                              //Style Hint
+                              hintStyle: const TextStyle(
+                                color: const Color.fromRGBO(255, 255, 255, 0.4),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13,
+                              ),
+
+                              //Style borders
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+
+                              hintText: "Insira origem de ida",
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 160,
+                          child: TextField(
+                            controller: _controllerOrigemVolta,
+                            autocorrect: false,
+                            keyboardType: TextInputType.visiblePassword,
+                            style: const TextStyle(color: Colors.white),
+                            decoration: const InputDecoration(
+                              //Style Hint
+                              hintStyle: const TextStyle(
+                                color: const Color.fromRGBO(255, 255, 255, 0.4),
+                                fontWeight: FontWeight.w400,
+                                fontSize: 13,
+                              ),
+
+                              //Style borders
+                              focusedBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+                              enabledBorder: OutlineInputBorder(
+                                  borderRadius: const BorderRadius.all(
+                                    const Radius.circular(20.0),
+                                  ),
+                                  borderSide: BorderSide(
+                                    color: Color.fromRGBO(255, 255, 255, 1),
+                                  )),
+
+                              hintText: "Insira origem de volta",
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+
+                SizedBox(
+                  height: 60,
+                ),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color.fromRGBO(51, 101, 229, 1),
+                      onPrimary: Colors.white,
+                      elevation: 0,
+                    ),
+                    onPressed: () {
+                      _criaViagem(
+                          _controllerNome.text,
+                          _controllerNumPassageiros.text,
+                          _controllerHorarioIda.text,
+                          _controllerOrigemIda.text,
+                          _controllerHorarioVolta.text,
+                          _controllerOrigemVolta.text);
+                    },
                     child: Text(
-                      _mensagemErro,
+                      "Criar Viagem",
                       style: TextStyle(
-                        color: Colors.red,
+                        fontFamily: 'InriaSans',
                         fontSize: 16,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                //mensagem de erro
+                Center(
+                  child: Text(
+                    _mensagemErro,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),
