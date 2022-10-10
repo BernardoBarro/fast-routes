@@ -21,7 +21,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   bool motorista = true;
   bool passageiro = false;
   bool feminino = false;
-  bool masculino = false;
+  bool masculino = true;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
@@ -34,46 +34,73 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
 
-  String _errorMessage = " ";
+  String _mensagemErro = "";
 
-  _registerMotorista(String nome, String cpf, String telefone, String dataNascimento, String email, String senha) {
-      FirebaseDatabase db = FirebaseDatabase.instance;
-      FirebaseAuth auth = FirebaseAuth.instance;
-
-      var dateFormat = new DateFormat('yyyy-MM-dd');
-      //String dataFormatada = dateFormat.format(dataNascimento);
-      DateFormat dataFormatada = DateFormat(dataNascimento);
-
-
-
-
-    Navigator.push(context,MaterialPageRoute(builder: ((context) => const LoginandRegister())));
-
+  String _formatDate(date) {
+    var dateFormat = new DateFormat('yyyy-MM-dd');
+    String dataFormatada = dateFormat.format(date);
+    return dataFormatada;
   }
 
-  _validateFieldsMotorista() {
-    String nome = _controllerNome.text;
-    String cpf = _controllerCPF.text;
-    String telefone = _controllerTelefone.text;
-    String dataNascimento = _controllerDataNascimento.text;
-    String email = _controllerEmail.text;
-    String senha = _controllerSenha.text;
+    //_validateFieldsMotorista(String nome, String cpf, String telefone, String dataNascimento, String email, String senha)
+    _validateFieldsMotorista() {
 
-    if(nome.isNotEmpty) {
-      if(cpf.isNotEmpty && cpf.length == 11) {
-          if(telefone.isNotEmpty) {
-            if(dataNascimento.isNotEmpty) {
-              if(email.isNotEmpty) {
-                if(senha.isNotEmpty && senha.length >= 6) {
-                  _registerMotorista(nome, cpf, telefone, dataNascimento, email, senha);
-                } else {
-                  _errorMessage = "Erro";
+      String nome = _controllerNome.text;
+      String cpf = _controllerCPF.text;
+      String telefone = _controllerTelefone.text;
+      String dataNascimento = _controllerDataNascimento.text;                     
+      String email = _controllerEmail.text;
+      String senha = _controllerSenha.text;
+
+      if(motorista == true) {
+        if(nome.isNotEmpty) {
+          if(cpf.isNotEmpty && cpf.length == 11) {
+            if(telefone.isNotEmpty) {
+              if(dataNascimento.isNotEmpty) {
+                if(email.isNotEmpty && email.contains("@")) {
+                  if(senha.isNotEmpty && senha.length >= 6) {
+                    _registerMotorista(nome, cpf, telefone, dataNascimento, email, senha);
+                  } else {
+                    _mensagemErro = "Erro";
+                  }
                 }
               }
             }
+          }
         }
       }
     }
+
+  _registerMotorista(String nome, String cpf, String telefone, String dataNascimento, 
+                    String email, String senha) {
+      FirebaseDatabase db = FirebaseDatabase.instance;
+      FirebaseAuth auth = FirebaseAuth.instance;
+      
+      String dataFormatada = _formatDate(dataNascimento);
+
+      Map<String, dynamic> dataMotorista = {
+        'nome':nome,
+        'cpf':cpf,
+        'telefone':telefone,
+        'data de nascimento':dataFormatada,
+        'email':email,
+        'senha':senha, 
+        'motorista':motorista,
+        'masculino':masculino,
+        'feminino':feminino
+      };
+
+      auth.createUserWithEmailAndPassword(email: email, password: senha).then((firebaseUser) => {
+        db.ref("motoristas")
+        .child(firebaseUser.user!.uid)
+        .set(dataMotorista),
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: ((context) => const LoginandRegister())), (route) => false)
+      }).catchError((error) {
+        setState(() {
+          _mensagemErro = "Erro ao criar usuário $error";
+        });
+      });
   }
 
   @override
@@ -494,7 +521,16 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       onPrimary: Colors.white,
                       elevation: 0,
                     ),
-                    onPressed: _validateFieldsMotorista,
+                    onPressed: () {
+                      _validateFieldsMotorista(
+                        // _controllerNome.text,
+                        // _controllerCPF.text,
+                        // _controllerTelefone.text,
+                        // _controllerDataNascimento.text,                     
+                        // _controllerEmail.text,
+                        // _controllerSenha.text
+                      );
+                    },
                     child: Text(
                       "ENVIAR",
                       style: TextStyle(
@@ -502,6 +538,15 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       ),
                     ),
                   )),
+            Center(
+                  child: Text(
+                    _mensagemErro,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
             ],
           )),
         ),

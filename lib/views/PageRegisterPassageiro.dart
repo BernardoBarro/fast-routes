@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:fast_routes/views/PageRegisterMotorista.dart';
+import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class PageRegisterPassageiro extends StatefulWidget {
   const PageRegisterPassageiro({Key? key}) : super(key: key);
@@ -24,6 +27,93 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
   bool _showPassword = false;
+
+  TextEditingController _controllerNome = TextEditingController();
+  TextEditingController _controllerCPF = TextEditingController();
+  TextEditingController _controllerTelefone = TextEditingController();
+  TextEditingController _controllerDataNascimento = TextEditingController();
+  TextEditingController _controllerEmail = TextEditingController();
+  TextEditingController _controllerSenha = TextEditingController();
+  TextEditingController _controllerPcdDesc = TextEditingController();
+
+  String _mensagemErro = "";
+
+  String _formatDate(date) {
+    var dateFormat = new DateFormat('yyyy-MM-dd');
+    String dataFormatada = dateFormat.format(date);
+    return dataFormatada;
+  }
+
+  _validateFieldsPassageiro() {
+    String nome = _controllerNome.text;
+    String cpf = _controllerCPF.text;
+    String telefone = _controllerTelefone.text;
+    String dataNascimento = _controllerDataNascimento.text;                     
+    String email = _controllerEmail.text;
+    String senha = _controllerSenha.text;
+    String pcdDesc = _controllerPcdDesc.text;
+
+    if(passageiro == true) {
+      if(nome.isNotEmpty) {
+        if(cpf.isNotEmpty && cpf.length == 11) {
+          if(telefone.isNotEmpty) {
+            if(dataNascimento.isNotEmpty) {
+              if(email.isNotEmpty && email.contains("@")) {
+                if(senha.isNotEmpty && senha.length >= 6) {
+                  if(pcd == true) {
+                    if(pcdDesc.isNotEmpty) {
+                      _registerPassageiro(nome, cpf, telefone, dataNascimento, email, senha, pcd, pcdDesc);
+                    } else {
+                      _mensagemErro = "Erro";
+                    }
+                  } else if (pcd == false) {
+                    _registerPassageiro(nome, cpf, telefone, dataNascimento, email, senha, pcd);
+                  } else {
+                    _mensagemErro = "Erro";
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  _registerPassageiro(String nome, String cpf, String telefone, String dataNascimento, 
+                    String email, String senha, bool pcd, [String? pcdDesc]) {
+      FirebaseDatabase db = FirebaseDatabase.instance;
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      String dataFormatada = _formatDate(dataNascimento);
+
+      Map<String, dynamic> dataPassageiro = {
+        'nome':nome,
+        'cpf':cpf,
+        'telefone':telefone,
+        'data de nascimento':dataFormatada,
+        'email':email,
+        'senha':senha,
+        'pdc':pcd,
+        'descricao PCD' : pcdDesc
+      };
+
+      auth.createUserWithEmailAndPassword(email: email, password: senha)
+      .then((firebaseUser) => {
+        db
+        .ref("usuarios")
+        .child(firebaseUser.user!.uid)
+        .set(dataPassageiro),
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: ((context) => const LoginandRegister())), (route) => false)
+      }).catchError((error) {
+        setState(() {
+          _mensagemErro = "Erro ao registrar usuário passageiro, $error";
+        });
+      });
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -509,12 +599,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                         elevation: 0,
                       ),
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: ((context) =>
-                                    const LoginandRegister())),
-                            (route) => false);
+                        _validateFieldsPassageiro();
                       },
                       child: Text(
                         "ENVIAR",
