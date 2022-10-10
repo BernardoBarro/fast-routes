@@ -14,7 +14,6 @@ class Maps extends StatefulWidget {
 }
 
 class _MapsState extends State<Maps> {
-
   late GoogleMapController _googleMapController;
   Marker? _origin;
   Marker? _destination;
