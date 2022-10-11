@@ -46,38 +46,37 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
     _validateFieldsMotorista(String nome, String cpf, String telefone, String dataNascimento,
         String email, String senha) {
 
-      print(nome);
-      if(motorista == true) {
-        if(nome.isNotEmpty) {
-          if(cpf.isNotEmpty && cpf.length == 11) {
-            if(telefone.isNotEmpty) {
-              if(dataNascimento.isNotEmpty) {
-                if(email.isNotEmpty && email.contains("@")) {
-                  if(senha.isNotEmpty && senha.length >= 6) {
+        //String dataFormatada = _formatDate(dataNascimento);
+
+      // if(motorista == true) {
+      //   if(nome.isNotEmpty) {
+      //     if(cpf.isNotEmpty && cpf.length == 11) {
+      //       if(telefone.isNotEmpty) {
+      //         if(dataNascimento.isNotEmpty) {
+      //           if(email.isNotEmpty && email.contains("@")) {
+      //             if(senha.isNotEmpty && senha.length >= 6) {
                     _registerMotorista(nome, cpf, telefone, dataNascimento, email, senha);
-                  } else {
-                    _mensagemErro = "Erro";
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+      //             } else {
+      //               _mensagemErro = "Erro";
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
     }
 
-  _registerMotorista(String nome, String cpf, String telefone, String dataNascimento, 
+  _registerMotorista(String nome, String cpf, String telefone, String dataFormatada, 
                     String email, String senha) {
       FirebaseDatabase db = FirebaseDatabase.instance;
       FirebaseAuth auth = FirebaseAuth.instance;
-      
-      String dataFormatada = _formatDate(dataNascimento);
 
       Map<String, dynamic> dataMotorista = {
         'nome':nome,
         'cpf':cpf,
         'telefone':telefone,
-        'data de nascimento':dataFormatada,
+        'data_de_nascimento':dataFormatada,
         'email':email,
         'senha':senha, 
         'motorista':motorista,
@@ -91,7 +90,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
       auth.createUserWithEmailAndPassword(email: email, password: senha)
       .then((firebaseUser) => {
         db
-        .ref("motoristas")
+        .ref("usuarios")
         .child(firebaseUser.user!.uid)
         .set(dataMotorista),
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
