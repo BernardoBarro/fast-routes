@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:fast_routes/views/PageRegisterMotorista.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class PageRegisterMotorista extends StatefulWidget {
   const PageRegisterMotorista({Key? key}) : super(key: key);
@@ -19,8 +21,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   bool motorista = true;
   bool passageiro = false;
   bool feminino = false;
-  bool masculino = false;
-  bool pcd = false;
+  bool masculino = true;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
@@ -32,49 +33,77 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   TextEditingController _controllerDataNascimento = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
-  
-  String _errorMessage = " ";
 
-  _validateFieldsMotorista() {
-    String nome = _controllerNome.text;
-    String cpf = _controllerCPF.text;
-    String telefone = _controllerTelefone.text;
-    String dataNascimento = _controllerDataNascimento.text;
-    String email = _controllerEmail.text;
-    String senha = _controllerSenha.text;
+  String _mensagemErro = "";
 
-    if(nome.isNotEmpty) {
-      if(cpf.isNotEmpty && cpf.length == 11) {
-          if(telefone.isNotEmpty) {
-            if(dataNascimento.isNotEmpty) {
-              if(email.isNotEmpty) {
-                if(senha.isNotEmpty && senha.length >= 6) {
-                  _registerMotorista(nome, cpf, telefone, dataNascimento, email, senha);
-                } else {
-                  _errorMessage = "Erro";
-                }
-              }
-            }
-        }
-      }
-    }
-
-    _registerMotorista(String nome, String cpf, String telefone, String dataNascimento, String email, String senha) {
-      FirebaseDatabase db = FirebaseDatabase.instance;
-
-      var dateFormat = new DateFormat('yyyy-MM-dd');
-      //String dataFormatada = dateFormat.format(dataNascimento);
-      DateFormat dataFormatada = DateFormat(dataNascimento);
+  String _formatDate(date) {
+    var dateFormat = new DateFormat('yyyy-MM-dd');
+    String dataFormatada = dateFormat.format(date);
+    return dataFormatada;
   }
 
+    //_validateFieldsMotorista(String nome, String cpf, String telefone, String dataNascimento, String email, String senha)
+    _validateFieldsMotorista(String nome, String cpf, String telefone, String dataNascimento,
+        String email, String senha) {
 
-    Navigator.push(context,MaterialPageRoute(builder: ((context) => const LoginandRegister())));
+        //String dataFormatada = _formatDate(dataNascimento);
+
+      // if(motorista == true) {
+      //   if(nome.isNotEmpty) {
+      //     if(cpf.isNotEmpty && cpf.length == 11) {
+      //       if(telefone.isNotEmpty) {
+      //         if(dataNascimento.isNotEmpty) {
+      //           if(email.isNotEmpty && email.contains("@")) {
+      //             if(senha.isNotEmpty && senha.length >= 6) {
+                    _registerMotorista(nome, cpf, telefone, dataNascimento, email, senha);
+      //             } else {
+      //               _mensagemErro = "Erro";
+      //             }
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+    }
+
+  _registerMotorista(String nome, String cpf, String telefone, String dataFormatada, 
+                    String email, String senha) {
+      FirebaseDatabase db = FirebaseDatabase.instance;
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      Map<String, dynamic> dataMotorista = {
+        'nome':nome,
+        'cpf':cpf,
+        'telefone':telefone,
+        'data_de_nascimento':dataFormatada,
+        'email':email,
+        'senha':senha, 
+        'motorista':motorista,
+        'masculino':masculino,
+        'feminino':feminino
+      };
+
+      print(dataMotorista);
+
+
+      auth.createUserWithEmailAndPassword(email: email, password: senha)
+      .then((firebaseUser) => {
+        db
+        .ref("usuarios")
+        .child(firebaseUser.user!.uid)
+        .set(dataMotorista),
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+          builder: ((context) => const LoginandRegister())), (route) => false)
+      }).catchError((error) {
+        setState(() {
+          _mensagemErro = "Erro ao criar usuário $error";
+        });
+      });
   }
 
   @override
   Widget build(BuildContext context) {
-    // ignore: prefer_typing_uninitialized_variables
-
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -146,6 +175,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT NOME
               TextFormField(
+                controller: _controllerNome,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
                   //Style Label
@@ -190,6 +220,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT CPF
               TextFormField(
+                controller: _controllerCPF,
                 inputFormatters: [maskCPF],
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
@@ -236,6 +267,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT TELEFONE
               TextFormField(
+                controller: _controllerTelefone,
                 inputFormatters: [maskPhone],
                 keyboardType: TextInputType.number,
                 style: const TextStyle(color: Colors.white),
@@ -282,6 +314,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT DATA
               TextFormField(
+                controller: _controllerDataNascimento,
                 inputFormatters: [maskDate],
                 keyboardType: TextInputType.number,
                 //validator: _validateDate,
@@ -330,6 +363,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT EMAIL
               TextFormField(
+                controller: _controllerEmail,
                 keyboardType: TextInputType.emailAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -377,6 +411,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
               //TEXT SENHA
               TextFormField(
+                controller: _controllerSenha,
                 keyboardType: TextInputType.streetAddress,
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -446,6 +481,9 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       onChanged: (bool? checked) {
                         setState(() {
                           masculino = !masculino;
+                          if (masculino == true) {
+                            feminino = false;
+                          }
                         });
                       }),
                   const Text(
@@ -460,6 +498,10 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                         onChanged: (bool? checked) {
                           setState(() {
                             feminino = !feminino;
+
+                            if (feminino == true) {
+                              masculino = false;
+                            }
                           });
                         }),
                   ),
@@ -484,7 +526,16 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       onPrimary: Colors.white,
                       elevation: 0,
                     ),
-                    onPressed: _validateFieldsMotorista,
+                    onPressed: () {
+                      _validateFieldsMotorista(
+                        _controllerNome.text,
+                        _controllerCPF.text,
+                        _controllerTelefone.text,
+                        _controllerDataNascimento.text,                     
+                        _controllerEmail.text,
+                        _controllerSenha.text
+                      );
+                    },
                     child: Text(
                       "ENVIAR",
                       style: TextStyle(
@@ -492,6 +543,15 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       ),
                     ),
                   )),
+            Center(
+                  child: Text(
+                    _mensagemErro,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
             ],
           )),
         ),
