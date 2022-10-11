@@ -484,7 +484,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                 height: 10.0,
               ),
 
-              //NECESSIDADE ESPECIAL bool
+              //NECESSIDADE ESPECIAL
               Row(children: [
                 Checkbox(
                     side: BorderSide(color: Colors.white),
