@@ -47,31 +47,31 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   _validateFieldsPassageiro(String nome, String cpf, String telefone, String dataNascimento,
       String email, String senha, [String? pcdDesc]) {
 
-    if(passageiro == true) {
-      if(nome.isNotEmpty) {
-        if(cpf.isNotEmpty && cpf.length == 11) {
-          if(telefone.isNotEmpty) {
-            if(dataNascimento.isNotEmpty) {
-              if(email.isNotEmpty && email.contains("@")) {
-                if(senha.isNotEmpty && senha.length >= 6) {
-                  if(pcd == true) {
-                    if(pcdDesc!.isNotEmpty) {
-                      _registerPassageiro(nome, cpf, telefone, dataNascimento, email, senha, pcd, pcdDesc);
-                    } else {
-                      _mensagemErro = "Erro";
-                    }
-                  } else if (pcd == false) {
-                    _registerPassageiro(nome, cpf, telefone, dataNascimento, email, senha, pcd);
-                  } else {
-                    _mensagemErro = "Erro";
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+    // if(passageiro == true) {
+    //   if(nome.isNotEmpty) {
+    //     if(cpf.isNotEmpty && cpf.length == 11) {
+    //       if(telefone.isNotEmpty) {
+    //         if(dataNascimento.isNotEmpty) {
+    //           if(email.isNotEmpty && email.contains("@")) {
+    //             if(senha.isNotEmpty && senha.length >= 6) {
+    //               if(pcd == true) {
+    //                 if(pcdDesc!.isNotEmpty) {
+                       _registerPassageiro(nome, cpf, telefone, dataNascimento, email, senha, pcd, pcdDesc);
+    //                 } else {
+    //                   _mensagemErro = "Erro";
+    //                 }
+    //               } else if (pcd == false) {
+    //                 _registerPassageiro(nome, cpf, telefone, dataNascimento, email, senha, pcd);
+    //               } else {
+    //                 _mensagemErro = "Erro";
+    //               }
+    //             }
+    //           }
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   _registerPassageiro(String nome, String cpf, String telefone, String dataNascimento, 

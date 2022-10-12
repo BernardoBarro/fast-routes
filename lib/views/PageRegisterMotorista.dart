@@ -47,7 +47,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
         String email, String senha) {
 
         //String dataFormatada = _formatDate(dataNascimento);
-
+    //validator
       // if(motorista == true) {
       //   if(nome.isNotEmpty) {
       //     if(cpf.isNotEmpty && cpf.length == 11) {
