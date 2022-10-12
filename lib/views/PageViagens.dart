@@ -1,8 +1,6 @@
-import 'dart:math';
-
+import 'package:fast_routes/models/TravelModel.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:provider/provider.dart';
 import 'PageCreateTravel.dart';
 
 class PageViagens extends StatefulWidget {
@@ -13,6 +11,7 @@ class PageViagens extends StatefulWidget {
 }
 
 class _PageViagensState extends State<PageViagens> {
+
   _pageCreateTravel() {
     setState(() {
       Navigator.push(
@@ -29,107 +28,49 @@ class _PageViagensState extends State<PageViagens> {
           width: double.infinity,
           color: Color.fromRGBO(69, 69, 85, 1),
           padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Card(
-                  color: Color.fromRGBO(51, 101, 229, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(12)),
-                  ),
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      debugPrint('Card 1.');
-                    },
-                    child: SizedBox(
-                      width: 350,
-                      height: 100,
-                      child: Center(
-                        child: ListTile(
-                          textColor: Color.fromRGBO(255, 255, 255, 1),
-                          title: Text(
-                            'Viagem URI CAMPUS 2',
-                            style: TextStyle(fontSize: 18),
+          child: Column(
+            children: [
+              Consumer<TravelModel>(
+                  builder: (context, model, child) {
+                    return Expanded(child: ListView(
+                      children: [
+                        ...model.travels.map((travel) => Card(
+                          color: Color.fromRGBO(51, 101, 229, 1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
-                          subtitle: Text(
-                            'Manha,Sab',
-                            style: TextStyle(
-                                fontSize: 16,
-                                height: 1.6,
-                                color: Color.fromARGB(174, 255, 255, 255)),
+                          child: InkWell(
+                            splashColor: Colors.blue.withAlpha(30),
+                            onTap: () {
+                              debugPrint('Card 2.');
+                            },
+                            child: SizedBox(
+                              width: 350,
+                              height: 100,
+                              child: Center(
+                                child: ListTile(
+                                  textColor: Color.fromRGBO(255, 255, 255, 1),
+                                  title: Text(
+                                    travel.nome,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  subtitle: Text(
+                                    travel.weekDays,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        height: 1.6,
+                                        color: Color.fromARGB(174, 255, 255, 255)),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  color: Color.fromRGBO(51, 101, 229, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  ),
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      debugPrint('Card 2.');
-                    },
-                    child: SizedBox(
-                      width: 350,
-                      height: 100,
-                      child: Center(
-                        child: ListTile(
-                          textColor: Color.fromRGBO(255, 255, 255, 1),
-                          title: Text(
-                            'Viagem URI CAMPUS 1/2',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          subtitle: Text(
-                            'Tarde,Seg a Sab',
-                            style: TextStyle(
-                                fontSize: 16,
-                                height: 1.6,
-                                color: Color.fromARGB(174, 255, 255, 255)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Card(
-                  color: Color.fromRGBO(51, 101, 229, 1),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  ),
-                  child: InkWell(
-                    splashColor: Colors.blue.withAlpha(30),
-                    onTap: () {
-                      debugPrint('Card 3.');
-                    },
-                    child: SizedBox(
-                      width: 350,
-                      height: 100,
-                      child: Center(
-                        child: ListTile(
-                          textColor: Color.fromRGBO(255, 255, 255, 1),
-                          title: Text(
-                            'Viagem URI CAMPUS 1/2',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          subtitle: Text(
-                            'Noite,Seg a Sex',
-                            style: TextStyle(
-                                fontSize: 16,
-                                height: 1.6,
-                                color: Color.fromARGB(174, 255, 255, 255)),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+                        ))
+                      ],
+                    ));
+                  }
+              )
+            ],
           ),
         ),
       ),
