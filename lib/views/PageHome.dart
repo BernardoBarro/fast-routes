@@ -1,8 +1,10 @@
+import 'package:fast_routes/models/TravelModel.dart';
+import 'package:fast_routes/views/Maps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/bottom_navigation_bar.dart';
+import 'package:provider/provider.dart';
 
 import 'PageViagens.dart';
-import 'PageMap.dart';
 import 'PagePerfil.dart';
 
 class PageHome extends StatefulWidget {
@@ -34,8 +36,11 @@ class _PageHomeState extends State<PageHome> {
         controller: pc,
         children: [
           PagePerfil(),
-          PageMap(),
-          PageViagens(),
+          Maps(),
+          ChangeNotifierProvider(
+            create: (_) => TravelModel(),
+            child: PageViagens(),
+          ),
         ],
         onPageChanged: setActualPage,
       ),

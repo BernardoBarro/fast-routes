@@ -47,40 +47,28 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
     Map<String, dynamic> viagem = {
       'nome': nome,
       'numPassageiros': numPassageiros,
-      'data': dataFormatada
-    };
-
-    Map<String, dynamic> ida = {'horario': horarioIda, 'origem': origemIda};
-
-    Map<String, dynamic> volta = {
-      'horario': horarioVolta,
-      'origem': origemVolta
+      'data': dataFormatada,
+      'dias': {
+        'dom': dom,
+        'seg': seg,
+        'ter': ter,
+        'qua': qua,
+        'qui': qui,
+        'sex': sex,
+        'sab': sab
+      },
+      "ida": {'horario': horarioIda, 'origem': origemIda},
+      "volta": {'horario': horarioVolta, 'origem': origemVolta}
     };
 
     db
         .ref("usuarios")
         .child(usuarioLogado!.uid)
         .child("viagens")
-        .child(dataFormatada)
+        .push()
         .set(viagem)
-        .then((value) => {
-              db
-                  .ref("usuarios")
-                  .child(usuarioLogado.uid)
-                  .child("viagens")
-                  .child(dataFormatada)
-                  .child("ida")
-                  .set(ida)
-                  .then((value) => {
-                        db
-                            .ref("usuarios")
-                            .child(usuarioLogado.uid)
-                            .child("viagens")
-                            .child(dataFormatada)
-                            .child("volta")
-                            .set(volta)
-                      })
-            });
+        .then((value) => print("Viagem cadastrada com sucesso!"))
+        .catchError((error) => print("Ocorreu um erro $error"));
 
     Navigator.pushAndRemoveUntil(
         context,
