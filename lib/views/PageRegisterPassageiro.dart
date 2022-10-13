@@ -79,17 +79,16 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       FirebaseDatabase db = FirebaseDatabase.instance;
       FirebaseAuth auth = FirebaseAuth.instance;
 
-      String dataFormatada = _formatDate(dataNascimento);
-
       Map<String, dynamic> dataPassageiro = {
         'nome':nome,
         'cpf':cpf,
         'telefone':telefone,
-        'data de nascimento':dataFormatada,
+        'data de nascimento':dataNascimento,
         'email':email,
         'senha':senha,
         'pdc':pcd,
         'descricao PCD' : pcdDesc,
+        'passageiro':passageiro,
         'masculino':masculino,
         'feminino':feminino
       };

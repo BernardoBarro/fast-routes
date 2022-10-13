@@ -67,7 +67,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
       // }
     }
 
-  _registerMotorista(String nome, String cpf, String telefone, String dataFormatada, 
+  _registerMotorista(String nome, String cpf, String telefone, String dataNascimento,
                     String email, String senha) {
       FirebaseDatabase db = FirebaseDatabase.instance;
       FirebaseAuth auth = FirebaseAuth.instance;
@@ -76,17 +76,14 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
         'nome':nome,
         'cpf':cpf,
         'telefone':telefone,
-        'data_de_nascimento':dataFormatada,
+        'data_de_nascimento':dataNascimento,
         'email':email,
         'senha':senha, 
         'motorista':motorista,
         'masculino':masculino,
         'feminino':feminino
       };
-
-      print(dataMotorista);
-
-
+      
       auth.createUserWithEmailAndPassword(email: email, password: senha)
       .then((firebaseUser) => {
         db
