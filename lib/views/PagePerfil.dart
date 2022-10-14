@@ -19,8 +19,7 @@ class _PagePerfilState extends State<PagePerfil> {
   bool fieldOcult = false;
 
   _logout() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    auth.signOut();
+    FirebaseAuth.instance.signOut();
     setState(() {
       Navigator.pushAndRemoveUntil(
           context,

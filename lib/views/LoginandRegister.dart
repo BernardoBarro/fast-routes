@@ -12,21 +12,6 @@ class LoginandRegister extends StatefulWidget {
 }
 
 class _LoginandRegisterState extends State<LoginandRegister> {
-  _verifyUserLoggedIn() {
-    User? LoggedInUser = FirebaseAuth.instance.currentUser;
-    if (LoggedInUser != null) {
-      setState(() {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => PageHome()));
-      });
-    }
-  }
-
-  void initState() {
-    super.initState();
-    _verifyUserLoggedIn();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
