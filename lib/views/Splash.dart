@@ -1,4 +1,5 @@
 import 'package:fast_routes/views/LoginandRegister.dart';
+import 'package:fast_routes/views/LoginLogic.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,7 +15,7 @@ class _SplashState extends State<Splash> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     Future.delayed(const Duration(seconds: 4)).then((_) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => LoginandRegister()));
+          context, MaterialPageRoute(builder: (context) => LoginLogic()));
     });
   }
 
