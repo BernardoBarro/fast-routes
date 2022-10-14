@@ -21,21 +21,30 @@ class _PageLoginState extends State<PageLogin> {
   TextEditingController _controllerPassword = TextEditingController();
 
   _login() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Center(
+              child: CircularProgressIndicator(),
+            ));
+
     String email = _controllerEmail.text;
     String password = _controllerPassword.text;
 
-    if(email.isNotEmpty && email.contains("@")){
-      if(password.isNotEmpty && password.length >= 6);
+    if (email.isNotEmpty && email.contains("@")) {
+      if (password.isNotEmpty && password.length >= 6) {
         FirebaseAuth auth = FirebaseAuth.instance;
-        auth.signInWithEmailAndPassword(email: email, password: password).then((value) => {
-          setState((){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => PageHome()));
-          }),
-        });
+        auth
+            .signInWithEmailAndPassword(email: email, password: password)
+            .then((value) => {
+                  setState(() {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PageHome()));
+                  }),
+                });
+      }
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
