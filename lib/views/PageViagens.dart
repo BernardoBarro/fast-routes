@@ -1,6 +1,8 @@
-import 'package:fast_routes/models/TravelModel.dart';
+import 'package:fast_routes/providers/TravelProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import '../providers/AddressProvider.dart';
 import 'PageCreateTravel.dart';
 
 class PageViagens extends StatefulWidget {
@@ -30,46 +32,50 @@ class _PageViagensState extends State<PageViagens> {
           padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
           child: Column(
             children: [
-              Consumer<TravelModel>(
+              Consumer<TravelProvider>(
                   builder: (context, model, child) {
                     return Expanded(child: ListView(
                       children: [
-                        ...model.travels.map((travel) => Card(
-                          color: Color.fromRGBO(51, 101, 229, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                          ),
-                          child: InkWell(
-                            splashColor: Colors.blue.withAlpha(30),
-                            onTap: () {
-                              debugPrint('Card 2.');
-                            },
-                            child: SizedBox(
-                              width: 350,
-                              height: 100,
-                              child: Center(
-                                child: ListTile(
-                                  textColor: Color.fromRGBO(255, 255, 255, 1),
-                                  title: Text(
-                                    travel.nome,
-                                    style: TextStyle(fontSize: 18),
-                                  ),
-                                  subtitle: Text(
-                                    travel.weekDays,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        height: 1.6,
-                                        color: Color.fromARGB(174, 255, 255, 255)),
+                        ...model.travels.map((travel) =>
+                            Card(
+                              color: Color.fromRGBO(51, 101, 229, 1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(12)),
+                              ),
+                              child: InkWell(
+                                splashColor: Colors.blue.withAlpha(30),
+                                onTap: () {
+                                  debugPrint('Card 2.');
+                                },
+                                child: SizedBox(
+                                  width: 350,
+                                  height: 100,
+                                  child: Center(
+                                    child: ListTile(
+                                      textColor: Color.fromRGBO(
+                                          255, 255, 255, 1),
+                                      title: Text(
+                                        travel.nome,
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      subtitle: Text(
+                                        travel.weekDays,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            height: 1.6,
+                                            color: Color.fromARGB(
+                                                174, 255, 255, 255)),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ))
+                            ))
                       ],
                     ));
                   }
-              )
+              ),
             ],
           ),
         ),

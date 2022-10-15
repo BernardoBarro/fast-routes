@@ -3,8 +3,10 @@ import 'package:fast_routes/models/Directions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 
 import '../clients/DirectionsRepository.dart';
+import '../providers/AddressProvider.dart';
 
 class Maps extends StatefulWidget {
   const Maps({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class Maps extends StatefulWidget {
 
 class _MapsState extends State<Maps> {
   final controller = Get.put(MapsController());
-  Marker? _origin;
+  List<Marker>? _origin;
   Marker? _destination;
   Directions? _info;
 
@@ -27,7 +29,6 @@ class _MapsState extends State<Maps> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: GetBuilder<MapsController>(
         init: controller,
@@ -43,10 +44,7 @@ class _MapsState extends State<Maps> {
               ),
               onMapCreated: controller.onMapsCreated,
               myLocationEnabled: true,
-              markers: {
-                if (_origin != null) _origin!,
-                if (_destination != null) _destination!,
-              },
+              markers: _origin,
               polylines: {
                 if (_info != null)
                   Polyline(
@@ -94,7 +92,9 @@ class _MapsState extends State<Maps> {
   }
 
   void _addMarker(LatLng pos) async {
-    if (_origin == null || (_origin != null && _destination != null)) {
+
+    final passa = Get.put(AddressProvider());
+    // if (_origin == null || (_origin != null && _destination != null)) {
       setState(() {
         _origin = Marker(
           markerId: const MarkerId('origin'),
@@ -105,20 +105,20 @@ class _MapsState extends State<Maps> {
         );
         _destination = null;
         _info = null;
-      });
-    } else {
-      setState(() {
-        _destination = Marker(
-          markerId: const MarkerId('destination'),
-          infoWindow: const InfoWindow(title: 'Destination'),
-          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-          position: pos,
-        );
-      });
-
-      final directions = await DirectionsRepository()
-          .getDirections(origin: _origin!.position, destination: pos);
-      setState(() => _info = directions);
-    }
+    //   });
+    // } else {
+    //   setState(() {
+    //     _destination = Marker(
+    //       markerId: const MarkerId('destination'),
+    //       infoWindow: const InfoWindow(title: 'Destination'),
+    //       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
+    //       position: pos,
+    //     );
+    //   });
+    //
+    //   final directions = await DirectionsRepository()
+    //       .getDirections(origin: _origin!.position, destination: pos);
+    //   setState(() => _info = directions);
+    // }
   }
 }

@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'Travel.dart';
+import '../models/Travel.dart';
 
-class TravelModel extends ChangeNotifier {
+class TravelProvider extends ChangeNotifier {
   List<Travel> _travel = [];
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final _db = FirebaseDatabase.instance.ref("usuarios");
@@ -16,13 +16,14 @@ class TravelModel extends ChangeNotifier {
 
   List<Travel> get travels => _travel;
 
-  TravelModel() {
+  TravelProvider() {
     _listenToTravels();
   }
 
   void _listenToTravels() {
     String uid = usuarioLogado!.uid;
     _travelStream = _db.child(uid+TRAVEL_PATH).onValue.listen((event) {
+      print(event.snapshot.value);
       final allTravels =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
       _travel = allTravels.values

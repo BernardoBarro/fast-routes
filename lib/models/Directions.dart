@@ -33,7 +33,7 @@ class Directions {
       distance = leg['distance']['text'];
       duration = leg['duration']['text'];
     }
-
+  (PolylinePoints().decodePolyline(data['overview_polyline']['points'])).forEach((element) => print(element));
     return Directions(
       bounds: bounds,
       polylinePoints: PolylinePoints().decodePolyline(data['overview_polyline']['points']),
