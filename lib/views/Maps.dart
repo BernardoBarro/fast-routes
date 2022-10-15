@@ -14,20 +14,19 @@ class Maps extends StatefulWidget {
 }
 
 class _MapsState extends State<Maps> {
-  late GoogleMapController _googleMapController;
+  final controller = Get.put(MapsController());
   Marker? _origin;
   Marker? _destination;
   Directions? _info;
 
   @override
   void dispose() {
-    _googleMapController.dispose();
+    controller.positionStream.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(MapsController());
 
     return Scaffold(
       body: GetBuilder<MapsController>(

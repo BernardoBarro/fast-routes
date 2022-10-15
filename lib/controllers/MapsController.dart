@@ -7,7 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class MapsController extends GetxController {
   final latitude = 0.0.obs;
   final longitude = 0.0.obs;
-  StreamSubscription<Position>? positionStream;
+  late StreamSubscription<Position> positionStream;
   final LatLng _position = const LatLng(-27.6357848, -52.2745583);
   late GoogleMapController _mapsController;
 
