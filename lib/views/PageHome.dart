@@ -16,43 +16,31 @@ class PageHome extends StatefulWidget {
 
 class _PageHomeState extends State<PageHome> {
   int _selectedIndex = 1;
-  late PageController pc;
+  final List<Widget> _telas = [
+    PagePerfil(),
+    Maps(),
+    ChangeNotifierProvider(
+      create: (_) => TravelModel(),
+      child: PageViagens(),
+    ),
+  ];
 
-  void initState() {
-    super.initState();
-    pc = PageController(initialPage: _selectedIndex);
-  }
-
-  setActualPage(pagina) {
+  void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = pagina;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: PageView(
-        controller: pc,
-        children: [
-          PagePerfil(),
-          Maps(),
-          ChangeNotifierProvider(
-            create: (_) => TravelModel(),
-            child: PageViagens(),
-          ),
-        ],
-        onPageChanged: setActualPage,
-      ),
+      body: _telas[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         backgroundColor: const Color.fromRGBO(69, 69, 85, 1),
         unselectedItemColor: Color.fromARGB(57, 255, 255, 255),
         selectedItemColor: Color.fromRGBO(255, 255, 255, 1),
-        onTap: (pagina) {
-          pc.animateToPage(pagina,
-              duration: Duration(milliseconds: 1), curve: Curves.ease);
-        },
+        onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
