@@ -17,6 +17,7 @@ class Maps extends StatefulWidget {
 
 class _MapsState extends State<Maps> {
   final controller = Get.put(MapsController());
+  late GoogleMapController _googleMapController;
   late AddressProvider provider;
   Set<Marker> _markersSet = {};
   Marker? _marker;
@@ -31,7 +32,6 @@ class _MapsState extends State<Maps> {
   @override
   Widget build(BuildContext context) {
     provider = Provider.of<AddressProvider>(context, listen: true);
-
     return Scaffold(
       body: GetBuilder<MapsController>(
         init: controller,
@@ -45,7 +45,10 @@ class _MapsState extends State<Maps> {
                 target: controller.position,
                 zoom: 18,
               ),
-              onMapCreated: controller.onMapsCreated,
+              onMapCreated: (gmc) => {
+                _googleMapController = gmc,
+                controller.onMapsCreated(_googleMapController)
+              },
               myLocationEnabled: true,
               markers: _addMarker.call(),
               polylines: {
@@ -60,6 +63,12 @@ class _MapsState extends State<Maps> {
                   ),
               },
               onTap: _getRoute,
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: FloatingActionButton(
+                onPressed: () => controller.onMapsCreated(_googleMapController),
+              ),
             ),
           ],
         ),
