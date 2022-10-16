@@ -61,33 +61,6 @@ class _MapsState extends State<Maps> {
               },
               onTap: _getRoute,
             ),
-            // if (_info != null)
-            //   Positioned(
-            //     top: 20.0,
-            //     child: Container(
-            //       padding: const EdgeInsets.symmetric(
-            //         vertical: 6.0,
-            //         horizontal: 12.0,
-            //       ),
-            //       decoration: BoxDecoration(
-            //           color: Colors.yellowAccent,
-            //           borderRadius: BorderRadius.circular(20.0),
-            //           boxShadow: const [
-            //             BoxShadow(
-            //               color: Colors.black26,
-            //               offset: Offset(0, 2),
-            //               blurRadius: 6.0,
-            //             )
-            //           ]),
-            //       child: Text(
-            //         '${_info!.totalDistance}, ${_info!.totalduration}',
-            //         style: const TextStyle(
-            //           fontSize: 18.0,
-            //           fontWeight: FontWeight.w600,
-            //         ),
-            //       ),
-            //     ),
-            //   ),
           ],
         ),
       ),
