@@ -370,8 +370,9 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       if (email == null || email.isEmpty) {
                         return 'Digite o seu E-mail';
                       } else if (!email.contains("@")) {
-                        return 'CPF inválido';
+                        return 'E-mail inválido';
                       }
+                      //Verify email alredy in use
                       return null;
                     },
                     keyboardType: TextInputType.emailAddress,
@@ -557,6 +558,11 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Motorista registrado')),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('teste erro')),
                             );
                           }
                         },
