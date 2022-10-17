@@ -10,6 +10,7 @@ import 'package:fast_routes/views/PageRegisterMotorista.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:email_validator/email_validator.dart';
 
 class PageRegisterMotorista extends StatefulWidget {
   const PageRegisterMotorista({Key? key}) : super(key: key);
@@ -68,8 +69,17 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                   (route) => false)
             })
         .catchError((error) {
+          if(error.code == 'firebase_auth/email-already-in-use') {
+            setState(() {
+              _mensagemErro = "E-mail já cadastrado";
+            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+              content: Text('erro'),
+            );
+          }
       setState(() {
-        _mensagemErro = "Erro ao criar usuário $error";
+        _mensagemErro = "Erro = $error";
       });
     });
   }
@@ -558,11 +568,6 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text('Motorista registrado')),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content: Text('teste erro')),
                             );
                           }
                         },
