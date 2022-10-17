@@ -8,6 +8,7 @@ import 'package:fast_routes/views/PageRegisterMotorista.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:email_validator/email_validator.dart';
 
 class PageRegisterPassageiro extends StatefulWidget {
   const PageRegisterPassageiro({Key? key}) : super(key: key);
@@ -35,40 +36,8 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
   TextEditingController _controllerPcdDesc = TextEditingController();
-  String _mensagemErro = "";
+  String _mensagemErro = " ";
   final formKey = GlobalKey<FormState>();
-
-  // _validateFieldsPassageiro(String nome, String cpf, String telefone,
-  //     String dataNascimento, String email, String senha,
-  //     [String? pcdDesc]) {
-  //   if (passageiro == true) {
-  //     if (nome.isNotEmpty) {
-  //       if (cpf.isNotEmpty && cpf.length == 11) {
-  //         if (telefone.isNotEmpty) {
-  //           if (dataNascimento.isNotEmpty) {
-  //             if (email.isNotEmpty && email.contains("@")) {
-  //               if (senha.isNotEmpty && senha.length >= 6) {
-  //                 if (pcd == true) {
-  //                   if (pcdDesc!.isNotEmpty) {
-  //                     _registerPassageiro(nome, cpf, telefone, dataNascimento,
-  //                         email, senha, pcd, pcdDesc);
-  //                   } else {
-  //                     _mensagemErro = "Erro";
-  //                   }
-  //                 } else if (pcd == false) {
-  //                   _registerPassageiro(
-  //                       nome, cpf, telefone, dataNascimento, email, senha, pcd);
-  //                 } else {
-  //                   _mensagemErro = "Erro";
-  //                 }
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
 
   _registerPassageiro(String nome, String cpf, String telefone,
       String dataNascimento, String email, String senha,
@@ -105,7 +74,16 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
             })
         .catchError((error) {
       setState(() {
-        _mensagemErro = "Erro ao registrar usuário passageiro, $error";
+            if(error.code.toString() == "email-already-in-use") {
+            setState(() {
+              _mensagemErro = "E-mail já cadastrado";
+              print(error.toString());
+            });
+          } else {
+            setState(() {
+              _mensagemErro = "vv";
+            });
+          }
       });
     });
   }
@@ -353,6 +331,8 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     validator: (dataNascimento) {
                       if (dataNascimento == null || dataNascimento.isEmpty) {
                         return 'Digite sua data de nascimento';
+                      } else if(dataNascimento.length < 10) {
+                        return 'Data de nascimento inválida';
                       }
                       return null;
                     },
@@ -408,8 +388,8 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     validator: (email) {
                       if (email == null || email.isEmpty) {
                         return 'Digite o seu E-mail';
-                      } else if (!email.contains("@")) {
-                        return 'CPF inválido';
+                      } else if (!EmailValidator.validate(email)) {
+                        return 'E-mail inválido';
                       }
                       return null;
                     },
@@ -636,11 +616,18 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       )
                     ],
                   ),
-
+                  Center(
+                    child: Text(
+                      _mensagemErro,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 20.0,
                   ),
-
                   //BUTTON
                   Padding(
                       padding: const EdgeInsets.only(bottom: 10.0),
@@ -654,20 +641,18 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                             elevation: 0,
                           ),
                           onPressed: () {
+                          setState(() {
+                            _mensagemErro = "";
+                          });                            
                             if (formKey.currentState!.validate()) {
                               _registerPassageiro(
-                                  _controllerNome.text,
-                                  _controllerCPF.text,
-                                  _controllerTelefone.text,
-                                  _controllerDataNascimento.text,
-                                  _controllerEmail.text,
-                                  _controllerSenha.text,
-                                  _controllerPcdDesc.text);
-                              //SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Passageiro registrado')),
-                              );
+                                _controllerNome.text,
+                                _controllerCPF.text,
+                                _controllerTelefone.text,
+                                _controllerDataNascimento.text,
+                                _controllerEmail.text,
+                                _controllerSenha.text,
+                                _controllerPcdDesc.text);
                             }
                           },
                           child: Text(
