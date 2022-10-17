@@ -379,7 +379,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     validator: (email) {
                       if (email == null || email.isEmpty) {
                         return 'Digite o seu E-mail';
-                      } else if (!email.contains("@")) {
+                      } else if (!EmailValidator.validate(email)) {
                         return 'E-mail inválido';
                       }
                       //Verify email alredy in use
