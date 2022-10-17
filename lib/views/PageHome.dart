@@ -1,4 +1,5 @@
-import 'package:fast_routes/models/TravelModel.dart';
+import 'package:fast_routes/providers/AddressProvider.dart';
+import 'package:fast_routes/providers/TravelProvider.dart';
 import 'package:fast_routes/views/Maps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/bottom_navigation_bar.dart';
@@ -18,9 +19,12 @@ class _PageHomeState extends State<PageHome> {
   int _selectedIndex = 1;
   final List<Widget> _telas = [
     PagePerfil(),
-    Maps(),
     ChangeNotifierProvider(
-      create: (_) => TravelModel(),
+      create: (_) => AddressProvider(),
+      child: Maps(),
+    ),
+    ChangeNotifierProvider(
+      create: (_) => TravelProvider(),
       child: PageViagens(),
     ),
   ];

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:fast_routes/models/Passageiro.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:fast_routes/.env.dart';
 
@@ -14,21 +15,25 @@ class DirectionsRepository {
   DirectionsRepository({Dio? dio}) : _dio = dio ?? Dio();
 
   Future<Directions?> getDirections({
-    required LatLng origin,
-    required LatLng destination,
+    // TODO alterar para retornar lista de LatLng
+    required List<Passageiro> address,
   }) async {
-    final respose = await _dio.get(
-      _baseUrl,
-      queryParameters: {
-        'origin': '${origin.latitude},${origin.longitude}',
-        'destination': '${destination.latitude},${destination.longitude}',
-        'key': googleAPIKey,
-      },
-    );
-
-    if(respose.statusCode == 200) {
-      return Directions.fromMap(respose.data);
+    List<Map<String, dynamic>> responseList = [];
+    for(int i=0;i<address.length-1;i++){
+      final response = await _dio.get(
+        _baseUrl,
+        queryParameters: {
+          'origin': '${address[i].latitude},${address[i].longitude}',
+          'destination': '${address[i+1].latitude},${address[i+1].longitude}',
+          'key': googleAPIKey,
+        },
+      );
+      if(response.statusCode == 200) {
+        responseList.add(response.data);
+      }
+      // TODO tratamento de erro
     }
-    return null;
+
+    return Directions.fromMap(responseList);
   }
 }
