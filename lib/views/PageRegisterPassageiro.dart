@@ -28,6 +28,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
   bool _showPassword = false;
+  bool _showRepeatedPassword = false;
 
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerCPF = TextEditingController();
@@ -36,6 +37,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
   TextEditingController _controllerPcdDesc = TextEditingController();
+  TextEditingController _controllerRepetirSenha = TextEditingController();
   String _mensagemErro = " ";
   final formKey = GlobalKey<FormState>();
 
@@ -506,6 +508,79 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                   ),
 
                   const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  //TEXT REPETIR SENHA
+                  TextFormField(
+                    controller: _controllerRepetirSenha,
+                    validator: (repetirSenha) {
+                      if (repetirSenha == null || repetirSenha.isEmpty) {
+                        return 'Digite uma senha';
+                      } else if (repetirSenha.length < 6) {
+                        return 'Digite uma senha com mais de 6 caracteres';
+                      } else if(repetirSenha != _controllerSenha.text) {
+                        return 'As senhas são diferentes';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.streetAddress,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+
+                      //Label Senha
+                      labelText: "Repetir Senha",
+                      hintText: "Digite sua senha",
+
+                      suffixIcon: GestureDetector(
+                        child: Icon(
+                          _showRepeatedPassword == false
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Color.fromRGBO(170, 170, 170, 1),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _showRepeatedPassword = !_showRepeatedPassword;
+                          });
+                        },
+                      ),
+
+                      //Style Label
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+
+                      //Style Hint
+                      hintStyle: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 0.4),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+
+                      //Style borders
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                    ),
+                    obscureText: _showRepeatedPassword == false ? true : false,
+                  ),
+
+                  const SizedBox(
                     height: 10.0,
                   ),
 
@@ -536,7 +611,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     controller: _controllerPcdDesc,
                     validator: (descPcd) {
                       if (fieldPCD == true && (descPcd == null || descPcd.isEmpty)) {
-                        return 'Descreva a sua necessidade';
+                        return 'escreva aqui seu tipo de doença';
                       }
                       return null;
                     },

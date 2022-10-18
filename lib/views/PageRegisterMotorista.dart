@@ -28,6 +28,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   var maskDate = MaskTextInputFormatter(mask: '##/##/####');
   bool _showPassword = false;
+  bool _showRepeatedPassword = false;
 
   TextEditingController _controllerNome = TextEditingController();
   TextEditingController _controllerCPF = TextEditingController();
@@ -35,7 +36,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   TextEditingController _controllerDataNascimento = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
-  //String _mensagemErro = "";
+  TextEditingController _controllerRepetirSenha = TextEditingController();
   String _mensagemErro = " ";
   final formKey = GlobalKey<FormState>();
 
@@ -70,7 +71,6 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                   (route) => false),
             })
         .catchError((error) {
-          //if(error.toString().contains('auth/email-already-in-use')) {
             if(error.code.toString() == "email-already-in-use") {
             setState(() {
               _mensagemErro = "E-mail já cadastrado";
@@ -497,6 +497,79 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                           )),
                     ),
                     obscureText: _showPassword == false ? true : false,
+                  ),
+
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  //TEXT REPETIR SENHA
+                  TextFormField(
+                    controller: _controllerRepetirSenha,
+                    validator: (repetirSenha) {
+                      if (repetirSenha == null || repetirSenha.isEmpty) {
+                        return 'Digite uma senha';
+                      } else if (repetirSenha.length < 6) {
+                        return 'Digite uma senha com mais de 6 caracteres';
+                      } else if(repetirSenha != _controllerSenha.text) {
+                        return 'As senhas são diferentes';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.streetAddress,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+
+                      //Label Senha
+                      labelText: "Repetir Senha",
+                      hintText: "Digite sua senha",
+
+                      suffixIcon: GestureDetector(
+                        child: Icon(
+                          _showRepeatedPassword == false
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                          color: Color.fromRGBO(170, 170, 170, 1),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _showRepeatedPassword = !_showRepeatedPassword;
+                          });
+                        },
+                      ),
+
+                      //Style Label
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+
+                      //Style Hint
+                      hintStyle: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 0.4),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+
+                      //Style borders
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                    ),
+                    obscureText: _showRepeatedPassword == false ? true : false,
                   ),
 
                   const SizedBox(
