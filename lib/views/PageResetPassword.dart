@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 
 class PageResetPassword extends StatefulWidget {
   const PageResetPassword({Key? key}) : super(key: key);
@@ -57,6 +58,14 @@ class _PageResetPasswordState extends State<PageResetPassword> {
                 ),
                 TextFormField(
                   controller: _controllerEmail,
+                  validator: (email) {
+                      if (email == null || email.isEmpty) {
+                        return 'Digite o seu E-mail';
+                      } else if (!EmailValidator.validate(email)) {
+                        return 'E-mail inválido';
+                      }
+                      return null;
+                    },
                   // autofocus: true,
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.white),
