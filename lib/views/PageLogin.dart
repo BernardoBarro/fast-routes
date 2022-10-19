@@ -3,6 +3,7 @@
 import 'dart:ffi';
 
 import 'package:fast_routes/views/PageHome.dart';
+import 'package:fast_routes/views/PageResetPassword.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -167,7 +168,13 @@ class _PageLoginState extends State<PageLogin> {
                 Align(
                   alignment: Alignment.centerRight,
                   child: FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                PageResetPassword()));
+                    },
                     child: Text(
                       "Esqueceu sua senha?",
                       textAlign: TextAlign.right,
