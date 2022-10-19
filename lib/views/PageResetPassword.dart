@@ -1,3 +1,6 @@
+import 'package:fast_routes/views/LoginandRegister.dart';
+import 'package:fast_routes/views/PageRegisterMotorista.dart';
+import 'package:fast_routes/views/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,27 +15,42 @@ class PageResetPassword extends StatefulWidget {
 
 class _PageResetPasswordState extends State<PageResetPassword> {
   TextEditingController _controllerEmail = TextEditingController();
-  String _mensagemErro = "teste";
+  String _mensagemErro = "";
   final formKey = GlobalKey<FormState>();
 
   _resetPassword(String emailField) {
+    showDialog(
+      context: context, 
+      barrierDismissible: false,
+      builder: ((context) => Center(child: CircularProgressIndicator())));
+
     FirebaseAuth auth = FirebaseAuth.instance;
       auth
         .sendPasswordResetEmail(email: emailField)
+        .then((value) => {
+          setState(() {
+            _mensagemErro = "";
+          }),
+          Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) => const LoginandRegister())),
+                  (route) => false),
+          // show toast              
+        })
         .catchError((error) {
-          if(error.code.toString() == "email-already-in-use") {
+          if(error.code.toString() == "user-not-found") {
                 setState(() {
-                  _mensagemErro = "E-mail já cadastrado";
+                  _mensagemErro = "E-mail não encontrado";
                   print(error.toString());
                 });
             } else {
                 setState(() {
                   _mensagemErro = "ocorreu um erro: $error";
                 });
-              }                 
-        });      
-  }
-
+              }                
+        });
+  }      
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +64,7 @@ class _PageResetPasswordState extends State<PageResetPassword> {
             padding: EdgeInsets.only(top: 0, left: 32, right: 32),
             color: Color.fromRGBO(69, 69, 85, 1),
             child: Form(
+              key: formKey,
               child: ListView(
                 children: <Widget>[
                   Padding(
@@ -127,6 +146,9 @@ class _PageResetPasswordState extends State<PageResetPassword> {
                           fontSize: 18,
                         )),
                   ),
+                  SizedBox(
+                    height: 15,
+                  ),
                   //MESSAGE ERROR
                   Center(
                     child: Text(
@@ -138,7 +160,7 @@ class _PageResetPasswordState extends State<PageResetPassword> {
                     ),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 15,
                   ),
                   //BUTTON
                   SizedBox(
@@ -154,6 +176,7 @@ class _PageResetPasswordState extends State<PageResetPassword> {
                             _mensagemErro = "";
                           });
                           if (formKey.currentState!.validate()) {
+                            print("form validado");
                             _resetPassword(
                               _controllerEmail.text);
                           }
