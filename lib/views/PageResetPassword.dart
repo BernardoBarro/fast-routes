@@ -1,10 +1,11 @@
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PageRegisterMotorista.dart';
-import 'package:fast_routes/views/Utils.dart';
+import 'package:fast_routes/utils/Utils.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class PageResetPassword extends StatefulWidget {
   const PageResetPassword({Key? key}) : super(key: key);
@@ -18,26 +19,42 @@ class _PageResetPasswordState extends State<PageResetPassword> {
   String _mensagemErro = "";
   final formKey = GlobalKey<FormState>();
 
+    _showSuccessToast(String text) {
+    Fluttertoast.showToast(
+      msg: text,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.BOTTOM,
+      fontSize: 16,
+      textColor: Colors.white,
+      backgroundColor: Colors.green,
+      timeInSecForIosWeb: 1);
+  }
+
   _resetPassword(String emailField) {
-    showDialog(
-      context: context, 
-      barrierDismissible: false,
-      builder: ((context) => Center(child: CircularProgressIndicator())));
 
     FirebaseAuth auth = FirebaseAuth.instance;
+
+    // showDialog(
+    //         context: context, 
+    //         barrierDismissible: false,
+    //         builder: ((context) => 
+    //                     Center(child: CircularProgressIndicator())));
+
       auth
         .sendPasswordResetEmail(email: emailField)
         .then((value) => {
           setState(() {
             _mensagemErro = "";
           }),
+          Fluttertoast.showToast(msg: "Email enviado"),
           Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                       builder: ((context) => const LoginandRegister())),
                   (route) => false),
-          // show toast              
+          // show toast          
         })
+        
         .catchError((error) {
           if(error.code.toString() == "user-not-found") {
                 setState(() {

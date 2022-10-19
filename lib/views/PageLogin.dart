@@ -2,6 +2,7 @@
 
 import 'dart:ffi';
 
+import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PageHome.dart';
 import 'package:fast_routes/views/PageResetPassword.dart';
 import 'package:flutter/material.dart';
