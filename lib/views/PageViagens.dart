@@ -11,7 +11,6 @@ class PageViagens extends StatefulWidget {
 }
 
 class _PageViagensState extends State<PageViagens> {
-
   _pageCreateTravel() {
     setState(() {
       Navigator.push(
@@ -30,11 +29,11 @@ class _PageViagensState extends State<PageViagens> {
           padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
           child: Column(
             children: [
-              Consumer<TravelProvider>(
-                  builder: (context, model, child) {
-                    return Expanded(child: ListView(
-                      children: [
-                        ...model.travels.map((travel) => Card(
+              Consumer<TravelProvider>(builder: (context, model, child) {
+                return Expanded(
+                    child: ListView(
+                  children: [
+                    ...model.travels.map((travel) => Card(
                           color: Color.fromRGBO(51, 101, 229, 1),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -49,6 +48,14 @@ class _PageViagensState extends State<PageViagens> {
                               height: 100,
                               child: Center(
                                 child: ListTile(
+                                  leading: Builder(
+                                    builder: (BuildContext context) {
+                                      return IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () {},
+                                      );
+                                    },
+                                  ),
                                   textColor: Color.fromRGBO(255, 255, 255, 1),
                                   title: Text(
                                     travel.nome,
@@ -59,17 +66,17 @@ class _PageViagensState extends State<PageViagens> {
                                     style: TextStyle(
                                         fontSize: 16,
                                         height: 1.6,
-                                        color: Color.fromARGB(174, 255, 255, 255)),
+                                        color:
+                                            Color.fromARGB(174, 255, 255, 255)),
                                   ),
                                 ),
                               ),
                             ),
                           ),
                         ))
-                      ],
-                    ));
-                  }
-              )
+                  ],
+                ));
+              })
             ],
           ),
         ),
