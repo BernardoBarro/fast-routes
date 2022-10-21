@@ -1,5 +1,6 @@
 // ignore_for_file: unnecessary_const
 
+import 'package:fast_routes/views/Home.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PageRegisterPassageiro.dart';
 import 'package:flutter/material.dart';
