@@ -83,7 +83,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
             });
           } else {
             setState(() {
-              _mensagemErro = "vv";
+              _mensagemErro = "ocorreu um erro: $error";
             });
           }
       });

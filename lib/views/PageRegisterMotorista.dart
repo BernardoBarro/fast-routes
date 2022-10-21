@@ -78,7 +78,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
             });
           } else {
             setState(() {
-              _mensagemErro = "vv";
+              _mensagemErro = "ocorreu um erro: $error";
             });
           }
         });
