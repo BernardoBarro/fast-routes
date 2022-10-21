@@ -18,6 +18,8 @@ class _PagePerfilState extends State<PagePerfil> {
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   bool fieldOcult = false;
 
+  String textChange = 'Editar Perfil';
+  String changeName = 'Matheus Grigoleto';
   _logout() async {
     FirebaseAuth.instance.signOut();
     setState(() {
@@ -28,11 +30,15 @@ class _PagePerfilState extends State<PagePerfil> {
     });
   }
 
+  final ChangeName = TextEditingController(text: 'Matheus Grigoleto');
+
   _hiddenFields() {
     setState(() {
       if (fieldOcult == false) {
+        textChange = 'Salvar';
         fieldOcult = true;
       } else if (fieldOcult == true) {
+        textChange = 'Editar Perfil';
         fieldOcult = false;
       }
     });
@@ -157,25 +163,32 @@ class _PagePerfilState extends State<PagePerfil> {
                 ),
 
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
-                const SizedBox(
-                  child: Text(
-                    "Matheus Grigoleto",
-                    style: TextStyle(
-                      color: Color.fromRGBO(255, 255, 255, 1),
-                      fontSize: 25,
+                TextField(
+                  textAlign: TextAlign.center,
+                  enabled: fieldOcult,
+                  controller: ChangeName,
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontSize: 25,
+                  ),
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 45,
+                  height: 15,
                 ),
                 //E-MAIL
                 TextFormField(
                   enabled: fieldOcult,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
                     //Style Label
                     labelStyle: TextStyle(
                       color: Colors.white,
@@ -221,6 +234,7 @@ class _PagePerfilState extends State<PagePerfil> {
                   keyboardType: TextInputType.number,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
                     //Style Label
                     labelStyle: TextStyle(
                       color: Colors.white,
@@ -266,6 +280,7 @@ class _PagePerfilState extends State<PagePerfil> {
                   keyboardType: TextInputType.number,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
                     //Style Label
                     labelStyle: TextStyle(
                       color: Colors.white,
@@ -310,6 +325,7 @@ class _PagePerfilState extends State<PagePerfil> {
                   enabled: fieldOcult,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
                     //Style Label
                     labelStyle: TextStyle(
                       color: Colors.white,
@@ -353,6 +369,7 @@ class _PagePerfilState extends State<PagePerfil> {
                   keyboardType: TextInputType.number,
                   style: const TextStyle(color: Colors.white),
                   decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
                     //Style Label
                     labelStyle: TextStyle(
                       color: Colors.white,
@@ -408,7 +425,7 @@ class _PagePerfilState extends State<PagePerfil> {
                           });
                         },
                         child: Text(
-                          "EDITAR PERFIL",
+                          textChange,
                           style: TextStyle(
                             fontFamily: 'InriaSans',
                           ),
