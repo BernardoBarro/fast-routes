@@ -1,7 +1,7 @@
 import 'package:fast_routes/providers/AddressProvider.dart';
 import 'package:fast_routes/providers/TravelProvider.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
-import 'package:fast_routes/views/Maps.dart';
+import 'package:fast_routes/views/PageMaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/bottom_navigation_bar.dart';
 import 'package:provider/provider.dart';
@@ -23,10 +23,7 @@ class _PageHomeState extends State<PageHome> {
       create: (_) => UserProvider(),
       child: PagePerfil(),
     ),
-    ChangeNotifierProvider(
-      create: (_) => AddressProvider(),
-      child: Maps(),
-    ),
+    PageMaps(),
     ChangeNotifierProvider(
       create: (_) => TravelProvider(),
       child: PageViagens(),

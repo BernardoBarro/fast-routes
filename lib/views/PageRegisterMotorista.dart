@@ -1,6 +1,3 @@
-// ignore_for_file: unnecessary_const
-
-import 'package:fast_routes/views/Home.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PageRegisterPassageiro.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +49,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
       'data_de_nascimento': dataNascimento,
       'email': email,
       'senha': senha,
-      'motorista': motorista,
+      'isMotorista': motorista,
       'masculino': masculino,
       'feminino': feminino
     };
