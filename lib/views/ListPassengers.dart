@@ -1,9 +1,9 @@
-import 'dart:ffi';
-
+import 'package:fast_routes/views/AddedPassengers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'dart:io';
 
 class ListPassengers extends StatefulWidget {
   const ListPassengers({Key? key}) : super(key: key);
@@ -36,15 +36,30 @@ class _ListPassengersState extends State<ListPassengers> {
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w500,
-                      fontSize: 22),
+                      fontSize: 25),
                 ),
                 SizedBox(
                   height: 15.0,
                 ),
                 Text(
                   nameTravel,
-                  style: TextStyle(color: Colors.white, fontSize: 14),
-                )
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                SizedBox(
+                  height: 50.0,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 80.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Matheus Grigoleto - 125.215.521-35',
+                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -83,7 +98,10 @@ class _ListPassengersState extends State<ListPassengers> {
                 backgroundColor: Color.fromRGBO(51, 101, 229, 1),
                 label: 'Adicionar passageiro',
                 onTap: () {
-                  print('Added');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AddedPassengers()));
                 },
               ),
               SpeedDialChild(
