@@ -1,7 +1,6 @@
 import 'package:fast_routes/views/AddedPassengers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'dart:io';
 
@@ -112,9 +111,7 @@ class _ListPassengersState extends State<ListPassengers> {
                 ),
                 backgroundColor: Color.fromRGBO(51, 101, 229, 1),
                 label: 'Criar PDF',
-                onTap: () {
-                  print('PDF');
-                },
+                onTap: () async {},
               ),
             ],
           ),
