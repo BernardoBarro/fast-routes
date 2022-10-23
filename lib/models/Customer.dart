@@ -1,4 +1,5 @@
 class Customer {
+  final String uid;
   final String nome;
   final String email;
   final String phone;
@@ -6,14 +7,16 @@ class Customer {
   final String birthDate;
 
   Customer(
-      {required this.nome,
+      {required this.uid,
+      required this.nome,
       required this.email,
       required this.phone,
       required this.cpf,
       required this.birthDate});
 
-  factory Customer.fromRTDB(Map<String, dynamic> data) {
+  factory Customer.fromRTDB(Map<String, dynamic> data, String uid) {
     return Customer(
+        uid: uid,
         nome: data['nome'],
         email: data['email'],
         phone: data['telefone'],
