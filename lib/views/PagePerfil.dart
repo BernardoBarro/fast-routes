@@ -4,7 +4,6 @@ import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -22,6 +21,9 @@ class _PagePerfilState extends State<PagePerfil> {
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   bool fieldOcult = false;
 
+  String textChange = 'Editar Perfil';
+  String changeName = 'Matheus Grigoleto';
+
   _logout() async {
     FirebaseAuth.instance.signOut();
     setState(() {
@@ -32,11 +34,15 @@ class _PagePerfilState extends State<PagePerfil> {
     });
   }
 
+  final ChangeName = TextEditingController(text: 'Matheus Grigoleto');
+
   _hiddenFields() {
     setState(() {
       if (fieldOcult == false) {
+        textChange = 'Salvar';
         fieldOcult = true;
       } else if (fieldOcult == true) {
+        textChange = 'Editar Perfil';
         fieldOcult = false;
       }
     });
@@ -185,25 +191,32 @@ class _PagePerfilState extends State<PagePerfil> {
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
-                        SizedBox(
-                          child: Text(
-                            user.nome,
-                            style: const TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                              fontSize: 25,
+                        TextField(
+                          textAlign: TextAlign.center,
+                          enabled: fieldOcult,
+                          controller: ChangeName,
+                          style: TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                            fontSize: 25,
+                          ),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
                             ),
                           ),
                         ),
                         const SizedBox(
-                          height: 45,
+                          height: 15,
                         ),
                         //E-MAIL
                         TextFormField(
                           enabled: fieldOcult,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -249,6 +262,7 @@ class _PagePerfilState extends State<PagePerfil> {
                           keyboardType: TextInputType.number,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -294,6 +308,7 @@ class _PagePerfilState extends State<PagePerfil> {
                           keyboardType: TextInputType.number,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -338,6 +353,7 @@ class _PagePerfilState extends State<PagePerfil> {
                           keyboardType: TextInputType.number,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,

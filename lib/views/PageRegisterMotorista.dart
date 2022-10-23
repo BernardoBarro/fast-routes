@@ -68,17 +68,17 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                   (route) => false),
             })
         .catchError((error) {
-            if(error.code.toString() == "email-already-in-use") {
-            setState(() {
-              _mensagemErro = "E-mail já cadastrado";
-              print(error.toString());
-            });
-          } else {
-            setState(() {
-              _mensagemErro = "ocorreu um erro: $error";
-            });
-          }
+      if (error.code.toString() == "email-already-in-use") {
+        setState(() {
+          _mensagemErro = "E-mail já cadastrado";
+          print(error.toString());
         });
+      } else {
+        setState(() {
+          _mensagemErro = "ocorreu um erro: $error";
+        });
+      }
+    });
   }
 
   @override
@@ -321,7 +321,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     validator: (dataNascimento) {
                       if (dataNascimento == null || dataNascimento.isEmpty) {
                         return 'Digite sua data de nascimento';
-                      } else if(dataNascimento.length < 10) {
+                      } else if (dataNascimento.length < 10) {
                         return 'Data de nascimento inválida';
                       }
                       return null;
@@ -508,7 +508,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                         return 'Digite uma senha';
                       } else if (repetirSenha.length < 6) {
                         return 'Digite uma senha com mais de 6 caracteres';
-                      } else if(repetirSenha != _controllerSenha.text) {
+                      } else if (repetirSenha != _controllerSenha.text) {
                         return 'As senhas são diferentes';
                       }
                       return null;
@@ -620,7 +620,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                         fontSize: 16,
                       ),
                     ),
-                  ),                  
+                  ),
                   const SizedBox(
                     height: 60.0,
                   ),
@@ -640,12 +640,12 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                           });
                           if (formKey.currentState!.validate()) {
                             _registerMotorista(
-                              _controllerNome.text,
-                              _controllerCPF.text,
-                              _controllerTelefone.text,
-                              _controllerDataNascimento.text,
-                              _controllerEmail.text,
-                              _controllerSenha.text);
+                                _controllerNome.text,
+                                _controllerCPF.text,
+                                _controllerTelefone.text,
+                                _controllerDataNascimento.text,
+                                _controllerEmail.text,
+                                _controllerSenha.text);
                           }
                         },
                         child: Text(
@@ -662,4 +662,3 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
     );
   }
 }
-
