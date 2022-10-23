@@ -61,6 +61,13 @@ dev_dependencies:
   email_validator: ^2.1.17
   flutter_launcher_icons: ^0.10.0
 
+
+#Flutter icons path set
+flutter_icons:
+  android: true
+  image_path: "assets/images/logo.png"
+
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
