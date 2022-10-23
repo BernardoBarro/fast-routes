@@ -1,4 +1,5 @@
 import 'package:fast_routes/providers/TravelProvider.dart';
+import 'package:fast_routes/views/ListPassengers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'PageCreateTravel.dart';
@@ -41,6 +42,10 @@ class _PageViagensState extends State<PageViagens> {
                           child: InkWell(
                             splashColor: Colors.blue.withAlpha(30),
                             onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ListPassengers()));
                               debugPrint('Card 2.');
                             },
                             child: SizedBox(
