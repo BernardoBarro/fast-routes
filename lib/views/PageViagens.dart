@@ -3,6 +3,8 @@ import 'package:fast_routes/views/ListPassengers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'PageCreateTravel.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PageViagens extends StatefulWidget {
   const PageViagens({Key? key}) : super(key: key);
@@ -21,6 +23,8 @@ class _PageViagensState extends State<PageViagens> {
 
   @override
   Widget build(BuildContext context) {
+    User? usuarioLogado = FirebaseAuth.instance.currentUser;
+    final _db = FirebaseDatabase.instance.ref("usuarios");
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -53,11 +57,45 @@ class _PageViagensState extends State<PageViagens> {
                               height: 100,
                               child: Center(
                                 child: ListTile(
-                                  leading: Builder(
+                                  trailing: Builder(
                                     builder: (BuildContext context) {
                                       return IconButton(
                                         icon: const Icon(Icons.delete),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          showDialog(
+                                              context: context,
+                                              builder: (ctx) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      "Confirmação!!"),
+                                                  content: Text(
+                                                      "Você tem certeza que deseja excluir a viagem: " +
+                                                          travel.nome +
+                                                          "?"),
+                                                  actions: [
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Não")),
+                                                    TextButton(
+                                                        onPressed: () {
+                                                          _db
+                                                              .child(
+                                                                  usuarioLogado!
+                                                                      .uid)
+                                                              .child('viagens')
+                                                              .child(travel.key)
+                                                              .remove();
+                                                          Navigator.of(ctx)
+                                                              .pop();
+                                                        },
+                                                        child: Text("Sim")),
+                                                  ],
+                                                );
+                                              });
+                                        },
                                       );
                                     },
                                   ),
