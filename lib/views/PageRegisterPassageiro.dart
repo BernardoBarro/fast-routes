@@ -51,7 +51,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'nome': nome,
       'cpf': cpf,
       'telefone': telefone,
-      'data de nascimento': dataNascimento,
+      'data_de_nascimento': dataNascimento,
       'email': email,
       'senha': senha,
       'pcd': pcd,
