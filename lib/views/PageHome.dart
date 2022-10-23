@@ -23,7 +23,10 @@ class _PageHomeState extends State<PageHome> {
       create: (_) => UserProvider(),
       child: PagePerfil(),
     ),
-    PageMaps(),
+    ChangeNotifierProvider(
+      create: (_) => AddressProvider(),
+      child: PageMaps(),
+    ),
     ChangeNotifierProvider(
       create: (_) => TravelProvider(),
       child: PageViagens(),
