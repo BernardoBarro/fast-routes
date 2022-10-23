@@ -53,14 +53,6 @@ class _PageViagensState extends State<PageViagens> {
                               height: 100,
                               child: Center(
                                 child: ListTile(
-                                  leading: Builder(
-                                    builder: (BuildContext context) {
-                                      return IconButton(
-                                        icon: const Icon(Icons.delete),
-                                        onPressed: () {},
-                                      );
-                                    },
-                                  ),
                                   textColor: Color.fromRGBO(255, 255, 255, 1),
                                   title: Text(
                                     travel.nome,
