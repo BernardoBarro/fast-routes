@@ -22,6 +22,8 @@ class _PagePerfilState extends State<PagePerfil> {
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
   bool fieldOcult = false;
 
+  String textChange = 'Editar Perfil';
+  String changeName = 'Matheus Grigoleto';
   _logout() async {
     FirebaseAuth.instance.signOut();
     setState(() {
@@ -32,11 +34,15 @@ class _PagePerfilState extends State<PagePerfil> {
     });
   }
 
+  final ChangeName = TextEditingController(text: 'Matheus Grigoleto');
+
   _hiddenFields() {
     setState(() {
       if (fieldOcult == false) {
+        textChange = 'Salvar';
         fieldOcult = true;
       } else if (fieldOcult == true) {
+        textChange = 'Editar Perfil';
         fieldOcult = false;
       }
     });
@@ -122,70 +128,54 @@ class _PagePerfilState extends State<PagePerfil> {
                     Icons.logout,
                     color: Color.fromRGBO(51, 101, 229, 1),
                   ),
-                  label: const Text(
-                    "Deslogar",
-                    style: TextStyle(color: Colors.white, fontSize: 13.0),
+                ),
+
+                const SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  textAlign: TextAlign.center,
+                  enabled: fieldOcult,
+                  controller: ChangeName,
+                  style: TextStyle(
+                    color: Color.fromRGBO(255, 255, 255, 1),
+                    fontSize: 25,
+                  ),
+                  cursorColor: Colors.white,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                    ),
                   ),
                   padding: EdgeInsets.zero,
                 ),
-              ),
-              const SizedBox(
-                height: 7,
-              ),
-              GestureDetector(
-                onTap: () {
-                  _showPicker(context);
-                },
-                child: CircleAvatar(
-                  radius: 90,
-                  backgroundColor: Colors.black12,
-                  child: imageOK != (false)
-                      ? ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: Container(
-                              color: Colors.grey,
-                              height: 300,
-                              width: 300,
-                              child: Image.file(_image)))
-                      : Container(
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(100)),
-                          width: 300,
-                          height: 300,
-                          child: Icon(
-                            Icons.camera_alt,
-                            color: Colors.grey[800],
-                          ),
-                        ),
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-              Consumer<UserProvider>(builder: (context, model, child) {
-                Customer user = model.user;
-                String _calcularIdade(){
-                  List<String> campos = user.birthDate.split('/');
-                  int dia = int.parse(campos[0]);
-                  int mes = int.parse(campos[1]);
-                  int ano = int.parse(campos[2]);
-                  DateTime nascimento = DateTime(ano,mes,dia);
-                  DateTime hoje = DateTime.now();
+                //E-MAIL
+                TextFormField(
+                  enabled: fieldOcult,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    //Style Label
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
 
-                  int idade = hoje.year - nascimento.year;
-                  if (hoje.month<nascimento.month)
-                    idade--;
-                  else if (hoje.month==nascimento.month){
-                    if (hoje.day<nascimento.day)
-                      idade--;
-                  }
-                  print(idade);
-                  return "$idade";
-                }
-                return Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(
-                          height: 30,
+                    //Style Hint
+                    hintStyle: const TextStyle(
+                      color: const Color.fromRGBO(255, 255, 255, 0.4),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
+
+                    //Style borders
+                    focusedBorder: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(20.0),
                         ),
                         SizedBox(
                           child: Text(
@@ -196,20 +186,32 @@ class _PagePerfilState extends State<PagePerfil> {
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 45,
-                        ),
-                        //E-MAIL
-                        TextFormField(
-                          enabled: fieldOcult,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            //Style Label
-                            labelStyle: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                            ),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                        )),
+
+                    //Labels Nome
+                    hintText: "Digite seu nome",
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+
+                //TEXT TELEFONE
+                TextFormField(
+                  enabled: fieldOcult,
+                  inputFormatters: [maskPhone],
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    //Style Label
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
 
                             //Style Hint
                             hintStyle: const TextStyle(
@@ -242,19 +244,28 @@ class _PagePerfilState extends State<PagePerfil> {
                           height: 10.0,
                         ),
 
-                        //TEXT TELEFONE
-                        TextFormField(
-                          enabled: fieldOcult,
-                          inputFormatters: [maskPhone],
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            //Style Label
-                            labelStyle: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                            ),
+                    //Labels Nome
+                    hintText: "(54) 88888-8888",
+                  ),
+                ),
+
+                const SizedBox(
+                  height: 10.0,
+                ),
+                //TEXT CPF
+                TextFormField(
+                  enabled: fieldOcult,
+                  inputFormatters: [maskCPF],
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    //Style Label
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
 
                             //Style Hint
                             hintStyle: const TextStyle(
@@ -284,22 +295,22 @@ class _PagePerfilState extends State<PagePerfil> {
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        //TEXT CPF
-                        TextFormField(
-                          enabled: fieldOcult,
-                          inputFormatters: [maskCPF],
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            //Style Label
-                            labelStyle: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                            ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+
+                //ENDEREÇO
+                TextFormField(
+                  enabled: fieldOcult,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    //Style Label
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
 
                             //Style Hint
                             hintStyle: const TextStyle(
@@ -329,21 +340,26 @@ class _PagePerfilState extends State<PagePerfil> {
                           ),
                         ),
 
-                        const SizedBox(
-                          height: 10.0,
-                        ),
-                        //E-MAIL
-                        TextFormField(
-                          enabled: fieldOcult,
-                          keyboardType: TextInputType.number,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                            //Style Label
-                            labelStyle: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15,
-                            ),
+                    //Labels Nome
+                    hintText: "Rua Navegantes,874,Centro,Erechim/RS",
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                //E-MAIL
+                TextFormField(
+                  enabled: fieldOcult,
+                  keyboardType: TextInputType.number,
+                  style: const TextStyle(color: Colors.white),
+                  decoration: const InputDecoration(
+                    disabledBorder: InputBorder.none,
+                    //Style Label
+                    labelStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                    ),
 
                             //Style Hint
                             hintStyle: const TextStyle(
@@ -404,9 +420,37 @@ class _PagePerfilState extends State<PagePerfil> {
                       ],
                     ),
                   ),
-                );
-              }),
-            ],
+                ),
+                const SizedBox(
+                  height: 20.0,
+                ),
+                //BUTTON
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: SizedBox(
+                      width: 150,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color.fromRGBO(51, 101, 229, 1),
+                          onPrimary: Colors.white,
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _hiddenFields();
+                          });
+                        },
+                        child: Text(
+                          textChange,
+                          style: TextStyle(
+                            fontFamily: 'InriaSans',
+                          ),
+                        ),
+                      ),
+                    )),
+              ],
+            ),
           ),
           // ),
         ),
