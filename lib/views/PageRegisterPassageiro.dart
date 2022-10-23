@@ -56,7 +56,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'senha': senha,
       'pcd': pcd,
       'descricao PCD': pcdDesc,
-      'passageiro': passageiro,
+      'isMotorista': motorista,
       'masculino': masculino,
       'feminino': feminino
     };

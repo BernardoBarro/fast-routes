@@ -47,7 +47,7 @@ class _MapsState extends State<Maps> {
               ),
               onMapCreated: (gmc) => {
                 _googleMapController = gmc,
-                controller.onMapsCreated(_googleMapController)
+                controller.onMapsCreated(_googleMapController, false)
               },
               myLocationEnabled: true,
               markers: _addMarker.call(),
@@ -67,7 +67,7 @@ class _MapsState extends State<Maps> {
             Align(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
-                onPressed: () => controller.onMapsCreated(_googleMapController),
+                onPressed: () => controller.onMapsCreated(_googleMapController, false),
               ),
             ),
           ],
