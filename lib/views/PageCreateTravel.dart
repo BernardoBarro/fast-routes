@@ -21,6 +21,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
   TextEditingController _controllerHorarioVolta = TextEditingController();
   TextEditingController _controllerOrigemVolta = TextEditingController();
   String _mensagemErro = "";
+  String _mensagemErroPass = "";
   bool seg = false;
   bool ter = false;
   bool qua = false;
@@ -30,6 +31,13 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
   bool dom = false;
   var maskTime = MaskTextInputFormatter(mask: '##:##');
   final formKey = GlobalKey<FormState>();
+  var pass;
+  int? passageiros;
+
+  int convert (String text) {
+    int casted = int.parse(text);
+    return casted;
+  }
 
   String _getDate() {
     var now = new DateTime.now();
@@ -44,7 +52,21 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
     User? usuarioLogado = FirebaseAuth.instance.currentUser;
     String dataFormatada = _getDate();
 
-    Map<String, dynamic> viagem = {
+    if(
+      dom == false &&
+      seg == false &&
+      ter == false &&
+      qua == false &&
+      qui == false &&
+      sex == false &&
+      sab == false
+    ) {
+      setState(() {
+        _mensagemErro = "Selecione ao menos um dia";
+      });
+    } else {
+
+      Map<String, dynamic> viagem = {
       'nome': nome,
       'numPassageiros': numPassageiros,
       'data': dataFormatada,
@@ -61,7 +83,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
       "volta": {'horario': horarioVolta, 'origem': origemVolta}
     };
 
-    db
+      db
         .ref("usuarios")
         .child(usuarioLogado!.uid)
         .child("viagens")
@@ -76,7 +98,9 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
           builder: (context) => PageHome(),
         ),
         (route) => false);
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +123,14 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                   Padding(
                     padding: const EdgeInsets.only(bottom: 50, top: 10),
                     //TEXT NOME
-                    child: TextField(
+                    child: TextFormField(
                       controller: _controllerNome,
+                      validator: (nome) {
+                        if (nome == null || nome.isEmpty) {
+                        return 'Digite o nome da viagem';
+                        }
+                        return null;
+                      },
                       //autofocus: true,
                       keyboardType: TextInputType.name,
                       autocorrect: false,
@@ -260,13 +290,33 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                       ),
                     ],
                   ),
-
+                  Center(
+                    child: Text(
+                      _mensagemErro,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 40.0,
                   ),
-
-                  TextField(
+                  //TEXT NUMERO PASSAGEIROS
+                  TextFormField(
                     controller: _controllerNumPassageiros,
+                    validator: (passageiros) {
+                      if(passageiros == null || passageiros.isEmpty) {
+                        return "A viagem precisa ter passageiros";
+                      }
+                      if(passageiros.length >= 1) {
+                        int pass = convert(passageiros.toString());                      
+                        if(pass <= 0) {
+                        return "A viagem precisa ter passageiros";
+                        }
+                      }
+                      return null;
+                    },
                     //autofocus: true,
                     keyboardType: TextInputType.phone,
                     autocorrect: false,
@@ -327,8 +377,15 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                         children: [
                           SizedBox(
                             width: 160,
-                            child: TextField(
+                            //TEXT HORARIO IDA
+                            child: TextFormField(
                               controller: _controllerHorarioIda,
+                              validator: (horarioIda) {
+                                if(horarioIda == null || horarioIda.isEmpty) {
+                                  return "Digite o horário de ida";
+                                }
+                                return null;
+                              },
                               autocorrect: false,
                               keyboardType: TextInputType.datetime,
                               inputFormatters: [maskTime],
@@ -364,7 +421,8 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                           ),
                           SizedBox(
                             width: 160,
-                            child: TextField(
+                            //TEXT HORARIO VOLTA
+                            child: TextFormField(
                               controller: _controllerHorarioVolta,
                               autocorrect: false,
                               keyboardType: TextInputType.datetime,
@@ -426,8 +484,15 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                         children: [
                           SizedBox(
                             width: 160,
-                            child: TextField(
+                            //TEXT ORIGEM IDA
+                            child: TextFormField(
                               controller: _controllerOrigemIda,
+                              validator: (origemIda) {
+                                if(origemIda == null || origemIda.isEmpty) {
+                                  return "Digite a origem de ida";
+                                }
+                                return null;
+                              },
                               autocorrect: false,
                               keyboardType: TextInputType.visiblePassword,
                               style: const TextStyle(color: Colors.white),
@@ -462,7 +527,8 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                           ),
                           SizedBox(
                             width: 160,
-                            child: TextField(
+                            //TEXT ORIGEM VOLTA
+                            child: TextFormField(
                               controller: _controllerOrigemVolta,
                               autocorrect: false,
                               keyboardType: TextInputType.visiblePassword,
@@ -515,6 +581,10 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                         elevation: 0,
                       ),
                       onPressed: () {
+                        setState(() {
+                          _mensagemErro = "";
+                          _mensagemErroPass = "";
+                        });
                         if(formKey.currentState!.validate()) {
                           _criaViagem(
                             _controllerNome.text,
@@ -531,17 +601,6 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                           fontFamily: 'InriaSans',
                           fontSize: 16,
                         ),
-                      ),
-                    ),
-                  ),
-
-                  //mensagem de erro
-                  Center(
-                    child: Text(
-                      _mensagemErro,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
                       ),
                     ),
                   ),
