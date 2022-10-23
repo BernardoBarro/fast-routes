@@ -48,7 +48,7 @@ class _PageMapsState extends State<PageMaps> {
   }
 
   getDriverLocation() async {
-    db
+    positionStream = db
         .ref("usuarios")
         .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
         .child("viagens")
@@ -158,7 +158,8 @@ class _PageMapsState extends State<PageMaps> {
           Align(
             alignment: Alignment.bottomRight,
             child: FloatingActionButton(
-              onPressed: () => controller.onMapsCreated(_googleMapController, isMotorista),
+              onPressed: () =>
+                  controller.onMapsCreated(_googleMapController, isMotorista),
             ),
           ),
         ],
