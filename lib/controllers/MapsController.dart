@@ -92,6 +92,8 @@ class MapsController extends GetxController {
         .listen((event) {
       final position =
       Map<String, dynamic>.from(event.snapshot.value as dynamic);
+      _mapsController.animateCamera(CameraUpdate.newLatLng(
+          LatLng(position['latitude'], position['longitude'])));
     });
   }
 
