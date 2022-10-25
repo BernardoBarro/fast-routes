@@ -25,30 +25,38 @@ class _PageLoginState extends State<PageLogin> {
   String _mensagemErro = "";
   final formKey = GlobalKey<FormState>();
 
-  _login() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(
-              child: CircularProgressIndicator(),
-            ));
+  _login(String email, String password) {
 
-    String email = _controllerEmail.text;
-    String password = _controllerPassword.text;
-
-    if (email.isNotEmpty && email.contains("@")) {
-      if (password.isNotEmpty && password.length >= 6) {
         FirebaseAuth auth = FirebaseAuth.instance;
         auth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((value) => {
-                  setState(() {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PageHome()));
-                  }),
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) => {
+                setState(() {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) => Center(
+                          child: CircularProgressIndicator(),
+                  ));
+                  // -----------------
+                  // User Type verify |
+                  // -----------------
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PageHome()));
+                }),
+              })
+          .catchError((error) {
+            if(error.code.toString() == "user-not-found" || error.code.toString() == "wrong-password") {
+                setState(() {
+                  _mensagemErro = "E-mail ou senha inválidos";
                 });
-      }
-    }
+            } else {
+                setState(() {
+                  _mensagemErro = "ocorreu um erro: $error";
+                  print(error.code.toString());
+                });
+              } 
+          });
   }
 
   @override
@@ -211,7 +219,15 @@ class _PageLoginState extends State<PageLogin> {
                 SizedBox(
                   height: 45,
                 ),
-
+                Center(
+                    child: Text(
+                      _mensagemErro,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                 //BUTTON
                 SizedBox(
                     height: 50,
@@ -222,8 +238,13 @@ class _PageLoginState extends State<PageLogin> {
                         elevation: 0,
                       ),
                       onPressed: () {
+                        setState(() {
+                          _mensagemErro = "";
+                        });
                         if (formKey.currentState!.validate()) {
-                          _login;
+                          _login(
+                            _controllerEmail.text,
+                            _controllerPassword.text);
                         }
                       },
                       child: Text(
