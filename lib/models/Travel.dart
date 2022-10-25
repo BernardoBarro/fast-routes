@@ -1,4 +1,5 @@
 class Travel {
+  String key = "";
   final String nome;
   final String weekDays;
 
@@ -7,27 +8,31 @@ class Travel {
   factory Travel.fromRTDB(Map<String, dynamic> data) {
     var dias = data['dias'];
     String days = '';
-    if(dias['dom']){
-      days+='Dom,';
+    if (dias['dom']) {
+      days += 'Dom,';
     }
-    if(dias['seg']){
-      days+='Seg,';
+    if (dias['seg']) {
+      days += 'Seg,';
     }
-    if(dias['ter']){
-      days+='Ter,';
+    if (dias['ter']) {
+      days += 'Ter,';
     }
-    if(dias['qua']){
-      days+='Qua,';
+    if (dias['qua']) {
+      days += 'Qua,';
     }
-    if(dias['qui']){
-      days+='Qui,';
+    if (dias['qui']) {
+      days += 'Qui,';
     }
-    if(dias['sex']){
-      days+='Sex,';
+    if (dias['sex']) {
+      days += 'Sex,';
     }
-    if(dias['sab']){
-      days+='Sab,';
+    if (dias['sab']) {
+      days += 'Sab,';
     }
     return Travel(nome: data['nome'], weekDays: days);
+  }
+
+  void setKeys(String key) {
+    this.key = key;
   }
 }

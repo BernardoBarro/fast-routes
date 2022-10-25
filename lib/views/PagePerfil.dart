@@ -4,11 +4,12 @@ import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:email_validator/email_validator.dart';
 
 class PagePerfil extends StatefulWidget {
   const PagePerfil({Key? key}) : super(key: key);
@@ -18,9 +19,14 @@ class PagePerfil extends StatefulWidget {
 }
 
 class _PagePerfilState extends State<PagePerfil> {
+  FirebaseDatabase db = FirebaseDatabase.instance;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
+  var maskDate = MaskTextInputFormatter(mask: '##/##/####');
   bool fieldOcult = false;
+
+  String textChange = 'Editar Perfil';
+  String changeName = 'Matheus Grigoleto';
 
   _logout() async {
     FirebaseAuth.instance.signOut();
@@ -29,16 +35,6 @@ class _PagePerfilState extends State<PagePerfil> {
           context,
           MaterialPageRoute(builder: (context) => const LoginandRegister()),
           (route) => false);
-    });
-  }
-
-  _hiddenFields() {
-    setState(() {
-      if (fieldOcult == false) {
-        fieldOcult = true;
-      } else if (fieldOcult == true) {
-        fieldOcult = false;
-      }
     });
   }
 
@@ -109,7 +105,6 @@ class _PagePerfilState extends State<PagePerfil> {
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
           padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
-          // child: SingleChildScrollView(
           child: Column(
             children: [
               Align(
@@ -162,48 +157,64 @@ class _PagePerfilState extends State<PagePerfil> {
               ),
               Consumer<UserProvider>(builder: (context, model, child) {
                 Customer user = model.user;
-                String _calcularIdade(){
-                  List<String> campos = user.birthDate.split('/');
-                  int dia = int.parse(campos[0]);
-                  int mes = int.parse(campos[1]);
-                  int ano = int.parse(campos[2]);
-                  DateTime nascimento = DateTime(ano,mes,dia);
-                  DateTime hoje = DateTime.now();
+                final name = TextEditingController(text: user.nome);
+                final email = TextEditingController(text: user.email);
+                final phone = TextEditingController(text: user.phone);
+                final cpf = TextEditingController(text: user.cpf);
+                final birthDate = TextEditingController(text: user.birthDate);
 
-                  int idade = hoje.year - nascimento.year;
-                  if (hoje.month<nascimento.month)
-                    idade--;
-                  else if (hoje.month==nascimento.month){
-                    if (hoje.day<nascimento.day)
-                      idade--;
-                  }
-                  print(idade);
-                  return "$idade";
+                _hiddenFields() {
+                  setState(() {
+                    if (fieldOcult == false) {
+                      textChange = 'Salvar';
+                      fieldOcult = true;
+                    } else if (fieldOcult == true) {
+                      Map<String, dynamic> value = {
+                        'nome': name.text,
+                        'cpf': cpf.text,
+                        'telefone': phone.text,
+                        'data_de_nascimento': birthDate.text,
+                        'email': email.text,
+                      };
+                      db.ref("usuarios").child(user.uid).update(value);
+                      textChange = 'Editar Perfil';
+                      fieldOcult = false;
+                    }
+                  });
                 }
+
                 return Expanded(
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
                         const SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
-                        SizedBox(
-                          child: Text(
-                            user.nome,
-                            style: const TextStyle(
-                              color: Color.fromRGBO(255, 255, 255, 1),
-                              fontSize: 25,
+                        TextField(
+                          textAlign: TextAlign.center,
+                          enabled: fieldOcult,
+                          controller: name,
+                          style: TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                            fontSize: 25,
+                          ),
+                          cursorColor: Colors.white,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide.none,
                             ),
                           ),
                         ),
                         const SizedBox(
-                          height: 45,
+                          height: 15,
                         ),
                         //E-MAIL
                         TextFormField(
+                          controller: email,
                           enabled: fieldOcult,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -244,11 +255,13 @@ class _PagePerfilState extends State<PagePerfil> {
 
                         //TEXT TELEFONE
                         TextFormField(
+                          controller: phone,
                           enabled: fieldOcult,
                           inputFormatters: [maskPhone],
                           keyboardType: TextInputType.number,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -289,11 +302,13 @@ class _PagePerfilState extends State<PagePerfil> {
                         ),
                         //TEXT CPF
                         TextFormField(
+                          controller: cpf,
                           enabled: fieldOcult,
                           inputFormatters: [maskCPF],
                           keyboardType: TextInputType.number,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -334,10 +349,13 @@ class _PagePerfilState extends State<PagePerfil> {
                         ),
                         //E-MAIL
                         TextFormField(
+                          controller: birthDate,
+                          inputFormatters: [maskDate],
                           enabled: fieldOcult,
                           keyboardType: TextInputType.number,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
+                            disabledBorder: InputBorder.none,
                             //Style Label
                             labelStyle: const TextStyle(
                               color: Colors.white,
@@ -369,7 +387,7 @@ class _PagePerfilState extends State<PagePerfil> {
                                 )),
 
                             //Labels Nome
-                            hintText: _calcularIdade(),
+                            hintText: birthDate.text,
                           ),
                         ),
                         const SizedBox(
@@ -393,8 +411,8 @@ class _PagePerfilState extends State<PagePerfil> {
                                     _hiddenFields();
                                   });
                                 },
-                                child: const Text(
-                                  "EDITAR PERFIL",
+                                child: Text(
+                                  textChange,
                                   style: TextStyle(
                                     fontFamily: 'InriaSans',
                                   ),
@@ -408,7 +426,6 @@ class _PagePerfilState extends State<PagePerfil> {
               }),
             ],
           ),
-          // ),
         ),
       ),
     );
