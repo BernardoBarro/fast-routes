@@ -21,6 +21,8 @@ class _PageLoginState extends State<PageLogin> {
 
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
+  String _mensagemErro = "";
+  final formKey = GlobalKey<FormState>();
 
   _login() {
     showDialog(
@@ -59,6 +61,8 @@ class _PageLoginState extends State<PageLogin> {
           child: Container(
             padding: EdgeInsets.only(top: 0, left: 32, right: 32),
             color: Color.fromRGBO(69, 69, 85, 1),
+            child: Form(
+              key: formKey,
             child: ListView(
               children: <Widget>[
                 Padding(
@@ -74,6 +78,7 @@ class _PageLoginState extends State<PageLogin> {
                 SizedBox(
                   height: 100,
                 ),
+                //TEXT EMAIL
                 TextFormField(
                   controller: _controllerEmail,
                   // autofocus: true,
@@ -118,6 +123,7 @@ class _PageLoginState extends State<PageLogin> {
                 SizedBox(
                   height: 20,
                 ),
+                //TEXT PASSWORD
                 TextFormField(
                   controller: _controllerPassword,
                   // autofocus: true,
@@ -208,6 +214,7 @@ class _PageLoginState extends State<PageLogin> {
               ],
             ),
           ),
-        ));
+        ))
+      );
   }
 }
