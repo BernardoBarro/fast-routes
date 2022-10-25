@@ -83,6 +83,15 @@ class _PageLoginState extends State<PageLogin> {
                 TextFormField(
                   controller: _controllerEmail,
                   // autofocus: true,
+                  validator: (email) {
+                      if (email == null || email.isEmpty) {
+                        return 'Digite o seu E-mail';
+                      } else if (!EmailValidator.validate(email)) {
+                        return 'E-mail inválido';
+                      }
+                      //Verify email alredy in use
+                      return null;
+                    },
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -128,6 +137,14 @@ class _PageLoginState extends State<PageLogin> {
                 TextFormField(
                   controller: _controllerPassword,
                   // autofocus: true,
+                  validator: (senha) {
+                      if (senha == null || senha.isEmpty) {
+                        return 'Digite uma senha';
+                      } else if (senha.length < 6) {
+                        return 'Digite uma senha com mais de 6 caracteres';
+                      }
+                      return null;
+                    },
                   keyboardType: TextInputType.streetAddress,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -204,7 +221,11 @@ class _PageLoginState extends State<PageLogin> {
                         onPrimary: Colors.white,
                         elevation: 0,
                       ),
-                      onPressed: _login,
+                      onPressed: () {
+                        if (formKey.currentState!.validate()) {
+                          _login;
+                        }
+                      },
                       child: Text(
                         "ENTRAR",
                         style: TextStyle(
