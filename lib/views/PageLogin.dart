@@ -32,12 +32,6 @@ class _PageLoginState extends State<PageLogin> {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) => {
                 setState(() {
-                  showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) => Center(
-                          child: CircularProgressIndicator(),
-                  ));
                   // -----------------
                   // User Type verify |
                   // -----------------
