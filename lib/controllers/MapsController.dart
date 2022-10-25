@@ -9,7 +9,7 @@ import 'package:firebase_database/firebase_database.dart';
 class MapsController extends GetxController {
   FirebaseDatabase db = FirebaseDatabase.instance;
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
-  late StreamSubscription<Position> positionStream;
+  late StreamSubscription positionStream;
   final LatLng _position = const LatLng(-27.6357848, -52.2745583);
   late GoogleMapController _mapsController;
   bool watchPositionFlag = false;
@@ -82,7 +82,7 @@ class MapsController extends GetxController {
     if (permission == LocationPermission.deniedForever) {
       return Future.error('Autorize o acesso à localização nas configurações.');
     }
-    db
+    positionStream = db
         .ref("usuarios")
         .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
         .child("viagens")
