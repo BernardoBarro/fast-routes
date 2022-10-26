@@ -32,9 +32,6 @@ class _PageLoginState extends State<PageLogin> {
           .signInWithEmailAndPassword(email: email, password: password)
           .then((value) => {
                 setState(() {
-                  // -----------------
-                  // User Type verify |
-                  // -----------------
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => PageHome()));
                 }),
@@ -43,6 +40,10 @@ class _PageLoginState extends State<PageLogin> {
             if(error.code.toString() == "user-not-found" || error.code.toString() == "wrong-password") {
                 setState(() {
                   _mensagemErro = "E-mail ou senha inválidos";
+                });
+            } else if(error.code.toString() == "too-many-requests") {
+                setState(() {
+                  _mensagemErro = "Nós bloqueamos o seu acesso devido a muitas requisições, tente novamente mais tarde";
                 });
             } else {
                 setState(() {
@@ -210,9 +211,6 @@ class _PageLoginState extends State<PageLogin> {
                     padding: EdgeInsets.zero,
                   ),
                 ),
-                SizedBox(
-                  height: 45,
-                ),
                 Center(
                     child: Text(
                       _mensagemErro,
@@ -222,6 +220,9 @@ class _PageLoginState extends State<PageLogin> {
                       ),
                     ),
                   ),
+                SizedBox(
+                  height: 25,
+                ),
                 //BUTTON
                 SizedBox(
                     height: 50,
