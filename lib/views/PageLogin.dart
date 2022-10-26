@@ -211,15 +211,6 @@ class _PageLoginState extends State<PageLogin> {
                     padding: EdgeInsets.zero,
                   ),
                 ),
-                Center(
-                    child: Text(
-                      _mensagemErro,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ),
                 SizedBox(
                   height: 25,
                 ),
