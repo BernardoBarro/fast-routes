@@ -211,9 +211,6 @@ class _PageLoginState extends State<PageLogin> {
                     padding: EdgeInsets.zero,
                   ),
                 ),
-                SizedBox(
-                  height: 25,
-                ),
                 Center(
                     child: Text(
                       _mensagemErro,
@@ -223,6 +220,9 @@ class _PageLoginState extends State<PageLogin> {
                       ),
                     ),
                   ),
+                  SizedBox(
+                  height: 25,
+                ),
                 //BUTTON
                 SizedBox(
                     height: 50,
