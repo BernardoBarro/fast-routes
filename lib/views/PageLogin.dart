@@ -223,6 +223,15 @@ class _PageLoginState extends State<PageLogin> {
                 SizedBox(
                   height: 25,
                 ),
+                Center(
+                    child: Text(
+                      _mensagemErro,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                 //BUTTON
                 SizedBox(
                     height: 50,

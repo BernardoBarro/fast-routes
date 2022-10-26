@@ -22,7 +22,8 @@ class UserProvider extends ChangeNotifier {
     String uid = usuarioLogado!.uid;
     _userStream = _db.child(uid).onValue.listen((event) {
       final user = Map<String, dynamic>.from(event.snapshot.value as dynamic);
-      _user = Customer.fromRTDB(Map<String, dynamic>.from(user));
+      _user = Customer.fromRTDB(
+          Map<String, dynamic>.from(user), uid);
       notifyListeners();
     });
   }

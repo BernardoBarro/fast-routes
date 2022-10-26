@@ -43,7 +43,8 @@ dependencies:
   get:
   image_picker : 0.8.6
   provider: ^6.0.4
-
+  location: ^4.2.0
+  flutter_speed_dial: ^6.2.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -59,6 +60,17 @@ dev_dependencies:
   firebase_core: ^1.22.0
   intl: ^0.17.0
   email_validator: ^2.1.17
+  flutter_launcher_icons: ^0.10.0
+
+
+#Flutter icons path set
+flutter_icons:
+  android: true
+  image_path: "assets/images/logo.png"
+  adaptive_icon_background: "#454555"
+  adaptive_icon_foreground: "assets/images/foreground_logo.png"
+
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
