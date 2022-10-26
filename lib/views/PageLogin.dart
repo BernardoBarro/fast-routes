@@ -8,6 +8,7 @@ import 'package:fast_routes/views/PageResetPassword.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:email_validator/email_validator.dart';
 
 class PageLogin extends StatefulWidget {
   const PageLogin({Key? key}) : super(key: key);
@@ -21,31 +22,35 @@ class _PageLoginState extends State<PageLogin> {
 
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerPassword = TextEditingController();
+  String _mensagemErro = "";
+  final formKey = GlobalKey<FormState>();
 
-  _login() {
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(
-              child: CircularProgressIndicator(),
-            ));
+  _login(String email, String password) {
 
-    String email = _controllerEmail.text;
-    String password = _controllerPassword.text;
-
-    if (email.isNotEmpty && email.contains("@")) {
-      if (password.isNotEmpty && password.length >= 6) {
         FirebaseAuth auth = FirebaseAuth.instance;
         auth
-            .signInWithEmailAndPassword(email: email, password: password)
-            .then((value) => {
-                  setState(() {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PageHome()));
-                  }),
+          .signInWithEmailAndPassword(email: email, password: password)
+          .then((value) => {
+                setState(() {
+                  // -----------------
+                  // User Type verify |
+                  // -----------------
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => PageHome()));
+                }),
+              })
+          .catchError((error) {
+            if(error.code.toString() == "user-not-found" || error.code.toString() == "wrong-password") {
+                setState(() {
+                  _mensagemErro = "E-mail ou senha inválidos";
                 });
-      }
-    }
+            } else {
+                setState(() {
+                  _mensagemErro = "ocorreu um erro: $error";
+                  print(error.code.toString());
+                });
+              } 
+          });
   }
 
   @override
@@ -59,6 +64,8 @@ class _PageLoginState extends State<PageLogin> {
           child: Container(
             padding: EdgeInsets.only(top: 0, left: 32, right: 32),
             color: Color.fromRGBO(69, 69, 85, 1),
+            child: Form(
+              key: formKey,
             child: ListView(
               children: <Widget>[
                 Padding(
@@ -74,9 +81,19 @@ class _PageLoginState extends State<PageLogin> {
                 SizedBox(
                   height: 100,
                 ),
+                //TEXT EMAIL
                 TextFormField(
                   controller: _controllerEmail,
                   // autofocus: true,
+                  validator: (email) {
+                      if (email == null || email.isEmpty) {
+                        return 'Digite o seu E-mail';
+                      } else if (!EmailValidator.validate(email)) {
+                        return 'E-mail inválido';
+                      }
+                      //Verify email alredy in use
+                      return null;
+                    },
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -118,9 +135,18 @@ class _PageLoginState extends State<PageLogin> {
                 SizedBox(
                   height: 20,
                 ),
+                //TEXT PASSWORD
                 TextFormField(
                   controller: _controllerPassword,
                   // autofocus: true,
+                  validator: (senha) {
+                      if (senha == null || senha.isEmpty) {
+                        return 'Digite uma senha';
+                      } else if (senha.length < 6) {
+                        return 'Digite uma senha com mais de 6 caracteres';
+                      }
+                      return null;
+                    },
                   keyboardType: TextInputType.streetAddress,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -187,7 +213,15 @@ class _PageLoginState extends State<PageLogin> {
                 SizedBox(
                   height: 45,
                 ),
-
+                Center(
+                    child: Text(
+                      _mensagemErro,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ),
                 //BUTTON
                 SizedBox(
                     height: 50,
@@ -197,7 +231,16 @@ class _PageLoginState extends State<PageLogin> {
                         onPrimary: Colors.white,
                         elevation: 0,
                       ),
-                      onPressed: _login,
+                      onPressed: () {
+                        setState(() {
+                          _mensagemErro = "";
+                        });
+                        if (formKey.currentState!.validate()) {
+                          _login(
+                            _controllerEmail.text,
+                            _controllerPassword.text);
+                        }
+                      },
                       child: Text(
                         "ENTRAR",
                         style: TextStyle(
@@ -208,6 +251,7 @@ class _PageLoginState extends State<PageLogin> {
               ],
             ),
           ),
-        ));
+        ))
+      );
   }
 }
