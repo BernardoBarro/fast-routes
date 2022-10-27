@@ -28,6 +28,9 @@ class _PagePerfilState extends State<PagePerfil> {
   String textChange = 'Editar Perfil';
   String changeName = 'Matheus Grigoleto';
 
+  String _mensagemErro = "";
+  final formKey = GlobalKey<FormState>();
+
   _logout() async {
     FirebaseAuth.instance.signOut();
     setState(() {
@@ -105,6 +108,8 @@ class _PagePerfilState extends State<PagePerfil> {
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
           padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
+          child: Form(
+              key: formKey,
           child: Column(
             children: [
               Align(
@@ -425,6 +430,7 @@ class _PagePerfilState extends State<PagePerfil> {
                 );
               }),
             ],
+          ),
           ),
         ),
       ),
