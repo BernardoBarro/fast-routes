@@ -181,7 +181,20 @@ class _PagePerfilState extends State<PagePerfil> {
                         'data_de_nascimento': birthDate.text,
                         'email': email.text,
                       };
-                      db.ref("usuarios").child(user.uid).update(value);
+                      db.ref("usuarios").child(user.uid).update(value).catchError((error) {
+                        setState(() {
+                          if(error.code.toString() == "email-already-in-use") {
+                            setState(() {
+                              _mensagemErro = "E-mail já cadastrado";
+                              print(error.toString());
+                            });
+                          } else {
+                            setState(() {
+                              _mensagemErro = "ocorreu um erro: $error";
+                            });
+                          }
+                        });
+                      });
                       textChange = 'Editar Perfil';
                       fieldOcult = false;
                     }
@@ -431,6 +444,18 @@ class _PagePerfilState extends State<PagePerfil> {
                         const SizedBox(
                           height: 20.0,
                         ),
+                        Center(
+                          child: Text(
+                            _mensagemErro,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
                         //BUTTON
                         Padding(
                             padding: const EdgeInsets.only(bottom: 10.0),
@@ -445,6 +470,9 @@ class _PagePerfilState extends State<PagePerfil> {
                                   elevation: 0,
                                 ),
                                 onPressed: () {
+                                  setState(() {
+                                    _mensagemErro = "";
+                                  });
                                   if (formKey.currentState!.validate()) {
                                     setState(() {
                                     _hiddenFields();
