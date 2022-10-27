@@ -216,6 +216,15 @@ class _PagePerfilState extends State<PagePerfil> {
                         //E-MAIL
                         TextFormField(
                           controller: email,
+                          validator: (email) {
+                            if (email == null || email.isEmpty) {
+                              return 'Digite o seu E-mail';
+                            } else if (!EmailValidator.validate(email)) {
+                              return 'E-mail inválido';
+                            }
+                            //Verify email alredy in use
+                            return null;
+                          },
                           enabled: fieldOcult,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -261,6 +270,14 @@ class _PagePerfilState extends State<PagePerfil> {
                         //TEXT TELEFONE
                         TextFormField(
                           controller: phone,
+                          validator: (telefone) {
+                            if (telefone == null || telefone.isEmpty) {
+                              return 'Digite o seu telefone';
+                            } else if (telefone.length != 15) {
+                              return 'Telefone inválido';
+                            }
+                            return null;
+                          },
                           enabled: fieldOcult,
                           inputFormatters: [maskPhone],
                           keyboardType: TextInputType.number,
@@ -308,6 +325,14 @@ class _PagePerfilState extends State<PagePerfil> {
                         //TEXT CPF
                         TextFormField(
                           controller: cpf,
+                          validator: (cpf) {
+                            if (cpf == null || cpf.isEmpty) {
+                              return 'Digite o seu CPF';
+                            } else if (cpf.length != 14) {
+                              return 'CPF inválido';
+                            }
+                            return null;
+                          },
                           enabled: fieldOcult,
                           inputFormatters: [maskCPF],
                           keyboardType: TextInputType.number,
@@ -355,6 +380,14 @@ class _PagePerfilState extends State<PagePerfil> {
                         //E-MAIL
                         TextFormField(
                           controller: birthDate,
+                          validator: (dataNascimento) {
+                            if (dataNascimento == null || dataNascimento.isEmpty) {
+                              return 'Digite sua data de nascimento';
+                            } else if(dataNascimento.length < 10) {
+                              return 'Data de nascimento inválida';
+                            }
+                            return null;
+                          },
                           inputFormatters: [maskDate],
                           enabled: fieldOcult,
                           keyboardType: TextInputType.number,
@@ -412,9 +445,11 @@ class _PagePerfilState extends State<PagePerfil> {
                                   elevation: 0,
                                 ),
                                 onPressed: () {
-                                  setState(() {
+                                  if (formKey.currentState!.validate()) {
+                                    setState(() {
                                     _hiddenFields();
                                   });
+                                  }
                                 },
                                 child: Text(
                                   textChange,
