@@ -34,7 +34,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
   var pass;
   int? passageiros;
 
-  int convert (String text) {
+  int convert(String text) {
     int casted = int.parse(text);
     return casted;
   }
@@ -52,55 +52,51 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
     User? usuarioLogado = FirebaseAuth.instance.currentUser;
     String dataFormatada = _getDate();
 
-    if(
-      dom == false &&
-      seg == false &&
-      ter == false &&
-      qua == false &&
-      qui == false &&
-      sex == false &&
-      sab == false
-    ) {
+    if (dom == false &&
+        seg == false &&
+        ter == false &&
+        qua == false &&
+        qui == false &&
+        sex == false &&
+        sab == false) {
       setState(() {
         _mensagemErro = "Selecione ao menos um dia";
       });
     } else {
-
       Map<String, dynamic> viagem = {
-      'nome': nome,
-      'numPassageiros': numPassageiros,
-      'data': dataFormatada,
-      'dias': {
-        'dom': dom,
-        'seg': seg,
-        'ter': ter,
-        'qua': qua,
-        'qui': qui,
-        'sex': sex,
-        'sab': sab
-      },
-      "ida": {'horario': horarioIda, 'origem': origemIda},
-      "volta": {'horario': horarioVolta, 'origem': origemVolta}
-    };
+        'nome': nome,
+        'numPassageiros': numPassageiros,
+        'data': dataFormatada,
+        'dias': {
+          'dom': dom,
+          'seg': seg,
+          'ter': ter,
+          'qua': qua,
+          'qui': qui,
+          'sex': sex,
+          'sab': sab
+        },
+        "ida": {'horario': horarioIda, 'origem': origemIda},
+        "volta": {'horario': horarioVolta, 'origem': origemVolta}
+      };
 
       db
-        .ref("usuarios")
-        .child(usuarioLogado!.uid)
-        .child("viagens")
-        .push()
-        .set(viagem)
-        .then((value) => print("Viagem cadastrada com sucesso!"))
-        .catchError((error) => print("Ocorreu um erro $error"));
+          .ref("usuarios")
+          .child(usuarioLogado!.uid)
+          .child("viagens")
+          .push()
+          .set(viagem)
+          .then((value) => print("Viagem cadastrada com sucesso!"))
+          .catchError((error) => print("Ocorreu um erro $error"));
 
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => PageHome(),
-        ),
-        (route) => false);
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PageHome(),
+          ),
+          (route) => false);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +123,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                       controller: _controllerNome,
                       validator: (nome) {
                         if (nome == null || nome.isEmpty) {
-                        return 'Digite o nome da viagem';
+                          return 'Digite o nome da viagem';
                         }
                         return null;
                       },
@@ -306,13 +302,13 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                   TextFormField(
                     controller: _controllerNumPassageiros,
                     validator: (passageiros) {
-                      if(passageiros == null || passageiros.isEmpty) {
+                      if (passageiros == null || passageiros.isEmpty) {
                         return "A viagem precisa ter passageiros";
                       }
-                      if(passageiros.length >= 1) {
-                        int pass = convert(passageiros.toString());                      
-                        if(pass <= 0) {
-                        return "A viagem precisa ter passageiros";
+                      if (passageiros.length >= 1) {
+                        int pass = convert(passageiros.toString());
+                        if (pass <= 0) {
+                          return "A viagem precisa ter passageiros";
                         }
                       }
                       return null;
@@ -381,7 +377,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                             child: TextFormField(
                               controller: _controllerHorarioIda,
                               validator: (horarioIda) {
-                                if(horarioIda == null || horarioIda.isEmpty) {
+                                if (horarioIda == null || horarioIda.isEmpty) {
                                   return "Digite o horário de ida";
                                 }
                                 return null;
@@ -488,7 +484,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                             child: TextFormField(
                               controller: _controllerOrigemIda,
                               validator: (origemIda) {
-                                if(origemIda == null || origemIda.isEmpty) {
+                                if (origemIda == null || origemIda.isEmpty) {
                                   return "Digite a origem de ida";
                                 }
                                 return null;
@@ -585,14 +581,14 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                           _mensagemErro = "";
                           _mensagemErroPass = "";
                         });
-                        if(formKey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           _criaViagem(
-                            _controllerNome.text,
-                            _controllerNumPassageiros.text,
-                            _controllerHorarioIda.text,
-                            _controllerOrigemIda.text,
-                            _controllerHorarioVolta.text,
-                            _controllerOrigemVolta.text);
+                              _controllerNome.text,
+                              _controllerNumPassageiros.text,
+                              _controllerHorarioIda.text,
+                              _controllerOrigemIda.text,
+                              _controllerHorarioVolta.text,
+                              _controllerOrigemVolta.text);
                         }
                       },
                       child: Text(

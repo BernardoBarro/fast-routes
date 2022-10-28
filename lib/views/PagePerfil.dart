@@ -107,25 +107,42 @@ class _PagePerfilState extends State<PagePerfil> {
           padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
           child: Column(
             children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: FlatButton.icon(
-                  onPressed: () {
-                    _logout();
-                  },
-                  icon: const Icon(
-                    Icons.logout,
-                    color: Color.fromRGBO(51, 101, 229, 1),
-                  ),
-                  label: const Text(
-                    "Deslogar",
-                    style: TextStyle(color: Colors.white, fontSize: 13.0),
-                  ),
-                  padding: EdgeInsets.zero,
-                ),
-              ),
               const SizedBox(
-                height: 7,
+                height: 15,
+              ),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: FlatButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                    ),
+                    label: Text(''),
+                    padding: EdgeInsets.only(right: 40),
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: FlatButton.icon(
+                    onPressed: () {
+                      _logout();
+                    },
+                    icon: const Icon(
+                      Icons.logout,
+                      color: Color.fromRGBO(51, 101, 229, 1),
+                    ),
+                    label: const Text(
+                      "Deslogar",
+                      style: TextStyle(color: Colors.white, fontSize: 13.0),
+                    ),
+                    padding: EdgeInsets.only(left: 0),
+                  ),
+                ),
+              ]),
+              const SizedBox(
+                height: 40,
               ),
               GestureDetector(
                 onTap: () {

@@ -157,9 +157,18 @@ class _PageMapsState extends State<PageMaps> {
                 ),
           Align(
             alignment: Alignment.bottomRight,
-            child: FloatingActionButton(
-              onPressed: () =>
-                  controller.onMapsCreated(_googleMapController, isMotorista),
+            child: Container(
+              height: 60.0,
+              width: 60.0,
+              child: FloatingActionButton(
+                backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                onPressed: () =>
+                    controller.onMapsCreated(_googleMapController, isMotorista),
+                child: Icon(
+                  Icons.center_focus_strong_outlined,
+                  size: 50,
+                ),
+              ),
             ),
           ),
         ],
