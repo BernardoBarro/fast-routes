@@ -11,14 +11,14 @@ import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
 
-class PagePerfil extends StatefulWidget {
-  const PagePerfil({Key? key}) : super(key: key);
+class PagePerfilPassenger extends StatefulWidget {
+  const PagePerfilPassenger({Key? key}) : super(key: key);
 
   @override
-  State<PagePerfil> createState() => _PagePerfilState();
+  State<PagePerfilPassenger> createState() => _PagePerfilPassengerState();
 }
 
-class _PagePerfilState extends State<PagePerfil> {
+class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   FirebaseDatabase db = FirebaseDatabase.instance;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
@@ -107,42 +107,25 @@ class _PagePerfilState extends State<PagePerfil> {
           padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
           child: Column(
             children: [
-              const SizedBox(
-                height: 15,
+              Align(
+                alignment: Alignment.centerRight,
+                child: FlatButton.icon(
+                  onPressed: () {
+                    _logout();
+                  },
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Color.fromRGBO(51, 101, 229, 1),
+                  ),
+                  label: const Text(
+                    "Deslogar",
+                    style: TextStyle(color: Colors.white, fontSize: 13.0),
+                  ),
+                  padding: EdgeInsets.zero,
+                ),
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: FlatButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
-                    label: Text(''),
-                    padding: EdgeInsets.only(right: 40),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: FlatButton.icon(
-                    onPressed: () {
-                      _logout();
-                    },
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Color.fromRGBO(51, 101, 229, 1),
-                    ),
-                    label: const Text(
-                      "Deslogar",
-                      style: TextStyle(color: Colors.white, fontSize: 13.0),
-                    ),
-                    padding: EdgeInsets.only(left: 0),
-                  ),
-                ),
-              ]),
               const SizedBox(
-                height: 40,
+                height: 7,
               ),
               GestureDetector(
                 onTap: () {

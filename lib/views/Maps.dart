@@ -67,7 +67,8 @@ class _MapsState extends State<Maps> {
             Align(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
-                onPressed: () => controller.onMapsCreated(_googleMapController, false),
+                onPressed: () =>
+                    controller.onMapsCreated(_googleMapController, false),
               ),
             ),
           ],
