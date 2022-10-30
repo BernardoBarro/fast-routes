@@ -2,7 +2,6 @@
 
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:fast_routes/views/PageRegisterMotorista.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +20,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   bool motorista = false;
   bool passageiro = true;
   bool feminino = false;
-  bool masculino = false;
+  bool masculino = true;
   bool pcd = false;
   bool fieldPCD = false;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
