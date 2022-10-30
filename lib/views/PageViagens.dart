@@ -2,6 +2,7 @@ import 'package:fast_routes/providers/TravelProvider.dart';
 import 'package:fast_routes/views/ListPassengers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../providers/TravelPassagerProvider.dart';
 import 'PageCreateTravel.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,8 +50,13 @@ class _PageViagensState extends State<PageViagens> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ListPassengers()));
-                              debugPrint('Card 2.');
+                                      builder: (context) =>
+                                          ChangeNotifierProvider(
+                                            create: (_) =>
+                                                TravelPassagerProvider(
+                                                    travel.key),
+                                            child: ListPassengers(),
+                                          )));
                             },
                             child: SizedBox(
                               width: 350,

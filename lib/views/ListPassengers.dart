@@ -2,7 +2,10 @@ import 'package:fast_routes/views/AddedPassengers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+
+import '../providers/TravelPassagerProvider.dart';
 
 class ListPassengers extends StatefulWidget {
   const ListPassengers({Key? key}) : super(key: key);
@@ -27,40 +30,40 @@ class _ListPassengersState extends State<ListPassengers> {
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
           padding: const EdgeInsets.only(top: 40, right: 16, left: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  'Lista de Passageiros',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 25),
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Text(
-                  nameTravel,
+          child: Column(
+            children: [
+              Text(
+                'Lista de Passageiros',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Consumer<TravelPassagerProvider>(
+                  builder: (context, model, child) {
+                return Text(
+                  model.singleTravel.nome + " - " + model.singleTravel.weekDays,
                   style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                SizedBox(
-                  height: 50.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 80.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Matheus Grigoleto - 125.215.521-35',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
+                );
+              }),
+              SizedBox(
+                height: 50.0,
+              ),
+              Consumer<TravelPassagerProvider>(
+                  builder: (context, model, child) {
+                return Expanded(
+                    child: ListView(
+                  children: [
+                    ...model.passageiros.map((passageiro) => Card(
+                          child: Text(passageiro.nome),
+                        ))
+                  ],
+                ));
+              })
+            ],
           ),
         ),
       ),
