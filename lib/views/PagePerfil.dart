@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
+import 'package:fast_routes/views/PageConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +115,12 @@ class _PagePerfilState extends State<PagePerfil> {
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: FlatButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PageConfig()));
+                    },
                     icon: const Icon(
                       Icons.settings,
                       color: Colors.white,
