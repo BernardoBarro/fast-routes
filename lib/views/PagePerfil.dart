@@ -182,13 +182,6 @@ class _PagePerfilState extends State<PagePerfil> {
                         'email': email.text,
                       };
 
-                      // FirebaseAuth auth = FirebaseAuth.instance;
-                      // auth
-                      //  .signInWithEmailAndPassword(auth.currentUser, 'correcthorsebatterystaple')
-                      //   .then(function(userCredential) {
-                      //       userCredential.user.updateEmail('newyou@domain.example');
-                      //   })
-
                       db.ref("usuarios").child(user.uid).update(value);
                       textChange = 'Editar Perfil';
                       fieldOcult = false;
