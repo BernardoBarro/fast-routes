@@ -11,17 +11,16 @@ class LoginLogic extends StatelessWidget {
     return Scaffold(
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot){
-          if(snapshot.connectionState == ConnectionState.waiting){
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
-          }else if(snapshot.hasError){
+          } else if (snapshot.hasError) {
             return Center(child: Text('Something went wrong!'));
-          }else if(snapshot.hasData){
+          } else if (snapshot.hasData) {
             return PageHome();
           } else {
             return LoginandRegister();
           }
-
         },
       ),
     );

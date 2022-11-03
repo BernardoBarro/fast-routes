@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
-import 'package:fast_routes/views/PageConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -12,14 +11,14 @@ import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
 
-class PagePerfil extends StatefulWidget {
-  const PagePerfil({Key? key}) : super(key: key);
+class PagePerfilPassenger extends StatefulWidget {
+  const PagePerfilPassenger({Key? key}) : super(key: key);
 
   @override
-  State<PagePerfil> createState() => _PagePerfilState();
+  State<PagePerfilPassenger> createState() => _PagePerfilPassengerState();
 }
 
-class _PagePerfilState extends State<PagePerfil> {
+class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   FirebaseDatabase db = FirebaseDatabase.instance;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
   var maskCPF = MaskTextInputFormatter(mask: '###.###.###-##');
@@ -28,9 +27,6 @@ class _PagePerfilState extends State<PagePerfil> {
 
   String textChange = 'Editar Perfil';
   String changeName = 'Matheus Grigoleto';
-
-  String _mensagemErro = "";
-  final formKey = GlobalKey<FormState>();
 
   _logout() async {
     FirebaseAuth.instance.signOut();
@@ -109,51 +105,27 @@ class _PagePerfilState extends State<PagePerfil> {
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
           padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
-          child: Form(
-              key: formKey,
           child: Column(
             children: [
-              const SizedBox(
-                height: 15,
+              Align(
+                alignment: Alignment.centerRight,
+                child: FlatButton.icon(
+                  onPressed: () {
+                    _logout();
+                  },
+                  icon: const Icon(
+                    Icons.logout,
+                    color: Color.fromRGBO(51, 101, 229, 1),
+                  ),
+                  label: const Text(
+                    "Deslogar",
+                    style: TextStyle(color: Colors.white, fontSize: 13.0),
+                  ),
+                  padding: EdgeInsets.zero,
+                ),
               ),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: FlatButton.icon(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PageConfig()));
-                    },
-                    icon: const Icon(
-                      Icons.settings,
-                      color: Colors.white,
-                    ),
-                    label: Text(''),
-                    padding: EdgeInsets.only(right: 40),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: FlatButton.icon(
-                    onPressed: () {
-                      _logout();
-                    },
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Color.fromRGBO(51, 101, 229, 1),
-                    ),
-                    label: const Text(
-                      "Deslogar",
-                      style: TextStyle(color: Colors.white, fontSize: 13.0),
-                    ),
-                    padding: EdgeInsets.only(left: 0),
-                  ),
-                ),
-              ]),
               const SizedBox(
-                height: 40,
+                height: 7,
               ),
               GestureDetector(
                 onTap: () {
@@ -204,7 +176,6 @@ class _PagePerfilState extends State<PagePerfil> {
                         'data_de_nascimento': birthDate.text,
                         'email': email.text,
                       };
-
                       db.ref("usuarios").child(user.uid).update(value);
                       textChange = 'Editar Perfil';
                       fieldOcult = false;
@@ -240,15 +211,6 @@ class _PagePerfilState extends State<PagePerfil> {
                         //E-MAIL
                         TextFormField(
                           controller: email,
-                          validator: (email) {
-                            if (email == null || email.isEmpty) {
-                              return 'Digite o seu E-mail';
-                            } else if (!EmailValidator.validate(email)) {
-                              return 'E-mail inválido';
-                            }
-                            //Verify email alredy in use
-                            return null;
-                          },
                           enabled: fieldOcult,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -294,14 +256,6 @@ class _PagePerfilState extends State<PagePerfil> {
                         //TEXT TELEFONE
                         TextFormField(
                           controller: phone,
-                          validator: (telefone) {
-                            if (telefone == null || telefone.isEmpty) {
-                              return 'Digite o seu telefone';
-                            } else if (telefone.length != 15) {
-                              return 'Telefone inválido';
-                            }
-                            return null;
-                          },
                           enabled: fieldOcult,
                           inputFormatters: [maskPhone],
                           keyboardType: TextInputType.number,
@@ -349,14 +303,6 @@ class _PagePerfilState extends State<PagePerfil> {
                         //TEXT CPF
                         TextFormField(
                           controller: cpf,
-                          validator: (cpf) {
-                            if (cpf == null || cpf.isEmpty) {
-                              return 'Digite o seu CPF';
-                            } else if (cpf.length != 14) {
-                              return 'CPF inválido';
-                            }
-                            return null;
-                          },
                           enabled: fieldOcult,
                           inputFormatters: [maskCPF],
                           keyboardType: TextInputType.number,
@@ -404,14 +350,6 @@ class _PagePerfilState extends State<PagePerfil> {
                         //E-MAIL
                         TextFormField(
                           controller: birthDate,
-                          validator: (dataNascimento) {
-                            if (dataNascimento == null || dataNascimento.isEmpty) {
-                              return 'Digite sua data de nascimento';
-                            } else if(dataNascimento.length < 10) {
-                              return 'Data de nascimento inválida';
-                            }
-                            return null;
-                          },
                           inputFormatters: [maskDate],
                           enabled: fieldOcult,
                           keyboardType: TextInputType.number,
@@ -455,18 +393,6 @@ class _PagePerfilState extends State<PagePerfil> {
                         const SizedBox(
                           height: 20.0,
                         ),
-                        Center(
-                          child: Text(
-                            _mensagemErro,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20.0,
-                        ),
                         //BUTTON
                         Padding(
                             padding: const EdgeInsets.only(bottom: 10.0),
@@ -482,13 +408,8 @@ class _PagePerfilState extends State<PagePerfil> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    _mensagemErro = "";
-                                  });
-                                  if (formKey.currentState!.validate()) {
-                                    setState(() {
                                     _hiddenFields();
                                   });
-                                  }
                                 },
                                 child: Text(
                                   textChange,
@@ -504,7 +425,6 @@ class _PagePerfilState extends State<PagePerfil> {
                 );
               }),
             ],
-          ),
           ),
         ),
       ),

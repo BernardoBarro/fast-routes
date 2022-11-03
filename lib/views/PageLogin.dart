@@ -5,6 +5,7 @@ import 'dart:ffi';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PageHome.dart';
 import 'package:fast_routes/views/PageResetPassword.dart';
+import 'package:fast_routes/views/PagesPassengers/PageHomePassenger.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -26,32 +27,33 @@ class _PageLoginState extends State<PageLogin> {
   final formKey = GlobalKey<FormState>();
 
   _login(String email, String password) {
-
-        FirebaseAuth auth = FirebaseAuth.instance;
-        auth
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) => {
-                setState(() {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PageHome()));
-                }),
-              })
-          .catchError((error) {
-            if(error.code.toString() == "user-not-found" || error.code.toString() == "wrong-password") {
-                setState(() {
-                  _mensagemErro = "E-mail ou senha inválidos";
-                });
-            } else if(error.code.toString() == "too-many-requests") {
-                setState(() {
-                  _mensagemErro = "Nós bloqueamos o seu acesso devido a muitas requisições, tente novamente mais tarde";
-                });
-            } else {
-                setState(() {
-                  _mensagemErro = "ocorreu um erro: $error";
-                  print(error.code.toString());
-                });
-              } 
-          });
+    FirebaseAuth auth = FirebaseAuth.instance;
+    auth
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((value) => {
+              setState(() {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PageHome()));
+              }),
+            })
+        .catchError((error) {
+      if (error.code.toString() == "user-not-found" ||
+          error.code.toString() == "wrong-password") {
+        setState(() {
+          _mensagemErro = "E-mail ou senha inválidos";
+        });
+      } else if (error.code.toString() == "too-many-requests") {
+        setState(() {
+          _mensagemErro =
+              "Nós bloqueamos o seu acesso devido a muitas requisições, tente novamente mais tarde";
+        });
+      } else {
+        setState(() {
+          _mensagemErro = "ocorreu um erro: $error";
+          print(error.code.toString());
+        });
+      }
+    });
   }
 
   @override
@@ -62,11 +64,11 @@ class _PageLoginState extends State<PageLogin> {
           elevation: 0,
         ),
         body: SafeArea(
-          child: Container(
-            padding: EdgeInsets.only(top: 0, left: 32, right: 32),
-            color: Color.fromRGBO(69, 69, 85, 1),
-            child: Form(
-              key: formKey,
+            child: Container(
+          padding: EdgeInsets.only(top: 0, left: 32, right: 32),
+          color: Color.fromRGBO(69, 69, 85, 1),
+          child: Form(
+            key: formKey,
             child: ListView(
               children: <Widget>[
                 Padding(
@@ -87,14 +89,14 @@ class _PageLoginState extends State<PageLogin> {
                   controller: _controllerEmail,
                   // autofocus: true,
                   validator: (email) {
-                      if (email == null || email.isEmpty) {
-                        return 'Digite o seu E-mail';
-                      } else if (!EmailValidator.validate(email)) {
-                        return 'E-mail inválido';
-                      }
-                      //Verify email alredy in use
-                      return null;
-                    },
+                    if (email == null || email.isEmpty) {
+                      return 'Digite o seu E-mail';
+                    } else if (!EmailValidator.validate(email)) {
+                      return 'E-mail inválido';
+                    }
+                    //Verify email alredy in use
+                    return null;
+                  },
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -141,13 +143,13 @@ class _PageLoginState extends State<PageLogin> {
                   controller: _controllerPassword,
                   // autofocus: true,
                   validator: (senha) {
-                      if (senha == null || senha.isEmpty) {
-                        return 'Digite uma senha';
-                      } else if (senha.length < 6) {
-                        return 'Digite uma senha com mais de 6 caracteres';
-                      }
-                      return null;
-                    },
+                    if (senha == null || senha.isEmpty) {
+                      return 'Digite uma senha';
+                    } else if (senha.length < 6) {
+                      return 'Digite uma senha com mais de 6 caracteres';
+                    }
+                    return null;
+                  },
                   keyboardType: TextInputType.streetAddress,
                   style: TextStyle(color: Colors.white),
                   decoration: InputDecoration(
@@ -200,8 +202,7 @@ class _PageLoginState extends State<PageLogin> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                PageResetPassword()));
+                              builder: (context) => PageResetPassword()));
                     },
                     child: Text(
                       "Esqueceu sua senha?",
@@ -212,15 +213,15 @@ class _PageLoginState extends State<PageLogin> {
                   ),
                 ),
                 Center(
-                    child: Text(
-                      _mensagemErro,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                      ),
+                  child: Text(
+                    _mensagemErro,
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 16,
                     ),
                   ),
-                  SizedBox(
+                ),
+                SizedBox(
                   height: 25,
                 ),
                 //BUTTON
@@ -238,8 +239,7 @@ class _PageLoginState extends State<PageLogin> {
                         });
                         if (formKey.currentState!.validate()) {
                           _login(
-                            _controllerEmail.text,
-                            _controllerPassword.text);
+                              _controllerEmail.text, _controllerPassword.text);
                         }
                       },
                       child: Text(
@@ -252,7 +252,6 @@ class _PageLoginState extends State<PageLogin> {
               ],
             ),
           ),
-        ))
-      );
+        )));
   }
 }

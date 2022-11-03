@@ -2,7 +2,6 @@
 
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:fast_routes/views/PageRegisterMotorista.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +20,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   bool motorista = false;
   bool passageiro = true;
   bool feminino = false;
-  bool masculino = false;
+  bool masculino = true;
   bool pcd = false;
   bool fieldPCD = false;
   var maskPhone = MaskTextInputFormatter(mask: '(##) #####-####');
@@ -61,6 +60,16 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'feminino': feminino
     };
 
+    Map<String, dynamic> dataPassageiroReplica = {
+      'nome': nome,
+      'cpf': cpf,
+      'telefone': telefone,
+      'data_de_nascimento': dataNascimento,
+      'email': email,
+      'pcd': pcd,
+      'descricao PCD': pcdDesc,
+    };
+
     auth
         .createUserWithEmailAndPassword(email: email, password: senha)
         .then((firebaseUser) => {
@@ -68,6 +77,10 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                   .ref("usuarios")
                   .child(firebaseUser.user!.uid)
                   .set(dataPassageiro),
+              db
+                  .ref("passageiros")
+                  .child(firebaseUser.user!.uid)
+                  .set(dataPassageiroReplica),
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
