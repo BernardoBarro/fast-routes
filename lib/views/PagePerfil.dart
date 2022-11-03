@@ -11,6 +11,8 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_core/firebase_core.dart';
+//import 'package:firebase_storage/firebase_storage.dart';
 
 class PagePerfil extends StatefulWidget {
   const PagePerfil({Key? key}) : super(key: key);
@@ -38,6 +40,17 @@ class _PagePerfilState extends State<PagePerfil> {
           (route) => false);
     });
   }
+
+  //instacia Storage
+  // final FirebaseStorage storage = FirebaseStorage.instance;
+
+  // Future<void> upload(String path) async {
+  //   File file = File(path);
+  //   try {
+  //     String ref = 'images/img-${DateTime.now().toString()}.jpg';
+  //     await storage.ref(ref).putFile(file);
+  //   }
+  // }
 
   late File _image = File('/images/logo.png');
   bool imageOK = false;
