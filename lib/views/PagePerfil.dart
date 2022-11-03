@@ -11,6 +11,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 
 class PagePerfil extends StatefulWidget {
   const PagePerfil({Key? key}) : super(key: key);
@@ -191,18 +192,18 @@ class _PagePerfilState extends State<PagePerfil> {
                 final cpf = TextEditingController(text: user.cpf);
                 final birthDate = TextEditingController(text: user.birthDate);
 
-                _hiddenFields() {
+                _hiddenFields(String? name, String? email, String? phone, String? cpf, String? birthDate) {
                   setState(() {
                     if (fieldOcult == false) {
                       textChange = 'Salvar';
                       fieldOcult = true;
                     } else if (fieldOcult == true) {
                       Map<String, dynamic> value = {
-                        'nome': name.text,
-                        'cpf': cpf.text,
-                        'telefone': phone.text,
-                        'data_de_nascimento': birthDate.text,
-                        'email': email.text,
+                        'nome': name,
+                        'email': email,
+                        'telefone': phone,
+                        'cpf': cpf,
+                        'data_de_nascimento': birthDate,
                       };
 
                       db.ref("usuarios").child(user.uid).update(value);
@@ -219,10 +220,16 @@ class _PagePerfilState extends State<PagePerfil> {
                         const SizedBox(
                           height: 20,
                         ),
-                        TextField(
+                        TextFormField(
                           textAlign: TextAlign.center,
                           enabled: fieldOcult,
                           controller: name,
+                          validator: (name) {
+                            if (name == null || name.isEmpty) {
+                              return 'Digite o seu nome';
+                            } 
+                            return null;
+                          },
                           style: TextStyle(
                             color: Color.fromRGBO(255, 255, 255, 1),
                             fontSize: 25,
@@ -352,7 +359,7 @@ class _PagePerfilState extends State<PagePerfil> {
                           validator: (cpf) {
                             if (cpf == null || cpf.isEmpty) {
                               return 'Digite o seu CPF';
-                            } else if (cpf.length != 14) {
+                            } else if (!CPFValidator.isValid(cpf)){
                               return 'CPF inválido';
                             }
                             return null;
@@ -486,7 +493,13 @@ class _PagePerfilState extends State<PagePerfil> {
                                   });
                                   if (formKey.currentState!.validate()) {
                                     setState(() {
-                                    _hiddenFields();
+                                      _hiddenFields(
+                                        name.text,
+                                        email.text,
+                                        phone.text,
+                                        cpf.text,
+                                        birthDate.text,
+                                      );
                                   });
                                   }
                                 },

@@ -10,6 +10,7 @@ import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:cpf_cnpj_validator/cpf_validator.dart';
 
 class PagePerfilPassenger extends StatefulWidget {
   const PagePerfilPassenger({Key? key}) : super(key: key);
@@ -27,6 +28,9 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
 
   String textChange = 'Editar Perfil';
   String changeName = 'Matheus Grigoleto';
+
+  String _mensagemErro = "";
+  final formKey = GlobalKey<FormState>();
 
   _logout() async {
     FirebaseAuth.instance.signOut();
@@ -105,6 +109,8 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
           padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
+          child: Form(
+            key: formKey,
           child: Column(
             children: [
               Align(
@@ -163,19 +169,20 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                 final cpf = TextEditingController(text: user.cpf);
                 final birthDate = TextEditingController(text: user.birthDate);
 
-                _hiddenFields() {
+                _hiddenFields(String? name, String? email, String? phone, String? cpf, String? birthDate) {
                   setState(() {
                     if (fieldOcult == false) {
                       textChange = 'Salvar';
                       fieldOcult = true;
                     } else if (fieldOcult == true) {
                       Map<String, dynamic> value = {
-                        'nome': name.text,
-                        'cpf': cpf.text,
-                        'telefone': phone.text,
-                        'data_de_nascimento': birthDate.text,
-                        'email': email.text,
+                        'nome': name,
+                        'email': email,
+                        'telefone': phone,
+                        'cpf': cpf,
+                        'data_de_nascimento': birthDate,
                       };
+
                       db.ref("usuarios").child(user.uid).update(value);
                       textChange = 'Editar Perfil';
                       fieldOcult = false;
@@ -211,6 +218,15 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                         //E-MAIL
                         TextFormField(
                           controller: email,
+                          validator: (email) {
+                            if (email == null || email.isEmpty) {
+                              return 'Digite o seu E-mail';
+                            } else if (!EmailValidator.validate(email)) {
+                              return 'E-mail inválido';
+                            }
+                            //Verify email alredy in use
+                            return null;
+                          },
                           enabled: fieldOcult,
                           style: const TextStyle(color: Colors.white),
                           decoration: InputDecoration(
@@ -256,6 +272,14 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                         //TEXT TELEFONE
                         TextFormField(
                           controller: phone,
+                          validator: (telefone) {
+                            if (telefone == null || telefone.isEmpty) {
+                              return 'Digite o seu telefone';
+                            } else if (telefone.length != 15) {
+                              return 'Telefone inválido';
+                            }
+                            return null;
+                          },
                           enabled: fieldOcult,
                           inputFormatters: [maskPhone],
                           keyboardType: TextInputType.number,
@@ -303,6 +327,14 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                         //TEXT CPF
                         TextFormField(
                           controller: cpf,
+                          validator: (cpf) {
+                            if (cpf == null || cpf.isEmpty) {
+                              return 'Digite o seu CPF';
+                            } else if (!CPFValidator.isValid(cpf)){
+                              return 'CPF inválido';
+                            }
+                            return null;
+                          },
                           enabled: fieldOcult,
                           inputFormatters: [maskCPF],
                           keyboardType: TextInputType.number,
@@ -350,6 +382,14 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                         //E-MAIL
                         TextFormField(
                           controller: birthDate,
+                          validator: (dataNascimento) {
+                            if (dataNascimento == null || dataNascimento.isEmpty) {
+                              return 'Digite sua data de nascimento';
+                            } else if(dataNascimento.length < 10) {
+                              return 'Data de nascimento inválida';
+                            }
+                            return null;
+                          },
                           inputFormatters: [maskDate],
                           enabled: fieldOcult,
                           keyboardType: TextInputType.number,
@@ -393,6 +433,18 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                         const SizedBox(
                           height: 20.0,
                         ),
+                        Center(
+                          child: Text(
+                            _mensagemErro,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20.0,
+                        ),
                         //BUTTON
                         Padding(
                             padding: const EdgeInsets.only(bottom: 10.0),
@@ -408,7 +460,13 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    _hiddenFields();
+                                    _hiddenFields(
+                                      name.text,
+                                      email.text,
+                                      phone.text,
+                                      cpf.text,
+                                      birthDate.text,
+                                    );
                                   });
                                 },
                                 child: Text(
@@ -425,6 +483,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                 );
               }),
             ],
+          ),
           ),
         ),
       ),
