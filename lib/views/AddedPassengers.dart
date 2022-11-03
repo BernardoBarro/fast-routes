@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../models/Customer.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -89,13 +90,30 @@ class _AddedPassengersState extends State<AddedPassengers> {
                           )),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Expanded(
-                    child: ListView.builder(
-                      itemCount: displayList.length,
-                      itemBuilder: (context, index) => ListTile(
-                        title: Text(displayList[index].nome),
-                        subtitle: Text(displayList[index].email),
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                        border: Border.all(color: Colors.white),
+                      ),
+                      child: ListView.builder(
+                        itemCount: displayList.length,
+                        itemBuilder: (context, index) => ListTile(
+                          title: Text(
+                            displayList[index].nome,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            displayList[index].email,
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 0.6)),
+                          ),
+                        ),
                       ),
                     ),
                   )
