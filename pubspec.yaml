@@ -61,6 +61,7 @@ dev_dependencies:
   firebase_core: ^1.22.0
   intl: ^0.17.0
   email_validator: ^2.1.17
+  cpf_cnpj_validator: ^2.0.0
   flutter_launcher_icons: ^0.10.0
 
 
