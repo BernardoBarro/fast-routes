@@ -10,7 +10,9 @@ import 'PageViagens.dart';
 import 'PagePerfil.dart';
 
 class PageHome extends StatefulWidget {
-  const PageHome({Key? key}) : super(key: key);
+  final String? chave;
+
+  const PageHome({Key? key, this.chave}) : super(key: key);
 
   @override
   State<PageHome> createState() => _PageHomeState();
@@ -18,20 +20,21 @@ class PageHome extends StatefulWidget {
 
 class _PageHomeState extends State<PageHome> {
   int _selectedIndex = 1;
-  final List<Widget> _telas = [
-    ChangeNotifierProvider(
-      create: (_) => UserProvider(),
-      child: PagePerfil(),
-    ),
-    ChangeNotifierProvider(
-      create: (_) => AddressProvider(),
-      child: PageMaps(),
-    ),
-    ChangeNotifierProvider(
-      create: (_) => TravelProvider(),
-      child: PageViagens(),
-    ),
-  ];
+
+  // final List<Widget> _telas = [
+  //   ChangeNotifierProvider(
+  //     create: (_) => UserProvider(),
+  //     child: PagePerfil(),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => AddressProvider(),
+  //     child: PageMaps(chave: widget.chave),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => TravelProvider(),
+  //     child: PageViagens(),
+  //   ),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,7 +45,20 @@ class _PageHomeState extends State<PageHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _telas[_selectedIndex],
+      body: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+          child: PagePerfil(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddressProvider(),
+          child: PageMaps(chave: widget.chave),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TravelProvider(),
+          child: PageViagens(),
+        ),
+      ][_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         backgroundColor: const Color.fromRGBO(69, 69, 85, 1),

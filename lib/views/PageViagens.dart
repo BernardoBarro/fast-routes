@@ -55,7 +55,7 @@ class _PageViagensState extends State<PageViagens> {
                                             create: (_) =>
                                                 TravelPassagerProvider(
                                                     travel.key),
-                                            child: ListPassengers(),
+                                            child: ListPassengers(travel.key),
                                           )));
                             },
                             child: SizedBox(

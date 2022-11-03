@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:fast_routes/models/Directions.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,9 @@ import '../controllers/MapsController.dart';
 import '../providers/AddressProvider.dart';
 
 class PageMaps extends StatefulWidget {
-  const PageMaps({Key? key}) : super(key: key);
+  final String? chave;
+
+  const PageMaps({Key? key, this.chave}) : super(key: key);
 
   @override
   State<PageMaps> createState() => _PageMapsState();
@@ -42,67 +45,81 @@ class _PageMapsState extends State<PageMaps> {
         .then((snapshot) => {
               print(snapshot.value),
               isMotorista = (snapshot.value as dynamic),
-              _addMarker(),
-              if (isMotorista) {getCurrentLocation()} else {getDriverLocation()}
+              isMotorista ? getCurrentLocation() : getDriverLocation()
             });
   }
 
   getDriverLocation() async {
-    positionStream = db
-        .ref("usuarios")
-        .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
-        .child("viagens")
-        .child("-NER-JZ617H9fgrKwDRR")
-        .child("location")
-        .onValue
-        .listen((event) {
-      final position =
-          Map<String, dynamic>.from(event.snapshot.value as dynamic);
-      currentLocation = LatLng(position['latitude'], position['longitude']);
-      setState(() {
-        _markersSet
-            .removeWhere((marker) => marker.markerId == "currentLocation");
-        _markersSet.add(Marker(
-            markerId: const MarkerId("currentLocation"),
-            position:
-                LatLng(currentLocation!.latitude, currentLocation!.longitude)));
-      });
-    });
-  }
-
-  getCurrentLocation() async {
     Location location = Location();
 
     location.getLocation().then((location) {
-      currentLocation = LatLng(location.latitude!, location.longitude!);
+      setState(() {
+        currentLocation = LatLng(location.latitude!, location.longitude!);
+      });
     });
-
-    positionStream = location.onLocationChanged.listen((newLoc) {
-      currentLocation = LatLng(newLoc.latitude!, newLoc.longitude!);
-
-      Map<String, dynamic> position = {
-        'latitude': newLoc.latitude,
-        'longitude': newLoc.longitude,
-      };
-
-      db
+    if (widget.chave != null) {
+      positionStream = db
           .ref("usuarios")
           .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
           .child("viagens")
-          .child("-NER-JZ617H9fgrKwDRR")
+          .child(widget.chave!)
           .child("location")
-          .set(position)
-          .catchError((error) => print("Ocorreu um erro $error"));
-
-      setState(() {
-        _markersSet
-            .removeWhere((marker) => marker.markerId == "currentLocation");
-        _markersSet.add(Marker(
-            markerId: const MarkerId("currentLocation"),
-            position:
-                LatLng(currentLocation!.latitude, currentLocation!.longitude)));
+          .onValue
+          .listen((event) {
+        final position =
+            Map<String, dynamic>.from(event.snapshot.value as dynamic);
+        currentLocation = LatLng(position['latitude'], position['longitude']);
+        setState(() {
+          _markersSet
+              .removeWhere((marker) => marker.markerId == "currentLocation");
+          _markersSet.add(Marker(
+              markerId: const MarkerId("currentLocation"),
+              position: LatLng(
+                  currentLocation!.latitude, currentLocation!.longitude)));
+        });
       });
-    });
+    }
+  }
+
+  getCurrentLocation() async {
+      Location location = Location();
+
+      location.getLocation().then((location) {
+        setState(() {
+          currentLocation = LatLng(location.latitude!, location.longitude!);
+        });
+      });
+
+      if (widget.chave != null) {
+      positionStream = location.onLocationChanged.listen((newLoc) {
+        currentLocation = LatLng(newLoc.latitude!, newLoc.longitude!);
+
+        Map<String, dynamic> position = {
+          'latitude': newLoc.latitude,
+          'longitude': newLoc.longitude,
+        };
+        _getRoute();
+
+        db
+            .ref("usuarios")
+            .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
+            .child("viagens")
+            .child(widget.chave!)
+            .child("location")
+            .set(position)
+            .catchError((error) => print("Ocorreu um erro $error"));
+
+        setState(() {
+          _addMarker();
+          _markersSet
+              .removeWhere((marker) => marker.markerId == "currentLocation");
+          _markersSet.add(Marker(
+              markerId: const MarkerId("currentLocation"),
+              position: LatLng(
+                  currentLocation!.latitude, currentLocation!.longitude)));
+        });
+      });
+    }
   }
 
   @override
@@ -136,7 +153,7 @@ class _PageMapsState extends State<PageMaps> {
                         currentLocation!.latitude, currentLocation!.longitude),
                     zoom: 18,
                   ),
-                  myLocationEnabled: !isMotorista,
+                  myLocationEnabled: (!isMotorista || widget.chave == null),
                   markers: _markersSet,
                   polylines: {
                     if (_info != null)
@@ -151,9 +168,8 @@ class _PageMapsState extends State<PageMaps> {
                   },
                   onMapCreated: (gmc) => {
                     _googleMapController = gmc,
-                    controller.onMapsCreated(_googleMapController, isMotorista)
+                    controller.onMapsCreated(_googleMapController, isMotorista),
                   },
-                  onTap: _getRoute,
                 ),
           Align(
             alignment: Alignment.bottomRight,
@@ -193,7 +209,7 @@ class _PageMapsState extends State<PageMaps> {
     });
   }
 
-  void _getRoute(LatLng pos) async {
+  void _getRoute() async {
     final directions =
         await DirectionsRepository().getDirections(address: provider.address);
     // TODO alterar para enviar lista de LatLng

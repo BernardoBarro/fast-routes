@@ -9,6 +9,7 @@ import 'package:fast_routes/views/PagesPassengers/PageHomePassenger.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
 
 class PageLogin extends StatefulWidget {
@@ -28,12 +29,28 @@ class _PageLoginState extends State<PageLogin> {
 
   _login(String email, String password) {
     FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseDatabase db = FirebaseDatabase.instance;
     auth
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) => {
-              setState(() {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PageHome()));
+              db
+                  .ref("usuarios")
+                  .child(value.user!.uid)
+                  .child("isMotorista")
+                  .get()
+                  .then((snapshot) {
+                bool isMotorista = (snapshot.value as dynamic);
+                setState(() {
+                  if (isMotorista) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PageHome()));
+                  } else {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PageHomePassenger()));
+                  }
+                });
               }),
             })
         .catchError((error) {
