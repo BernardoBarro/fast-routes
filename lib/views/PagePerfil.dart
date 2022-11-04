@@ -10,9 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-import 'PagesPassengers/PageHomePassenger.dart';
-
-
 class PagePerfil extends StatefulWidget {
   const PagePerfil({Key? key}) : super(key: key);
 
