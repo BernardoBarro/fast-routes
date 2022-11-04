@@ -4,8 +4,6 @@ import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PageConfig.dart';
-import 'package:fast_routes/views/PagesPassengers/PageHomePassenger.dart';
-import 'package:fast_routes/views/PagesPassengers/PagePerfilPassenger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -253,13 +251,7 @@ class _PagePerfilState extends State<PagePerfil> {
                         ),
                         elevation: 0,
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        PageHomePassenger()));
-                      },
+                      onPressed: () {},
                       child: Text(
                         "Pré - View",
                         style: TextStyle(
