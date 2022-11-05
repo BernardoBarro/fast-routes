@@ -7,10 +7,9 @@ import 'package:fast_routes/views/PageConfig.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:email_validator/email_validator.dart';
+
 
 class PagePerfil extends StatefulWidget {
   const PagePerfil({Key? key}) : super(key: key);
@@ -120,7 +119,7 @@ class _PagePerfilState extends State<PagePerfil> {
                               builder: (context) => PageConfig()));
                     },
                     icon: const Icon(
-                      Icons.settings,
+                      Icons.notifications,
                       color: Colors.white,
                     ),
                     label: Text(''),
@@ -214,13 +213,13 @@ class _PagePerfilState extends State<PagePerfil> {
     ],
   ),
   ),
-  SizedBox(height: 50,),
+  SizedBox(height: 20,),
   Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
     
      SizedBox(
-                    height: 100,
+                    height: 80,
                     width: 150,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -241,7 +240,7 @@ class _PagePerfilState extends State<PagePerfil> {
                       ),
                     )),
                      SizedBox(
-                    height: 100,
+                    height: 80,
                     width: 150,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -262,9 +261,10 @@ class _PagePerfilState extends State<PagePerfil> {
                       ),
                     )),
   ],),
-  SizedBox(height: 50,),
-   Container(
-    height: 280,
+  SizedBox(height: 20,),
+   
+  Container(
+    height: 380,
     width: double.infinity,
      child: Card(
        color: Color.fromRGBO(69, 69, 85, 1),
@@ -278,16 +278,31 @@ class _PagePerfilState extends State<PagePerfil> {
           child: Column(           
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Text(
-                'Viagem',
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),                          
+               Padding(
+                 padding: const EdgeInsets.only(top: 15.0, left: 15),
+                 child: Text(
+                  'Viagens',
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),   
+                Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Viagem 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),     
+              
             Row(mainAxisAlignment: MainAxisAlignment.end,     
-              children: [InkWell(child: Icon(Icons.add, color: Colors.white,))],)
+              children: [InkWell(child: Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: Icon(Icons.add, color: Colors.white,),
+              ))],)
           ],
           ),      
     ),
    ),
+   
             ],   
           ),
         ),
