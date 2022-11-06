@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../providers/InviteProvider.dart';
+import '../providers/TravelProvider.dart';
 
 class PagePerfil extends StatefulWidget {
   const PagePerfil({Key? key}) : super(key: key);
@@ -22,10 +23,11 @@ class PagePerfil extends StatefulWidget {
 class _PagePerfilState extends State<PagePerfil> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   FirebaseDatabase db = FirebaseDatabase.instance;
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final double circleRadius = 120.0;
   final double circleBorderWidth = 50.0;
 
-  String changeName = 'Matheus Grigoleto';
+  String changeName = 'Loading...';
 
   _logout() async {
     FirebaseAuth.instance.signOut();
@@ -93,6 +95,12 @@ class _PagePerfilState extends State<PagePerfil> {
             ),
           );
         });
+  }
+
+  @override
+  void initState() {
+    _performingSingleFetch();
+    super.initState();
   }
 
   @override
@@ -267,15 +275,15 @@ class _PagePerfilState extends State<PagePerfil> {
                       )),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
                 height: 440,
                 width: double.infinity,
                 child: Card(
-                  color: Color.fromRGBO(69, 69, 85, 1),
-                  shape: RoundedRectangleBorder(
+                  color: const Color.fromRGBO(69, 69, 85, 1),
+                  shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     side: BorderSide(
                       color: Colors.white,
@@ -285,33 +293,23 @@ class _PagePerfilState extends State<PagePerfil> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 15.0, left: 15),
-                        child: Text(
-                          'Viagens',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 15.0, top: 25),
-                        child: Text(
-                          'Viagem 1',
-                          style: TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                              child: Padding(
-                            padding: const EdgeInsets.only(right: 15.0),
-                            child: Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                          ))
-                        ],
-                      )
+                      Consumer<TravelProvider>(
+                          builder: (context, model, child) {
+                        return Expanded(
+                            child: ListView(children: [
+                          ...model.travels.map(
+                            (travel) => Card(
+                                color: Color.fromRGBO(69, 69, 85, 0.8),
+                                child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 12.0, left: 15.0),
+                                    child: ListTile(
+                                      title: Text(travel.nome),
+                                      subtitle: Text(travel.weekDays),
+                                    ))),
+                          )
+                        ]));
+                      })
                     ],
                   ),
                 ),
@@ -321,5 +319,13 @@ class _PagePerfilState extends State<PagePerfil> {
         ),
       ),
     );
+  }
+
+  void _performingSingleFetch() {
+    db.ref("usuarios").child(usuarioLogado!.uid).child("nome").get().then((snapshot) {
+      setState(() {
+        changeName = (snapshot.value as dynamic);
+      });
+    });
   }
 }

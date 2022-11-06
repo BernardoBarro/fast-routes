@@ -47,7 +47,7 @@ class _PageHomeState extends State<PageHome> {
     return Scaffold(
       body: [
         ChangeNotifierProvider(
-          create: (_) => UserProvider(),
+          create: (_) => TravelProvider(),
           child: PagePerfil(),
         ),
         ChangeNotifierProvider(
