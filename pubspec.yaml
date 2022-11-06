@@ -55,12 +55,13 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  firebase_auth: ^3.9.0
-  firebase_database: ^9.1.4
-  firebase_core: ^1.22.0
-  firebase_storage: ^11.0.3
+  firebase_auth: ^4.1.1
+  firebase_database: ^10.0.4
+  firebase_core: ^2.1.1
+  firebase_storage: ^11.0.4
   intl: ^0.17.0
   email_validator: ^2.1.17
+  validatorless: ^1.2.3
   flutter_launcher_icons: ^0.10.0
 
 

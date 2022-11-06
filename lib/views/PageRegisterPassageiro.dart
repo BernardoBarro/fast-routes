@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:validatorless/validatorless.dart';
 
 class PageRegisterPassageiro extends StatefulWidget {
   const PageRegisterPassageiro({Key? key}) : super(key: key);
@@ -343,14 +344,15 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                   //TEXT DATA
                   TextFormField(
                     controller: _controllerDataNascimento,
-                    validator: (dataNascimento) {
-                      if (dataNascimento == null || dataNascimento.isEmpty) {
-                        return 'Digite sua data de nascimento';
-                      } else if(dataNascimento.length < 10) {
-                        return 'Data de nascimento inválida';
-                      }
-                      return null;
-                    },
+                    validator: Validatorless.date('data invalida'),
+                    // validator: (dataNascimento) {
+                    //   if (dataNascimento == null || dataNascimento.isEmpty) {
+                    //     return 'Digite sua data de nascimento';
+                    //   } else if(dataNascimento.length < 10) {
+                    //     return 'Data de nascimento inválida';
+                    //   }
+                    //   return null;
+                    // },
                     inputFormatters: [maskDate],
                     keyboardType: TextInputType.number,
                     //validator: _validateDate,

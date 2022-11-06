@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_core/firebase_core.dart';
-//import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class PagePerfil extends StatefulWidget {
   const PagePerfil({Key? key}) : super(key: key);
@@ -42,15 +42,19 @@ class _PagePerfilState extends State<PagePerfil> {
   }
 
   //instacia Storage
-  // final FirebaseStorage storage = FirebaseStorage.instance;
+  final FirebaseStorage storage = FirebaseStorage.instance;
 
-  // Future<void> upload(String path) async {
-  //   File file = File(path);
-  //   try {
-  //     String ref = 'images/img-${DateTime.now().toString()}.jpg';
-  //     await storage.ref(ref).putFile(file);
-  //   }
-  // }
+  Future<void> upload(String path) async {
+    File file = File(path);
+    try {
+      String ref = 'images/img-${DateTime.now().toString()}.jpg';
+      await storage.ref(ref).putFile(file);
+    } on FirebaseException catch (error) {
+      throw Exception("Erro ao fazer upload: ${error.code}");
+    }
+  }
+
+  
 
   late File _image = File('/images/logo.png');
   bool imageOK = false;
@@ -64,6 +68,8 @@ class _PagePerfilState extends State<PagePerfil> {
     final pickedFile =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 30);
 
+    upload(pickedFile!.path);
+
     setState(() {
       _image = File(pickedFile!.path);
       imageOK = true;
@@ -74,6 +80,8 @@ class _PagePerfilState extends State<PagePerfil> {
   _imgFromLibrary() async {
     final pickedFile =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
+
+    upload(pickedFile!.path);
 
     setState(() {
       _image = File(pickedFile!.path);
@@ -175,11 +183,13 @@ class _PagePerfilState extends State<PagePerfil> {
                           borderRadius: BorderRadius.circular(100),
                           child: Container(
                               color: Colors.grey,
-                              height: 300,
-                              width: 300,
+                              
+                              // height: 300,
+                              //width: 300,
                               child: Image.file(_image)))
                       : Container(
                           decoration: BoxDecoration(
+                            
                               color: Colors.grey[200],
                               borderRadius: BorderRadius.circular(100)),
                           width: 300,
