@@ -1,4 +1,5 @@
 import 'package:fast_routes/views/AddedPassengers.dart';
+import 'package:fast_routes/views/PageHome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
@@ -8,15 +9,15 @@ import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import '../providers/TravelPassagerProvider.dart';
 
 class ListPassengers extends StatefulWidget {
-  const ListPassengers({Key? key}) : super(key: key);
+  final String chave;
+  const ListPassengers(this.chave, {Key? key}) : super(key: key);
 
   @override
   State<ListPassengers> createState() => _ListPassengersState();
 }
 
-late String nameTravel = 'Viagem URI Campus 1/2, Tarde, Seg a Sex';
-
 class _ListPassengersState extends State<ListPassengers> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -129,7 +130,10 @@ class _ListPassengersState extends State<ListPassengers> {
                 backgroundColor: Color.fromRGBO(51, 101, 229, 1),
                 label: 'Inciar rota',
                 onTap: () {
-                  print('rota');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PageHome(chave: widget.chave)));
                 },
               ),
               SpeedDialChild(
@@ -144,7 +148,7 @@ class _ListPassengersState extends State<ListPassengers> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddedPassengers()));
+                          builder: (context) => AddedPassengers(widget.chave)));
                 },
               ),
               SpeedDialChild(

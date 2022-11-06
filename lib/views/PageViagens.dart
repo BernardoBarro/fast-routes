@@ -1,3 +1,4 @@
+import 'package:fast_routes/models/Travel.dart';
 import 'package:fast_routes/providers/TravelProvider.dart';
 import 'package:fast_routes/views/ListPassengers.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class _PageViagensState extends State<PageViagens> {
   @override
   Widget build(BuildContext context) {
     User? usuarioLogado = FirebaseAuth.instance.currentUser;
-    final _db = FirebaseDatabase.instance.ref("usuarios");
+    final db = FirebaseDatabase.instance.ref("usuarios");
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -55,7 +56,7 @@ class _PageViagensState extends State<PageViagens> {
                                             create: (_) =>
                                                 TravelPassagerProvider(
                                                     travel.key),
-                                            child: ListPassengers(),
+                                            child: ListPassengers(travel.key),
                                           )));
                             },
                             child: SizedBox(
@@ -68,39 +69,8 @@ class _PageViagensState extends State<PageViagens> {
                                       return IconButton(
                                         icon: const Icon(Icons.delete),
                                         onPressed: () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (ctx) {
-                                                return AlertDialog(
-                                                  title: const Text(
-                                                      "Confirmação!!"),
-                                                  content: Text(
-                                                      "Você tem certeza que deseja excluir a viagem: " +
-                                                          travel.nome +
-                                                          "?"),
-                                                  actions: [
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          Navigator.of(ctx)
-                                                              .pop();
-                                                        },
-                                                        child: Text("Não")),
-                                                    TextButton(
-                                                        onPressed: () {
-                                                          _db
-                                                              .child(
-                                                                  usuarioLogado!
-                                                                      .uid)
-                                                              .child('viagens')
-                                                              .child(travel.key)
-                                                              .remove();
-                                                          Navigator.of(ctx)
-                                                              .pop();
-                                                        },
-                                                        child: Text("Sim")),
-                                                  ],
-                                                );
-                                              });
+                                          showAlertDialog(context, travel, db,
+                                              usuarioLogado);
                                         },
                                       );
                                     },
@@ -145,5 +115,36 @@ class _PageViagensState extends State<PageViagens> {
         ),
       ),
     );
+  }
+
+  void showAlertDialog(BuildContext context, Travel travel,
+      DatabaseReference db, User? usuarioLogado) {
+    showDialog(
+        context: context,
+        builder: (ctx) {
+          return AlertDialog(
+            title: const Text("Confirmação!!"),
+            content: Text("Você tem certeza que deseja excluir a viagem: " +
+                travel.nome +
+                "?"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text("Não")),
+              TextButton(
+                  onPressed: () {
+                    removeTravel(db, usuarioLogado, travel);
+                    Navigator.of(ctx).pop();
+                  },
+                  child: Text("Sim")),
+            ],
+          );
+        });
+  }
+
+  void removeTravel(DatabaseReference db, User? usuarioLogado, Travel travel) {
+    db.child(usuarioLogado!.uid).child('viagens').child(travel.key).remove();
   }
 }

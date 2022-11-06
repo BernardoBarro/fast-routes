@@ -27,14 +27,20 @@ class TravelPassagerProvider extends ChangeNotifier {
   }
 
   void _listenToTravelsPassagers(String key) {
+    List<String> keys = [];
     String uid = usuarioLogado!.uid;
     _travelStream = _db.child(uid + TRAVEL_PATH + "/$key/passageiros").onValue.listen((event) {
       final allPassageiros =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
+      keys.addAll(allPassageiros.keys);
       _passageiros = allPassageiros.values
           .map((travelAsJSON) =>
-              Customer.fromRTDB(Map<String, dynamic>.from(travelAsJSON), ""))
+              Customer.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))
           .toList();
+      for(int i = 0;i<_passageiros.length;i++){
+        Customer travel = _passageiros[i];
+        travel.setKeys(keys[i]);
+      }
       notifyListeners();
     });
   }
