@@ -1,6 +1,7 @@
 import 'package:fast_routes/providers/AddressProvider.dart';
 import 'package:fast_routes/providers/TravelProvider.dart';
-import 'package:fast_routes/providers/UserProvider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fast_routes/views/PageMaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/bottom_navigation_bar.dart';
@@ -8,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import 'PageViagens.dart';
 import 'PagePerfil.dart';
+import 'PagesPassengers/PageHomePassenger.dart';
 
 class PageHome extends StatefulWidget {
   final String? chave;
@@ -19,6 +21,8 @@ class PageHome extends StatefulWidget {
 }
 
 class _PageHomeState extends State<PageHome> {
+  FirebaseDatabase db = FirebaseDatabase.instance;
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 1;
 
   // final List<Widget> _telas = [
@@ -40,6 +44,12 @@ class _PageHomeState extends State<PageHome> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    _performingSingleFetch();
+    super.initState();
   }
 
   @override
@@ -87,5 +97,20 @@ class _PageHomeState extends State<PageHome> {
         ],
       ),
     );
+  }
+
+  void _performingSingleFetch() {
+    db
+        .ref("usuarios")
+        .child(usuarioLogado!.uid)
+        .child("isMotorista")
+        .get()
+        .then((snapshot) {
+      bool isMotorista = (snapshot.value as dynamic);
+      if (!isMotorista) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => PageHomePassenger()));
+      }
+    });
   }
 }

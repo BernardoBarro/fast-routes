@@ -21,6 +21,7 @@ class PagePerfilPassenger extends StatefulWidget {
 class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
    FirebaseDatabase db = FirebaseDatabase.instance;
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final double circleRadius = 120.0;
   final double circleBorderWidth = 50.0;
 
@@ -93,6 +94,13 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           );
         });
   }
+
+  @override
+  void initState() {
+    _performingSingleFetch();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -261,5 +269,13 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
         ),
       ),
     );
+  }
+
+  void _performingSingleFetch() {
+    db.ref("usuarios").child(usuarioLogado!.uid).child("nome").get().then((snapshot) {
+      setState(() {
+        changeName = (snapshot.value as dynamic);
+      });
+    });
   }
 }
