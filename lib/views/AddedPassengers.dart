@@ -7,8 +7,11 @@ import '../models/Customer.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../models/Travel.dart';
+
 class AddedPassengers extends StatefulWidget {
-  const AddedPassengers({Key? key}) : super(key: key);
+  final String chave;
+  const AddedPassengers(this.chave, {Key? key}) : super(key: key);
 
   @override
   State<AddedPassengers> createState() => _AddedPassengersState();
@@ -18,7 +21,7 @@ TextEditingController editingController = TextEditingController();
 
 class _AddedPassengersState extends State<AddedPassengers> {
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
-  final db = FirebaseDatabase.instance.ref("passageiros");
+  final db = FirebaseDatabase.instance;
   static List<Customer> passageirosList = [];
 
   List<Customer> displayList = List.from(passageirosList);
@@ -104,6 +107,59 @@ class _AddedPassengersState extends State<AddedPassengers> {
                       child: ListView.builder(
                         itemCount: displayList.length,
                         itemBuilder: (context, index) => ListTile(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (ctx) {
+                                  return AlertDialog(
+                                    title: const Text("Confirmação!"),
+                                    content: Text("Realmente deseja convidar " +
+                                        displayList[index].nome +
+                                        " para a sua viagem?"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () {
+                                            Navigator.of(ctx).pop();
+                                          },
+                                          child: Text("Não")),
+                                      TextButton(
+                                          onPressed: () {
+                                            db.ref("usuarios")
+                                              .child(usuarioLogado!.uid)
+                                              .child("nome")
+                                              .get()
+                                              .then((snapshot) {
+                                                String nome = (snapshot.value as dynamic);
+                                                db.ref("usuarios")
+                                                    .child(usuarioLogado!.uid)
+                                                    .child("viagens")
+                                                    .child(widget.chave)
+                                                    .get()
+                                                    .then((snapshot) {
+                                                      Travel travel = Travel.fromRTDB(Map<String, dynamic>.from((snapshot.value as dynamic)));
+                                                      Map<String, dynamic> invite = {
+                                                        'travelName': travel.nome,
+                                                        'travelWeekDays': travel.weekDays,
+                                                        'travelKey': snapshot.key,
+                                                        'driverName': nome,
+                                                        'driverUid': usuarioLogado!.uid,
+                                                        'passagerUid': displayList[index]!.uid
+                                                      };
+                                                      print(invite);
+                                                    db.ref("usuarios")
+                                                        .child(displayList[index]!.uid)
+                                                        .child("convites")
+                                                        .push()
+                                                        .set(invite);
+                                                });
+                                            });
+                                            Navigator.of(ctx)
+                                                .pop();
+                                          }, child: Text("Sim")),
+                                    ],
+                                  );
+                                });
+                          },
                           title: Text(
                             displayList[index].nome,
                             style: TextStyle(color: Colors.white),
@@ -125,13 +181,19 @@ class _AddedPassengersState extends State<AddedPassengers> {
   }
 
   void getPassagers() {
-    db.onValue.listen((event) {
+    List<String> keys = [];
+    db.ref("passageiros").onValue.listen((event) {
       final allTravels =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
+      keys.addAll(allTravels.keys);
       passageirosList = allTravels.values
           .map((travelAsJSON) => Customer.fromRTDB(
-              Map<String, dynamic>.from(travelAsJSON), usuarioLogado!.uid))
+              Map<String, dynamic>.from(travelAsJSON)))
           .toList();
+      for(int i = 0;i<passageirosList.length;i++){
+        Customer travel = passageirosList[i];
+        travel.setKeys(keys[i]);
+      }
     });
   }
 }

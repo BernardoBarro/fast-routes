@@ -3,12 +3,14 @@ import 'dart:ui';
 import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
-import 'package:fast_routes/views/PageConfig.dart';
+import 'package:fast_routes/views/InviteSideBar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import '../../providers/InviteProvider.dart';
 class PagePerfilPassenger extends StatefulWidget {
   const PagePerfilPassenger({Key? key}) : super(key: key);
 
@@ -17,7 +19,7 @@ class PagePerfilPassenger extends StatefulWidget {
 }
 
 class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
-  @override
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
    FirebaseDatabase db = FirebaseDatabase.instance;
   final double circleRadius = 150.0;
   final double circleBorderWidth = 50.0;
@@ -91,8 +93,14 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           );
         });
   }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
+      drawer: ChangeNotifierProvider(
+        create: (_) => InviteProvider(),
+        child: InviteSideBar(),
+      ),
       body: SafeArea(
 
         child: Container(
@@ -110,10 +118,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                   alignment: Alignment.bottomLeft,
                   child: FlatButton.icon(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PageConfig()));
+                      _globalKey.currentState!.openDrawer();
                     },
                     icon: const Icon(
                       Icons.notifications,

@@ -43,7 +43,6 @@ class _PageMapsState extends State<PageMaps> {
         .child("isMotorista")
         .get()
         .then((snapshot) => {
-              print(snapshot.value),
               isMotorista = (snapshot.value as dynamic),
               isMotorista ? getCurrentLocation() : getDriverLocation()
             });

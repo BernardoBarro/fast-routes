@@ -16,8 +16,6 @@ class ListPassengers extends StatefulWidget {
   State<ListPassengers> createState() => _ListPassengersState();
 }
 
-late String nameTravel = 'Viagem URI Campus 1/2, Tarde, Seg a Sex';
-
 class _ListPassengersState extends State<ListPassengers> {
 
   @override
@@ -150,7 +148,7 @@ class _ListPassengersState extends State<ListPassengers> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddedPassengers()));
+                          builder: (context) => AddedPassengers(widget.chave)));
                 },
               ),
               SpeedDialChild(
