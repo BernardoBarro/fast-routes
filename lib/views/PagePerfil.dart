@@ -22,7 +22,7 @@ class PagePerfil extends StatefulWidget {
 class _PagePerfilState extends State<PagePerfil> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
   FirebaseDatabase db = FirebaseDatabase.instance;
-  final double circleRadius = 150.0;
+  final double circleRadius = 120.0;
   final double circleBorderWidth = 50.0;
 
   String changeName = 'Matheus Grigoleto';
@@ -161,7 +161,7 @@ class _PagePerfilState extends State<PagePerfil> {
                       padding: EdgeInsets.only(top: circleRadius / 10.0),
                       child: Container(
                         width: double.infinity,
-                        height: 120,
+                        height: 100,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.blue,
@@ -225,7 +225,7 @@ class _PagePerfilState extends State<PagePerfil> {
                 children: [
                   SizedBox(
                       height: 80,
-                      width: 150,
+                      width: 180,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
@@ -246,7 +246,7 @@ class _PagePerfilState extends State<PagePerfil> {
                       )),
                   SizedBox(
                       height: 80,
-                      width: 150,
+                      width: 180,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
@@ -271,7 +271,7 @@ class _PagePerfilState extends State<PagePerfil> {
                 height: 20,
               ),
               Container(
-                height: 380,
+                height: 440,
                 width: double.infinity,
                 child: Card(
                   color: Color.fromRGBO(69, 69, 85, 1),
