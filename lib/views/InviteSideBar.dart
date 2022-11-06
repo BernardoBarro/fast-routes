@@ -115,22 +115,28 @@ class _InviteSideBarState extends State<InviteSideBar> {
                     },
                     'nome': nome,
                   };
+
+                  Map<String, dynamic> viagem = {
+                    'weekDays': invite.travelWeekDays,
+                    'nome': invite.travelName,
+                    'driverUid': invite.driverUid
+                  };
                   db.ref("usuarios")
                     .child(invite.driverUid)
                     .child("viagens")
                     .child(invite.travelKey)
                     .child("passageiros")
                     .child(invite.passagerUid)
-                    .set(passageiro)
-                    .then((value) {
-                      db.ref("usuarios")
-                          .child(usuarioLogado!.uid)
-                          .child("viagens")
-                          .child(invite.travelKey)
-                          .set(passageiro);
-                    deleteInvite(invite);
-                    Navigator.of(context).pop();
-                  });
+                    .set(passageiro);
+
+
+                  db.ref("usuarios")
+                      .child(usuarioLogado!.uid)
+                      .child("viagens")
+                      .child(invite.travelKey)
+                      .set(viagem);
+                  deleteInvite(invite);
+                  Navigator.of(context).pop();
             });
           }, child: Text("Save")),
           ElevatedButton(onPressed: (){

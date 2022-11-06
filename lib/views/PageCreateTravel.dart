@@ -63,19 +63,34 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
         _mensagemErro = "Selecione ao menos um dia";
       });
     } else {
+      String days = '';
+      if (dom) {
+        days += 'Dom,';
+      }
+      if (seg) {
+        days += 'Seg,';
+      }
+      if (ter) {
+        days += 'Ter,';
+      }
+      if (qua) {
+        days += 'Qua,';
+      }
+      if (qui) {
+        days += 'Qui,';
+      }
+      if (sex) {
+        days += 'Sex,';
+      }
+      if (sab) {
+        days += 'Sab,';
+      }
       Map<String, dynamic> viagem = {
+        'driverUid': usuarioLogado!.uid,
         'nome': nome,
         'numPassageiros': numPassageiros,
         'data': dataFormatada,
-        'dias': {
-          'dom': dom,
-          'seg': seg,
-          'ter': ter,
-          'qua': qua,
-          'qui': qui,
-          'sex': sex,
-          'sab': sab
-        },
+        'weekDays': days,
         "ida": {'horario': horarioIda, 'origem': origemIda},
         "volta": {'horario': horarioVolta, 'origem': origemVolta}
       };
