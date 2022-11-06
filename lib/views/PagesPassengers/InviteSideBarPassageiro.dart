@@ -6,14 +6,15 @@ import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class InviteSideBar extends StatefulWidget {
-  const InviteSideBar({Key? key}) : super(key: key);
+class InviteSideBarPassageiro extends StatefulWidget {
+  const InviteSideBarPassageiro({Key? key}) : super(key: key);
 
   @override
-  State<InviteSideBar> createState() => _InviteSideBarState();
+  State<InviteSideBarPassageiro> createState() =>
+      _InviteSideBarPassageiroState();
 }
 
-class _InviteSideBarState extends State<InviteSideBar> {
+class _InviteSideBarPassageiroState extends State<InviteSideBarPassageiro> {
   FirebaseDatabase db = FirebaseDatabase.instance;
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
 
@@ -28,6 +29,7 @@ class _InviteSideBarState extends State<InviteSideBar> {
       child: Column(
         children: [
           Consumer<InviteProvider>(builder: (context, model, child) {
+            print(model);
             return Expanded(
                 child: ListView(
               children: [
@@ -38,17 +40,20 @@ class _InviteSideBarState extends State<InviteSideBar> {
                       padding: const EdgeInsets.only(top: 12.0, left: 15.0),
                       child: ListTile(
                         title: Text(invite.travelName),
-                        subtitle: Text(invite.passagerName),
+                        subtitle: Text(invite.driverName),
                         onTap: () {
                           showDialog(
                               context: context,
                               builder: (ctx) {
                                 return AlertDialog(
                                   title: const Text("Confirmação!"),
-                                  content: Text("O " +
-                                      invite.passagerName +
-                                      " gostaria de entrar na viagem " +
-                                      invite.travelName),
+                                  content: Text("O motorista " +
+                                      invite.driverName +
+                                      " está te convidando a entrar na viagem " +
+                                      invite.travelName +
+                                      " que acontece nos dias " +
+                                      invite.travelWeekDays +
+                                      ". Gostaria de participar?"),
                                   actions: [
                                     TextButton(
                                         onPressed: () {
@@ -80,31 +85,39 @@ class _InviteSideBarState extends State<InviteSideBar> {
   }
 
   void _onButtonPressed(Invite invite) {
-    Map<String, dynamic> passageiro = {
-      'nome': invite.passagerName,
-    };
-
-    Map<String, dynamic> viagem = {
-      'weekDays': invite.travelWeekDays,
-      'nome': invite.travelName,
-      'driverUid': invite.driverUid
-    };
     db
         .ref("usuarios")
         .child(usuarioLogado!.uid)
-        .child("viagens")
-        .child(invite.travelKey)
-        .child("passageiros")
-        .child(invite.passagerUid)
-        .set(passageiro);
+        .child("nome")
+        .get()
+        .then((snapshot) {
+      String nome = (snapshot.value as dynamic);
+      Map<String, dynamic> passageiro = {
+        'nome': nome,
+      };
 
-    db
-        .ref("usuarios")
-        .child(invite.passagerUid)
-        .child("viagens")
-        .child(invite.travelKey)
-        .set(viagem);
-    deleteInvite(invite);
+      Map<String, dynamic> viagem = {
+        'weekDays': invite.travelWeekDays,
+        'nome': invite.travelName,
+        'driverUid': invite.driverUid
+      };
+      db
+          .ref("usuarios")
+          .child(invite.driverUid)
+          .child("viagens")
+          .child(invite.travelKey)
+          .child("passageiros")
+          .child(invite.passagerUid)
+          .set(passageiro);
+
+      db
+          .ref("usuarios")
+          .child(usuarioLogado!.uid)
+          .child("viagens")
+          .child(invite.travelKey)
+          .set(viagem);
+      deleteInvite(invite);
+    });
   }
 
   void deleteInvite(Invite invite) {

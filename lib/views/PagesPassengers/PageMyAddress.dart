@@ -1,4 +1,5 @@
 import 'package:fast_routes/models/Travel.dart';
+import 'package:fast_routes/views/PagesPassengers/FindDriver.dart';
 import 'package:flutter/material.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:provider/provider.dart';
@@ -133,7 +134,13 @@ class _PageMyAddressState extends State<PageMyAddress> {
         child: FittedBox(
           child: FloatingActionButton(
             backgroundColor: Color.fromRGBO(51, 101, 229, 1),
-            onPressed: () {},
+            onPressed: () {
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FindDriver()));
+            },
             child: Icon(
               Icons.add,
               size: 50,

@@ -1,0 +1,154 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:fast_routes/views/PagesPassengers/FindTravel.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../../models/Customer.dart';
+
+class FindDriver extends StatefulWidget {
+  const FindDriver({Key? key}) : super(key: key);
+
+  @override
+  State<FindDriver> createState() => _FindDriverState();
+}
+
+TextEditingController editingController = TextEditingController();
+
+class _FindDriverState extends State<FindDriver> {
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
+  final db = FirebaseDatabase.instance;
+  static List<Customer> driverList = [];
+
+  List<Customer> displayList = List.from(driverList);
+
+  void updateList(String value) {
+    getDrivers();
+    setState(() {
+      displayList = driverList
+          .where((element) =>
+              element.nome.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(69, 69, 85, 1),
+          elevation: 0,
+        ),
+        body: SafeArea(
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: const Color.fromRGBO(69, 69, 85, 1),
+            padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
+            child: Padding(
+              padding: const EdgeInsets.all(7.0),
+              child: Column(
+                children: [
+                  TextField(
+                    onChanged: (value) => updateList(value),
+                    controller: editingController,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: InputDecoration(
+                      //Style Label
+                      labelStyle: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
+
+                      //Style Hint
+                      hintStyle: const TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 0.4),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
+                      labelText: "Procurar motorista",
+                      hintText: "Informe o nome do motorista",
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(25.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                      enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(25.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Expanded(
+                    child: Container(
+                      decoration: new BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                        border: Border.all(color: Colors.white),
+                      ),
+                      child: ListView.builder(
+                        itemCount: displayList.length,
+                        itemBuilder: (context, index) => ListTile(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FindTravel(
+                                        displayList[index].uid,
+                                        displayList[index].nome)));
+                          },
+                          title: Text(
+                            displayList[index].nome,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          subtitle: Text(
+                            displayList[index].email,
+                            style: TextStyle(
+                                color: Color.fromRGBO(255, 255, 255, 0.6)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ));
+  }
+
+  void getDrivers() {
+    List<String> keys = [];
+    db.ref("motoristas").onValue.listen((event) {
+      final allTravels =
+          Map<String, dynamic>.from(event.snapshot.value as dynamic);
+      keys.addAll(allTravels.keys);
+      print(allTravels);
+      driverList = allTravels.values
+          .map((travelAsJSON) =>
+              Customer.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))
+          .toList();
+      for (int i = 0; i < driverList.length; i++) {
+        Customer travel = driverList[i];
+        travel.setKeys(keys[i]);
+      }
+    });
+  }
+}

@@ -6,6 +6,7 @@ class Invite {
   final String travelName;
   final String travelWeekDays;
   final String passagerUid;
+  final String passagerName;
 
   Invite(
       {required this.driverUid,
@@ -13,7 +14,8 @@ class Invite {
       required this.travelKey,
       required this.travelName,
       required this.travelWeekDays,
-      required this.passagerUid});
+      required this.passagerUid,
+      required this.passagerName});
 
   factory Invite.fromRTDB(Map<String, dynamic> data) {
     return Invite(
@@ -23,6 +25,7 @@ class Invite {
       travelName: data["travelName"],
       travelWeekDays: data["travelWeekDays"],
       passagerUid: data["passagerUid"],
+      passagerName: data["passagerName"],
     );
   }
 

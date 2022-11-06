@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
-import 'package:fast_routes/views/InviteSideBar.dart';
+import 'package:fast_routes/views/PagesPassengers/InviteSideBarPassageiro.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -107,7 +107,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       key: _globalKey,
       drawer: ChangeNotifierProvider(
         create: (_) => InviteProvider(),
-        child: InviteSideBar(),
+        child: InviteSideBarPassageiro(),
       ),
       body: SafeArea(
 
