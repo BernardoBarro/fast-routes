@@ -3,12 +3,14 @@ import 'dart:ui';
 import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
-import 'package:fast_routes/views/PageConfig.dart';
+import 'package:fast_routes/views/PagesPassengers/InviteSideBarPassageiro.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
+
+import '../../providers/InviteProvider.dart';
 class PagePerfilPassenger extends StatefulWidget {
   const PagePerfilPassenger({Key? key}) : super(key: key);
 
@@ -17,9 +19,10 @@ class PagePerfilPassenger extends StatefulWidget {
 }
 
 class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
-  @override
+  GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
    FirebaseDatabase db = FirebaseDatabase.instance;
-  final double circleRadius = 150.0;
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
+  final double circleRadius = 120.0;
   final double circleBorderWidth = 50.0;
 
   String changeName = 'Matheus Grigoleto';
@@ -91,8 +94,21 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           );
         });
   }
+
+  @override
+  void initState() {
+    _performingSingleFetch();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
+      drawer: ChangeNotifierProvider(
+        create: (_) => InviteProvider(),
+        child: InviteSideBarPassageiro(),
+      ),
       body: SafeArea(
 
         child: Container(
@@ -110,10 +126,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                   alignment: Alignment.bottomLeft,
                   child: FlatButton.icon(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PageConfig()));
+                      _globalKey.currentState!.openDrawer();
                     },
                     icon: const Icon(
                       Icons.notifications,
@@ -156,7 +169,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       padding: EdgeInsets.only(top: circleRadius / 10.0),
       child: Container(
         width: double.infinity,
-        height: 120,
+        height: 100,
          decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.blue,
@@ -213,7 +226,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   SizedBox(height: 20,),
    
   Container(
-    height: 500,
+    height: 560,
     width: double.infinity,
      child: Card(
        color: Color.fromRGBO(69, 69, 85, 1),
@@ -256,5 +269,13 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
         ),
       ),
     );
+  }
+
+  void _performingSingleFetch() {
+    db.ref("usuarios").child(usuarioLogado!.uid).child("nome").get().then((snapshot) {
+      setState(() {
+        changeName = (snapshot.value as dynamic);
+      });
+    });
   }
 }
