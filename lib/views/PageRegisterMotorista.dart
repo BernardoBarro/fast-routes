@@ -54,6 +54,14 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
       'feminino': feminino
     };
 
+    Map<String, dynamic> dataMotoristaReplica = {
+      'nome': nome,
+      'cpf': cpf,
+      'telefone': telefone,
+      'data_de_nascimento': dataNascimento,
+      'email': email
+    };
+
     auth
         .createUserWithEmailAndPassword(email: email, password: senha)
         .then((firebaseUser) => {
@@ -61,6 +69,10 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                   .ref("usuarios")
                   .child(firebaseUser.user!.uid)
                   .set(dataMotorista),
+              db
+                  .ref("motoristas")
+                  .child(firebaseUser.user!.uid)
+                  .set(dataMotoristaReplica),
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(

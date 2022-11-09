@@ -57,9 +57,9 @@ class _MapsState extends State<Maps> {
                     polylineId: const PolylineId('overview_polyline'),
                     color: Colors.red,
                     width: 5,
-                    points: _info!.polylinePoints
-                        .map((e) => LatLng(e.latitude, e.longitude))
-                        .toList(),
+                    // points: _info!.polylinePoints
+                    //     .map((e) => LatLng(e.latitude, e.longitude))
+                    //     .toList(),
                   ),
               },
               onTap: _getRoute,
@@ -67,7 +67,8 @@ class _MapsState extends State<Maps> {
             Align(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
-                onPressed: () => controller.onMapsCreated(_googleMapController, false),
+                onPressed: () =>
+                    controller.onMapsCreated(_googleMapController, false),
               ),
             ),
           ],
@@ -83,7 +84,8 @@ class _MapsState extends State<Maps> {
             infoWindow: InfoWindow(title: passageiro.nome),
             icon: BitmapDescriptor.defaultMarkerWithHue(
                 BitmapDescriptor.hueGreen),
-            position: LatLng(passageiro.latitude, passageiro.longitude),
+            position:
+                LatLng(passageiro.origemLatitude, passageiro.origemLongitude),
           ),
           _markersSet.add(_marker!)
         });

@@ -1,19 +1,23 @@
 import 'package:fast_routes/views/AddedPassengers.dart';
+import 'package:fast_routes/views/PageHome.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import '../providers/TravelPassagerProvider.dart';
 
 class ListPassengers extends StatefulWidget {
-  const ListPassengers({Key? key}) : super(key: key);
+  final String chave;
+  const ListPassengers(this.chave, {Key? key}) : super(key: key);
 
   @override
   State<ListPassengers> createState() => _ListPassengersState();
 }
 
-late String nameTravel = 'Viagem URI Campus 1/2, Tarde, Seg a Sex';
-
 class _ListPassengersState extends State<ListPassengers> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,40 +31,81 @@ class _ListPassengersState extends State<ListPassengers> {
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
           padding: const EdgeInsets.only(top: 40, right: 16, left: 16),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  'Lista de Passageiros',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 25),
-                ),
-                SizedBox(
-                  height: 15.0,
-                ),
-                Text(
-                  nameTravel,
+          child: Column(
+            children: [
+              Text(
+                'Lista de Passageiros',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 25),
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              Consumer<TravelPassagerProvider>(
+                  builder: (context, model, child) {
+                return Text(
+                  model.singleTravel.nome + " - " + model.singleTravel.weekDays,
                   style: TextStyle(color: Colors.white, fontSize: 16),
-                ),
-                SizedBox(
-                  height: 50.0,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 80.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                );
+              }),
+              SizedBox(
+                height: 50.0,
+              ),
+              Consumer<TravelPassagerProvider>(
+                  builder: (context, model, child) {
+                bool forAndroid = true;
+                return Expanded(
+                  child: ListView(
                     children: [
-                      Text(
-                        'Matheus Grigoleto - 125.215.521-35',
-                        style: TextStyle(color: Colors.white, fontSize: 14),
+                      ...model.passageiros.map(
+                        (passageiro) => Row(
+                          children: [
+                            Container(
+                              width: 250,
+                              height: 50,
+                              child: Card(
+                                color: Color.fromRGBO(69, 69, 85, 0.8),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 12.0, left: 15.0),
+                                  child: Text(
+                                    passageiro.nome,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: Container(
+                                height: 35,
+                                width: 80,
+                                child: LiteRollingSwitch(
+                                  width: 80,
+                                  iconOn: Icons.check,
+                                  iconOff: Icons.remove,
+                                  colorOn: Colors.green,
+                                  colorOff: Colors.red,
+                                  textOff: "",
+                                  textOn: "",
+                                  animationDuration: Duration(milliseconds: 0),
+                                  onChanged: (bool state) {},
+                                  onSwipe: () {},
+                                  onDoubleTap: () {},
+                                  onTap: () {},
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
-              ],
-            ),
+                );
+              })
+            ],
           ),
         ),
       ),
@@ -85,7 +130,10 @@ class _ListPassengersState extends State<ListPassengers> {
                 backgroundColor: Color.fromRGBO(51, 101, 229, 1),
                 label: 'Inciar rota',
                 onTap: () {
-                  print('rota');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PageHome(chave: widget.chave)));
                 },
               ),
               SpeedDialChild(
@@ -100,7 +148,7 @@ class _ListPassengersState extends State<ListPassengers> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AddedPassengers()));
+                          builder: (context) => AddedPassengers(widget.chave)));
                 },
               ),
               SpeedDialChild(

@@ -3,38 +3,37 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import '../models/Travel.dart';
 
-class TravelProvider extends ChangeNotifier {
-  List<Travel> _travel = [];
+import '../models/Invite.dart';
+
+class InviteProvider extends ChangeNotifier {
+  List<Invite> _invites = [];
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final _db = FirebaseDatabase.instance.ref("usuarios");
 
-  static const TRAVEL_PATH = '/viagens';
+  static const INVITE_PATH = '/convites';
 
-  late StreamSubscription<DatabaseEvent> _travelStream;
+  late StreamSubscription<DatabaseEvent> _inviteStream;
 
-  List<Travel> get travels => _travel;
+  List<Invite> get invites => _invites;
 
-  TravelProvider() {
-    _listenToTravels();
+  InviteProvider() {
+    _listenToInvites();
   }
 
-  void _listenToTravels() {
+  void _listenToInvites() {
     List<String> keys = [];
     String uid = usuarioLogado!.uid;
-    _travelStream = _db.child(uid + TRAVEL_PATH).onValue.listen((event) {
+    _inviteStream = _db.child(uid + INVITE_PATH).onValue.listen((event) {
       final allTravels =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
       keys.addAll(allTravels.keys);
-      print(allTravels);
-      _travel = allTravels.values
+      _invites = allTravels.values
           .map((travelAsJSON) =>
-              Travel.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))
+              Invite.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))
           .toList();
-      for(int i = 0;i<_travel.length;i++){
-        Travel travel = _travel[i];
+      for(int i = 0;i<_invites.length;i++){
+        Invite travel = _invites[i];
         travel.setKeys(keys[i]);
       }
       notifyListeners();
@@ -43,7 +42,7 @@ class TravelProvider extends ChangeNotifier {
 
   @override
   void dispose() {
-    _travelStream.cancel();
+    _inviteStream.cancel();
     super.dispose();
   }
 }

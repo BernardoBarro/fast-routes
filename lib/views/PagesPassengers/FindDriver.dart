@@ -1,35 +1,34 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:fast_routes/views/PagesPassengers/FindTravel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import '../models/Customer.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../models/Travel.dart';
+import '../../models/Customer.dart';
 
-class AddedPassengers extends StatefulWidget {
-  final String chave;
-  const AddedPassengers(this.chave, {Key? key}) : super(key: key);
+class FindDriver extends StatefulWidget {
+  const FindDriver({Key? key}) : super(key: key);
 
   @override
-  State<AddedPassengers> createState() => _AddedPassengersState();
+  State<FindDriver> createState() => _FindDriverState();
 }
 
 TextEditingController editingController = TextEditingController();
 
-class _AddedPassengersState extends State<AddedPassengers> {
+class _FindDriverState extends State<FindDriver> {
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final db = FirebaseDatabase.instance;
-  static List<Customer> passageirosList = [];
+  static List<Customer> driverList = [];
 
-  List<Customer> displayList = List.from(passageirosList);
+  List<Customer> displayList = List.from(driverList);
 
   void updateList(String value) {
-    getPassagers();
+    getDrivers();
     setState(() {
-      displayList = passageirosList
+      displayList = driverList
           .where((element) =>
               element.nome.toLowerCase().contains(value.toLowerCase()))
           .toList();
@@ -71,8 +70,8 @@ class _AddedPassengersState extends State<AddedPassengers> {
                         fontWeight: FontWeight.w400,
                         fontSize: 15,
                       ),
-                      labelText: "Procurar passageiros",
-                      hintText: "Informe o nome do passageiro",
+                      labelText: "Procurar motorista",
+                      hintText: "Informe o nome do motorista",
                       prefixIcon: Icon(
                         Icons.search,
                         color: Colors.white,
@@ -108,57 +107,12 @@ class _AddedPassengersState extends State<AddedPassengers> {
                         itemCount: displayList.length,
                         itemBuilder: (context, index) => ListTile(
                           onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (ctx) {
-                                  return AlertDialog(
-                                    title: const Text("Confirmação!"),
-                                    content: Text("Realmente deseja convidar " +
-                                        displayList[index].nome +
-                                        " para a sua viagem?"),
-                                    actions: [
-                                      TextButton(
-                                          onPressed: () {
-                                            Navigator.of(ctx).pop();
-                                          },
-                                          child: Text("Não")),
-                                      TextButton(
-                                          onPressed: () {
-                                            db.ref("usuarios")
-                                              .child(usuarioLogado!.uid)
-                                              .child("nome")
-                                              .get()
-                                              .then((snapshot) {
-                                                String nome = (snapshot.value as dynamic);
-                                                db.ref("usuarios")
-                                                    .child(usuarioLogado!.uid)
-                                                    .child("viagens")
-                                                    .child(widget.chave)
-                                                    .get()
-                                                    .then((snapshot) {
-                                                      Travel travel = Travel.fromRTDB(Map<String, dynamic>.from((snapshot.value as dynamic)));
-                                                      Map<String, dynamic> invite = {
-                                                        'travelName': travel.nome,
-                                                        'travelWeekDays': travel.weekDays,
-                                                        'travelKey': snapshot.key,
-                                                        'driverName': nome,
-                                                        'driverUid': usuarioLogado!.uid,
-                                                        'passagerUid': displayList[index]!.uid
-                                                      };
-                                                      print(invite);
-                                                    db.ref("usuarios")
-                                                        .child(displayList[index]!.uid)
-                                                        .child("convites")
-                                                        .push()
-                                                        .set(invite);
-                                                });
-                                            });
-                                            Navigator.of(ctx)
-                                                .pop();
-                                          }, child: Text("Sim")),
-                                    ],
-                                  );
-                                });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FindTravel(
+                                        displayList[index].uid,
+                                        displayList[index].nome)));
                           },
                           title: Text(
                             displayList[index].nome,
@@ -180,18 +134,19 @@ class _AddedPassengersState extends State<AddedPassengers> {
         ));
   }
 
-  void getPassagers() {
+  void getDrivers() {
     List<String> keys = [];
-    db.ref("passageiros").onValue.listen((event) {
+    db.ref("motoristas").onValue.listen((event) {
       final allTravels =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
       keys.addAll(allTravels.keys);
-      passageirosList = allTravels.values
-          .map((travelAsJSON) => Customer.fromRTDB(
-              Map<String, dynamic>.from(travelAsJSON)))
+      print(allTravels);
+      driverList = allTravels.values
+          .map((travelAsJSON) =>
+              Customer.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))
           .toList();
-      for(int i = 0;i<passageirosList.length;i++){
-        Customer travel = passageirosList[i];
+      for (int i = 0; i < driverList.length; i++) {
+        Customer travel = driverList[i];
         travel.setKeys(keys[i]);
       }
     });

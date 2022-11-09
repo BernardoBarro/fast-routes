@@ -1,16 +1,24 @@
 class Passageiro {
   final String nome;
-  final double latitude;
-  final double longitude;
+  final double origemLatitude;
+  final double origemLongitude;
+  final double destinoLatitude;
+  final double destinoLongitude;
 
   Passageiro(
-      {required this.nome, required this.latitude, required this.longitude});
+      {required this.nome,
+      required this.origemLatitude,
+      required this.origemLongitude,
+      required this.destinoLatitude,
+      required this.destinoLongitude});
 
   factory Passageiro.fromRTDB(Map<String, dynamic> data) {
-    print(data);
     return Passageiro(
-        nome: data['nome'],
-        latitude: double.parse(data['latitude']),
-        longitude: double.parse(data['longitude']));
+      nome: data['nome'],
+      origemLatitude: double.parse(data['origemLatitude']),
+      origemLongitude: double.parse(data['origemLongitude']),
+      destinoLatitude: double.parse(data['destinoLatitude']),
+      destinoLongitude: double.parse(data['destinoLongitude']),
+    );
   }
 }

@@ -5,10 +5,9 @@ import 'package:fast_routes/.env.dart';
 
 import '../models/Directions.dart';
 
-
 class DirectionsRepository {
   static const String _baseUrl =
-      'https://maps.googleapis.com/maps/api/directions/json?';
+      'https://maps.googleapis.com/maps/api/distancematrix/json?';
 
   final Dio _dio;
 
@@ -17,23 +16,19 @@ class DirectionsRepository {
   Future<Directions?> getDirections({
     // TODO alterar para retornar lista de LatLng
     required List<Passageiro> address,
+    double? latitude,
+    double? longitude,
   }) async {
-    List<Map<String, dynamic>> responseList = [];
-    for(int i=0;i<address.length-1;i++){
-      final response = await _dio.get(
-        _baseUrl,
-        queryParameters: {
-          'origin': '${address[i].latitude},${address[i].longitude}',
-          'destination': '${address[i+1].latitude},${address[i+1].longitude}',
-          'key': googleAPIKey,
-        },
-      );
-      if(response.statusCode == 200) {
-        responseList.add(response.data);
-      }
-      // TODO tratamento de erro
-    }
+    final response = await _dio.get(
+      _baseUrl,
+      queryParameters: {
+        'origins': '${latitude},${longitude}',
+        'destinations':
+            '${address.first.origemLatitude},${address.first.origemLongitude}|${address.first.destinoLatitude},${address.first.destinoLongitude}',
+        'key': googleAPIKey,
+      },
+    );
 
-    return Directions.fromMap(responseList);
+    return Directions.fromMap(response.data);
   }
 }

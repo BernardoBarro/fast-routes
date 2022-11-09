@@ -1,6 +1,7 @@
 import 'package:fast_routes/providers/AddressProvider.dart';
 import 'package:fast_routes/providers/TravelProvider.dart';
-import 'package:fast_routes/providers/UserProvider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:fast_routes/views/PageMaps.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/material/bottom_navigation_bar.dart';
@@ -8,30 +9,36 @@ import 'package:provider/provider.dart';
 
 import 'PageViagens.dart';
 import 'PagePerfil.dart';
+import 'PagesPassengers/PageHomePassenger.dart';
 
 class PageHome extends StatefulWidget {
-  const PageHome({Key? key}) : super(key: key);
+  final String? chave;
+
+  const PageHome({Key? key, this.chave}) : super(key: key);
 
   @override
   State<PageHome> createState() => _PageHomeState();
 }
 
 class _PageHomeState extends State<PageHome> {
+  FirebaseDatabase db = FirebaseDatabase.instance;
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 1;
-  final List<Widget> _telas = [
-    ChangeNotifierProvider(
-      create: (_) => UserProvider(),
-      child: PagePerfil(),
-    ),
-    ChangeNotifierProvider(
-      create: (_) => AddressProvider(),
-      child: PageMaps(),
-    ),
-    ChangeNotifierProvider(
-      create: (_) => TravelProvider(),
-      child: PageViagens(),
-    ),
-  ];
+
+  // final List<Widget> _telas = [
+  //   ChangeNotifierProvider(
+  //     create: (_) => UserProvider(),
+  //     child: PagePerfil(),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => AddressProvider(),
+  //     child: PageMaps(chave: widget.chave),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => TravelProvider(),
+  //     child: PageViagens(),
+  //   ),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -40,9 +47,28 @@ class _PageHomeState extends State<PageHome> {
   }
 
   @override
+  void initState() {
+    _performingSingleFetch();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _telas[_selectedIndex],
+      body: [
+        ChangeNotifierProvider(
+          create: (_) => TravelProvider(),
+          child: PagePerfil(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddressProvider(chave: widget.chave),
+          child: PageMaps(chave: widget.chave),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TravelProvider(),
+          child: PageViagens(),
+        ),
+      ][_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         backgroundColor: const Color.fromRGBO(69, 69, 85, 1),
@@ -71,5 +97,20 @@ class _PageHomeState extends State<PageHome> {
         ],
       ),
     );
+  }
+
+  void _performingSingleFetch() {
+    db
+        .ref("usuarios")
+        .child(usuarioLogado!.uid)
+        .child("isMotorista")
+        .get()
+        .then((snapshot) {
+      bool isMotorista = (snapshot.value as dynamic);
+      if (!isMotorista) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => PageHomePassenger()));
+      }
+    });
   }
 }
