@@ -81,15 +81,15 @@ class _PageMapsState extends State<PageMaps> {
   }
 
   getCurrentLocation() async {
-      Location location = Location();
+    Location location = Location();
 
-      location.getLocation().then((location) {
-        setState(() {
-          currentLocation = LatLng(location.latitude!, location.longitude!);
-        });
+    location.getLocation().then((location) {
+      setState(() {
+        currentLocation = LatLng(location.latitude!, location.longitude!);
       });
+    });
 
-      if (widget.chave != null) {
+    if (widget.chave != null) {
       positionStream = location.onLocationChanged.listen((newLoc) {
         currentLocation = LatLng(newLoc.latitude!, newLoc.longitude!);
 
@@ -97,11 +97,11 @@ class _PageMapsState extends State<PageMaps> {
           'latitude': newLoc.latitude,
           'longitude': newLoc.longitude,
         };
-        _getRoute();
+        _getRoute(newLoc.latitude, newLoc.longitude);
 
         db
             .ref("usuarios")
-            .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
+            .child(usuarioLogado!.uid)
             .child("viagens")
             .child(widget.chave!)
             .child("location")
@@ -154,17 +154,17 @@ class _PageMapsState extends State<PageMaps> {
                   ),
                   myLocationEnabled: (!isMotorista || widget.chave == null),
                   markers: _markersSet,
-                  polylines: {
-                    if (_info != null)
-                      Polyline(
-                        polylineId: const PolylineId('overview_polyline'),
-                        color: Colors.red,
-                        width: 5,
-                        points: _info!.polylinePoints
-                            .map((e) => LatLng(e.latitude, e.longitude))
-                            .toList(),
-                      ),
-                  },
+                  // polylines: {
+                  //   if (_info != null)
+                  //     Polyline(
+                  //       polylineId: const PolylineId('overview_polyline'),
+                  //       color: Colors.red,
+                  //       width: 5,
+                  //       points: _info!.polylinePoints
+                  //           .map((e) => LatLng(e.latitude, e.longitude))
+                  //           .toList(),
+                  //     ),
+                  // },
                   onMapCreated: (gmc) => {
                     _googleMapController = gmc,
                     controller.onMapsCreated(_googleMapController, isMotorista),
@@ -195,11 +195,21 @@ class _PageMapsState extends State<PageMaps> {
     Set<Marker> provisorio = {};
     provider.address.forEach((passageiro) => {
           _marker = Marker(
-            markerId: MarkerId(passageiro.nome),
+            markerId: MarkerId(passageiro.nome + " origem"),
             infoWindow: InfoWindow(title: passageiro.nome),
             icon: BitmapDescriptor.defaultMarkerWithHue(
                 BitmapDescriptor.hueGreen),
-            position: LatLng(passageiro.latitude, passageiro.longitude),
+            position:
+                LatLng(passageiro.origemLatitude, passageiro.origemLongitude),
+          ),
+          provisorio.add(_marker!),
+          _marker = Marker(
+            markerId: MarkerId(passageiro.nome + " destino"),
+            infoWindow: InfoWindow(title: passageiro.nome),
+            icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueGreen),
+            position:
+                LatLng(passageiro.destinoLatitude, passageiro.destinoLongitude),
           ),
           provisorio.add(_marker!)
         });
@@ -208,10 +218,22 @@ class _PageMapsState extends State<PageMaps> {
     });
   }
 
-  void _getRoute() async {
+  void _getRoute(double? latitude, double? longitude) async {
     final directions =
-        await DirectionsRepository().getDirections(address: provider.address);
+        await DirectionsRepository().getDirections(address: provider.address, latitude: latitude, longitude: longitude);
     // TODO alterar para enviar lista de LatLng
     setState(() => _info = directions);
+    showModalBottomSheet(context: context, builder: (context) {
+      return ListView(
+        children: [
+          ListTile(
+            title: Text(_info!.distance[0]),
+          ),
+          ListTile(
+            title: Text(_info!.distance[1]),
+          ),
+        ],
+      );
+    });
   }
 }
