@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:fast_routes/models/Customer.dart';
+import 'package:fast_routes/providers/PassengersAddressProvider.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PagesPassengers/InviteSideBarPassageiro.dart';
@@ -242,20 +243,36 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           child: Column(           
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Padding(
-                 padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                 child: Text(
-                  'Endereços',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-              ),       
-               ),    
-               Padding(
-                 padding: const EdgeInsets.only(left: 15.0, top: 25),
-                 child: Text(
-                    'Endereço 1',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-               ),
+              Consumer<PassengersAddressProvider>(
+                          builder: (context, model, child) {
+                        return Expanded(
+                            child: ListView(children: [
+                          ...model.address.map(
+                            (address) => Card(
+                                color: Color.fromRGBO(69, 69, 85, 0.8),
+                                child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 12.0, left: 15.0),
+                                    child: ListTile(
+                                      title: Text(address.endereco),
+                                    ))),
+                          )
+                        ]));
+                      }),
+              //  Padding(
+              //    padding: const EdgeInsets.only(left: 15.0, top: 15.0),
+              //    child: Text(
+              //     'Endereços',
+              //     style: TextStyle(fontSize: 18, color: Colors.white),
+              // ),       
+              //  ),    
+              //  Padding(
+              //    padding: const EdgeInsets.only(left: 15.0, top: 25),
+              //    child: Text(
+              //       'Endereço 1',
+              //       style: TextStyle(fontSize: 18, color: Colors.white),
+              // ),
+              //  ),
             Row(mainAxisAlignment: MainAxisAlignment.end,     
               children: [InkWell(child: Padding(
                 padding: const EdgeInsets.only(right: 15.0),
