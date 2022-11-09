@@ -4,13 +4,15 @@ import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PagesPassengers/InviteSideBarPassageiro.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:geocoding/geocoding.dart';
 
 import '../../providers/InviteProvider.dart';
+
 class PagePerfilPassenger extends StatefulWidget {
   const PagePerfilPassenger({Key? key}) : super(key: key);
 
@@ -257,7 +259,13 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
             Row(mainAxisAlignment: MainAxisAlignment.end,     
               children: [InkWell(child: Padding(
                 padding: const EdgeInsets.only(right: 15.0),
-                child: Icon(Icons.add, color: Colors.white,),
+                child: FloatingActionButton(
+                  onPressed: _onButtonPressed,
+                  child: Icon(
+                    Icons.add, color: Colors.white,
+                    size: 50,
+                  ),
+                ), 
               ))],)
           ],
           ),      
@@ -276,6 +284,46 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       setState(() {
         changeName = (snapshot.value as dynamic);
       });
+    });
+  }
+
+  TextEditingController _controllerAddress = TextEditingController();
+
+  void _onButtonPressed() {
+    showModalBottomSheet(context: context, builder: (context) {
+      return Column(
+        children: [
+          TextFormField(
+            controller: _controllerAddress,
+          ),
+          ElevatedButton(onPressed: () async {
+            List<Location> address = await locationFromAddress(_controllerAddress.text);
+            db.ref("usuarios")
+                .child(usuarioLogado!.uid)
+                .child("nome")
+                .get()
+                .then((snapshot) {
+                  String nome = (snapshot.value as dynamic);
+                  Map<String, dynamic> endereco = {
+                    'endereco': {
+                      'latitude': address[0].latitude,
+                      'longitude': address[0].longitude,
+                    },
+                    'nome': nome,
+                  };
+                  db.ref("usuarios")
+                    .child(usuarioLogado!.uid)
+                    .child("endereco")
+                    .push()
+                    .set(endereco);
+                    Navigator.of(context).pop();
+                  });
+            
+          }, child: Text("Save")),
+          ElevatedButton(onPressed: (){
+            Navigator.of(context).pop();}, child: Text("Sair"))
+        ],
+      );
     });
   }
 }
