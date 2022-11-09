@@ -259,6 +259,11 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                           )
                         ]));
                       }),
+              // -- parte para remover
+              //
+              // -- precisa ter um botao com onPressed na funcao _onButtonPressed
+              //
+              //
               //  Padding(
               //    padding: const EdgeInsets.only(left: 15.0, top: 15.0),
               //    child: Text(
@@ -273,17 +278,18 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
               //       style: TextStyle(fontSize: 18, color: Colors.white),
               // ),
               //  ),
-            Row(mainAxisAlignment: MainAxisAlignment.end,     
-              children: [InkWell(child: Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: FloatingActionButton(
-                  onPressed: _onButtonPressed,
-                  child: Icon(
-                    Icons.add, color: Colors.white,
-                    size: 50,
-                  ),
-                ), 
-              ))],)
+            // Row(mainAxisAlignment: MainAxisAlignment.end,     
+            //   children: [InkWell(child: Padding(
+            //     padding: const EdgeInsets.only(right: 15.0),
+            //     child: FloatingActionButton(
+            //       onPressed: _onButtonPressed,
+            //       child: Icon(
+            //         Icons.add, color: Colors.white,
+            //         size: 50,
+            //       ),
+            //     ), 
+            //   ))],)
+            // -- parte para remover
           ],
           ),      
     ),
