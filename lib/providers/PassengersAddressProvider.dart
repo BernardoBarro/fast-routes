@@ -5,19 +5,19 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AddressProvider extends ChangeNotifier {
+class PassengersAddressProvider extends ChangeNotifier {
   List<Passageiro> _address = [];
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final _db = FirebaseDatabase.instance.ref("usuarios");
 
   // TODO alterar o id da viagem conforme a viagem do motorista
-  static const PASS_PATH = '/viagens/-NER-JZ617H9fgrKwDRR/passageiros';
+  static const PASS_PATH = '/enderecos/-NGNKRDIur7FscYtlmto';
 
   late StreamSubscription<DatabaseEvent> _addressStream;
 
   List<Passageiro> get address => _address;
 
-  AddressProvider() {
+  PassengersAddressProvider() {
     _listenToAddress();
   }
 
