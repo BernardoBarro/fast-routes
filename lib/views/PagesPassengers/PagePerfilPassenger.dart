@@ -297,19 +297,9 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
             controller: _controllerAddress,
           ),
           ElevatedButton(onPressed: () async {
-            List<Location> address = await locationFromAddress(_controllerAddress.text);
-            db.ref("usuarios")
-                .child(usuarioLogado!.uid)
-                .child("nome")
-                .get()
-                .then((snapshot) {
-                  String nome = (snapshot.value as dynamic);
+            String descEndereco = await _controllerAddress.text;
                   Map<String, dynamic> endereco = {
-                    'endereco': {
-                      'latitude': address[0].latitude,
-                      'longitude': address[0].longitude,
-                    },
-                    'nome': nome,
+                    'endereco': descEndereco,
                   };
                   db.ref("usuarios")
                     .child(usuarioLogado!.uid)
@@ -317,10 +307,9 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                     .push()
                     .set(endereco);
                     Navigator.of(context).pop();
-                  });
-            
+
           }, child: Text("Save")),
-          ElevatedButton(onPressed: (){
+          ElevatedButton(onPressed: () {
             Navigator.of(context).pop();}, child: Text("Sair"))
         ],
       );
