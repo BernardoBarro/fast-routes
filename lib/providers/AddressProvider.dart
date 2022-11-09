@@ -17,13 +17,21 @@ class AddressProvider extends ChangeNotifier {
 
   List<Passageiro> get address => _address;
 
-  AddressProvider() {
-    _listenToAddress();
+  AddressProvider({String? chave}) {
+    if (chave != null) {
+      _listenToAddress(chave);
+    }
   }
 
-  void _listenToAddress() {
+  void _listenToAddress(String? chave) {
     String uid = usuarioLogado!.uid;
-    _addressStream = _db.child(uid + PASS_PATH).onValue.listen((event) {
+    _addressStream = _db
+        .child(uid)
+        .child("viagens")
+        .child(chave!)
+        .child("passageiros")
+        .onValue
+        .listen((event) {
       final allAddress =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
       _address = allAddress.values
