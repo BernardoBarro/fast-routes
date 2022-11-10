@@ -50,10 +50,15 @@ class _PageResetPasswordState extends State<PageResetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(69, 69, 85, 1),
-          elevation: 0,
-        ),
+      appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Alterar Senha",),
+      ),),
         body: SafeArea(
           child: Container(
             padding: EdgeInsets.only(top: 0, left: 32, right: 32),
@@ -162,7 +167,7 @@ class _PageResetPasswordState extends State<PageResetPassword> {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromRGBO(51, 101, 229, 1),
+                          primary: Colors.blue,
                           onPrimary: Colors.white,
                           elevation: 0,
                         ),

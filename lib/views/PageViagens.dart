@@ -28,6 +28,16 @@ class _PageViagensState extends State<PageViagens> {
     User? usuarioLogado = FirebaseAuth.instance.currentUser;
     final db = FirebaseDatabase.instance.ref("usuarios");
     return Scaffold(
+      appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      automaticallyImplyLeading: false,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Minhas Viagens",),
+      ),),
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -41,7 +51,7 @@ class _PageViagensState extends State<PageViagens> {
                     child: ListView(
                   children: [
                     ...model.travels.map((travel) => Card(
-                          color: Color.fromRGBO(51, 101, 229, 1),
+                          color: Color.fromARGB(227, 108, 108, 126),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
@@ -67,7 +77,7 @@ class _PageViagensState extends State<PageViagens> {
                                   trailing: Builder(
                                     builder: (BuildContext context) {
                                       return IconButton(
-                                        icon: const Icon(Icons.delete),
+                                        icon: const Icon(Icons.delete, color: Colors.white,),
                                         onPressed: () {
                                           showAlertDialog(context, travel, db,
                                               usuarioLogado);
@@ -79,6 +89,8 @@ class _PageViagensState extends State<PageViagens> {
                                   title: Text(
                                     travel.nome,
                                     style: TextStyle(fontSize: 18),
+                                    
+                                    
                                   ),
                                   subtitle: Text(
                                     travel.weekDays,
@@ -105,7 +117,7 @@ class _PageViagensState extends State<PageViagens> {
         width: 60.0,
         child: FittedBox(
           child: FloatingActionButton(
-            backgroundColor: Color.fromRGBO(51, 101, 229, 1),
+            backgroundColor: Colors.blue,
             onPressed: _pageCreateTravel,
             child: Icon(
               Icons.add,
@@ -123,22 +135,23 @@ class _PageViagensState extends State<PageViagens> {
         context: context,
         builder: (ctx) {
           return AlertDialog(
-            title: const Text("Confirmação!!"),
+            backgroundColor: Color.fromARGB(223, 69, 69, 85),
+            title: const Text("Confirmação!!", style: TextStyle(color: Colors.white)),
             content: Text("Você tem certeza que deseja excluir a viagem: " +
                 travel.nome +
-                "?"),
+                "?",style: TextStyle(color: Colors.white)),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
-                  child: Text("Não")),
+                  child: Text("Não",style: TextStyle(color: Colors.white))),
               TextButton(
                   onPressed: () {
                     removeTravel(db, usuarioLogado, travel);
                     Navigator.of(ctx).pop();
                   },
-                  child: Text("Sim")),
+                  child: Text("Sim",style: TextStyle(color: Colors.white))),
             ],
           );
         });
