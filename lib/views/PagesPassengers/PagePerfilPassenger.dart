@@ -180,7 +180,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
         height: 100,
          decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Color.fromRGBO(33, 150, 243, 1),
+          color: Colors.blue,
           border: Border(
               left: BorderSide(
                   color: Colors.green,
@@ -484,7 +484,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                           child: InkWell(
                             child: Padding(
                             padding: const EdgeInsets.only(right: 15.0, bottom: 10.0),
-                            child: Icon(Icons.add, color: Colors.white,),
+                            child: Icon(Icons.add, color: Colors.blue),
                           ), 
                           onTap: (){},               
                           ),

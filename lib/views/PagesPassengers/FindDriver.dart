@@ -38,7 +38,7 @@ class _FindDriverState extends State<FindDriver> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+      appBar: AppBar(
       centerTitle: true,
       toolbarHeight: 65,
       backgroundColor: Color.fromARGB(223, 69, 69, 85),

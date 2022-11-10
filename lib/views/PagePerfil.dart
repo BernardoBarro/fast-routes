@@ -182,7 +182,7 @@ class _PagePerfilState extends State<PagePerfil> {
                         height: 100,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Color.fromARGB(226, 95, 95, 110),
+                          color: Colors.blue,
                           border: Border(
                             left: BorderSide(
                               color: Colors.green,
@@ -321,20 +321,18 @@ class _PagePerfilState extends State<PagePerfil> {
                             (travel) => Padding(
                               padding: const EdgeInsets.only(left: 15.0,right: 15),
                               child: Card(                            
-                                   color: Color.fromARGB(228, 78, 78, 94),
+                                   color: Color.fromARGB(227, 108, 108, 126),
+                                   elevation: 3,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
-                    side: BorderSide(
-                      color: Color.fromRGBO(17, 17, 17, 0.2),
-                      width: 2.0,
-                    ),
+                    
                   ),
                                   child: Padding(
                                       padding: const EdgeInsets.only(
                                            left: 15.0),
                                       child: ListTile(
                                         title: Text(travel.nome,style: TextStyle(color: Colors.white),),
-                                        subtitle: Text(travel.weekDays,style: TextStyle(color: Colors.white)),
+                                        subtitle: Text(travel.weekDays,style: TextStyle(color:Color.fromARGB(174, 255, 255, 255))),
                                       ))),
                             ),
                                     
@@ -349,7 +347,7 @@ class _PagePerfilState extends State<PagePerfil> {
                           child: InkWell(
                             child: Padding(
                             padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
-                            child: Icon(Icons.add, color: Colors.white,),
+                            child: Icon(Icons.add, color: Colors.blue,),
                           ),       
                           onTap: (){},         
                           ),

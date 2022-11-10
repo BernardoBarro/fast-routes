@@ -51,7 +51,7 @@ class _PageViagensState extends State<PageViagens> {
                     child: ListView(
                   children: [
                     ...model.travels.map((travel) => Card(
-                          color: Colors.blue,
+                          color: Color.fromARGB(227, 108, 108, 126),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
@@ -89,6 +89,8 @@ class _PageViagensState extends State<PageViagens> {
                                   title: Text(
                                     travel.nome,
                                     style: TextStyle(fontSize: 18),
+                                    
+                                    
                                   ),
                                   subtitle: Text(
                                     travel.weekDays,

@@ -592,7 +592,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                     height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(51, 101, 229, 1),
+                        primary: Colors.blue,
                         onPrimary: Colors.white,
                         elevation: 0,
                       ),

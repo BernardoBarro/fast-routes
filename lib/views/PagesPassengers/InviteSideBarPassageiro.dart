@@ -46,12 +46,17 @@ class _InviteSideBarPassageiroState extends State<InviteSideBarPassageiro> {
                 
                 ...model.invites.map(
                   (invite) => Card(
-                    color: Color.fromRGBO(69, 69, 85, 0.8),
+                    color: Color.fromARGB(227, 108, 108, 126),
+                                   elevation: 3,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    
+                  ),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 12.0, left: 15.0),
+                      padding: const EdgeInsets.only(left: 15.0),
                       child: ListTile(
-                        title: Text(invite.travelName),
-                        subtitle: Text(invite.driverName),
+                        title: Text(invite.travelName,style: TextStyle(color: Colors.white),),
+                        subtitle: Text(invite.driverName,style: TextStyle(color: Color.fromARGB(174, 255, 255, 255))),
                         onTap: () {
                           showDialog(
                               context: context,

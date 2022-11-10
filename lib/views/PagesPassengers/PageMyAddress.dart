@@ -54,11 +54,10 @@ class _PageMyAddressState extends State<PageMyAddress> {
                               width: 250,
                               height: 80,
                               child: Card(
-                                color: Color.fromRGBO(51, 101, 229, 1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                ),
+                                 color: Color.fromARGB(227, 108, 108, 126),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
                                 child: InkWell(
                                   splashColor: Colors.blue.withAlpha(30),
                                   onTap: () {},
@@ -70,7 +69,7 @@ class _PageMyAddressState extends State<PageMyAddress> {
                                         trailing: Builder(
                                           builder: (BuildContext context) {
                                             return IconButton(
-                                              icon: const Icon(Icons.delete),
+                                              icon: const Icon(Icons.delete, color: Colors.white,),
                                               onPressed: () {
                                                 showAlertDialog(
                                                     context, travel);
@@ -156,22 +155,23 @@ class _PageMyAddressState extends State<PageMyAddress> {
         context: context,
         builder: (ctx) {
           return AlertDialog(
-            title: const Text("Confirmação!"),
+            backgroundColor: Color.fromARGB(223, 69, 69, 85),
+            title: const Text("Confirmação!!", style: TextStyle(color: Colors.white)),
             content: Text("Você tem certeza que deseja sair da viagem: " +
                 travel.nome +
-                "?"),
+                "?", style: TextStyle(color: Colors.white),),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
-                  child: Text("Não")),
+                  child: Text("Não", style: TextStyle(color: Colors.white))),
               TextButton(
                   onPressed: () {
                     removeTravel(travel);
                     Navigator.of(ctx).pop();
                   },
-                  child: Text("Sim")),
+                  child: Text("Sim", style: TextStyle(color: Colors.white))),
             ],
           );
         });

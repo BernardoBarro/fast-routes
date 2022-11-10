@@ -109,6 +109,14 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
     return Scaffold(
       appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Cadastro Passageiro",),
+      ),
         leading: InkWell(
           onTap: () {
             Navigator.pushAndRemoveUntil(
@@ -124,15 +132,13 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
             ),
           ),
         ),
-        backgroundColor: Color.fromRGBO(69, 69, 85, 1),
-        elevation: 0,
       ),
       body: SafeArea(
         child: Container(
           height: double.infinity,
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
-          padding: const EdgeInsets.only(top: 0, right: 16, left: 16),
+          padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
           child: Form(
               key: formKey,
               child: SingleChildScrollView(
@@ -724,7 +730,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                         height: 50,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(51, 101, 229, 1),
+                            primary: Colors.blue,
                             onPrimary: Colors.white,
                             elevation: 0,
                           ),
