@@ -133,7 +133,7 @@ class _PageMyAddressState extends State<PageMyAddress> {
         width: 60.0,
         child: FittedBox(
           child: FloatingActionButton(
-            backgroundColor: Color.fromRGBO(51, 101, 229, 1),
+            backgroundColor: Colors.blue,
             onPressed: () {
 
               Navigator.push(

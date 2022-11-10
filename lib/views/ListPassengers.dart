@@ -22,9 +22,14 @@ class _ListPassengersState extends State<ListPassengers> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(69, 69, 85, 1),
-        elevation: 0,
-      ),
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Lista de Passageiros",),
+      ),),
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -116,7 +121,7 @@ class _ListPassengersState extends State<ListPassengers> {
           padding: const EdgeInsets.all(0),
           child: SpeedDial(
             animatedIcon: AnimatedIcons.menu_close,
-            backgroundColor: Color.fromRGBO(51, 101, 229, 1),
+            backgroundColor: Colors.blue,
             overlayOpacity: 0,
             spaceBetweenChildren: 15,
             childPadding: const EdgeInsets.all(0),
@@ -127,7 +132,7 @@ class _ListPassengersState extends State<ListPassengers> {
                   color: Colors.white,
                   size: 30,
                 ),
-                backgroundColor: Color.fromRGBO(51, 101, 229, 1),
+                backgroundColor: Colors.blue,
                 label: 'Inciar rota',
                 onTap: () {
                   Navigator.push(
@@ -142,7 +147,7 @@ class _ListPassengersState extends State<ListPassengers> {
                   color: Colors.white,
                   size: 50,
                 ),
-                backgroundColor: Color.fromRGBO(51, 101, 229, 1),
+                backgroundColor: Colors.blue,
                 label: 'Adicionar passageiro',
                 onTap: () {
                   Navigator.push(
@@ -157,7 +162,7 @@ class _ListPassengersState extends State<ListPassengers> {
                   color: Colors.white,
                   size: 35,
                 ),
-                backgroundColor: Color.fromRGBO(51, 101, 229, 1),
+                backgroundColor: Colors.blue,
                 label: 'Criar PDF',
                 onTap: () async {},
               ),

@@ -104,6 +104,16 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      automaticallyImplyLeading: false,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Meu Perfil",),
+      ),),
       key: _globalKey,
       drawer: ChangeNotifierProvider(
         create: (_) => InviteProvider(),
@@ -115,12 +125,10 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           height: double.infinity,
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
-          padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
+          padding: const EdgeInsets.only(top: 15, right: 16, left: 16),
+          child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(
-                height: 15,
-              ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Align(
                   alignment: Alignment.bottomLeft,
@@ -144,7 +152,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                     },
                     icon: const Icon(
                       Icons.logout,
-                      color: Color.fromRGBO(51, 101, 229, 1),
+                      color: Colors.white,
                     ),
                     label: const Text(
                       "Deslogar",
@@ -155,7 +163,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                 ),
               ]),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
   
   GestureDetector(
@@ -172,7 +180,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
         height: 100,
          decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
-          color: Colors.blue,
+          color: Color.fromRGBO(33, 150, 243, 1),
           border: Border(
               left: BorderSide(
                   color: Colors.green,
@@ -224,9 +232,11 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   ),
   ),
   SizedBox(height: 20,),
-   
+  Text(
+                    'Meus Endereços',
+                    style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Colors.white),),
   Container(
-    height: 560,
+    height: 480,
     width: double.infinity,
      child: Card(
        color: Color.fromRGBO(69, 69, 85, 1),
@@ -237,16 +247,15 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
               width: 2.0,
             ),
           ),
+          child: SingleChildScrollView( 
           child: Column(           
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Padding(
-                 padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-                 child: Text(
-                  'Endereços',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-              ),       
-               ),    
+            Container(   
+                height: 420,
+                child: SingleChildScrollView( 
+                child: Column(
+                children: [   
                Padding(
                  padding: const EdgeInsets.only(left: 15.0, top: 25),
                  child: Text(
@@ -254,18 +263,241 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                     style: TextStyle(fontSize: 18, color: Colors.white),
               ),
                ),
-            Row(mainAxisAlignment: MainAxisAlignment.end,     
-              children: [InkWell(child: Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: Icon(Icons.add, color: Colors.white,),
-              ))],)
+               Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),
+               Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),Padding(
+                 padding: const EdgeInsets.only(left: 15.0, top: 25),
+                 child: Text(
+                    'Endereço 1',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
+              ),
+               ),
+               ],
+               ),
+               ),
+               ),
+               
+            Container(
+              height: 45,
+              child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: InkWell(
+                            child: Padding(
+                            padding: const EdgeInsets.only(right: 15.0, bottom: 10.0),
+                            child: Icon(Icons.add, color: Colors.white,),
+                          ), 
+                          onTap: (){},               
+                          ),
+                           ),
+            ),
           ],
           ),      
+          ),
     ),
    ),
    
             ],   
-          ),
+          ),),
         ),
       ),
     );

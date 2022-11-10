@@ -5,6 +5,7 @@ import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/InviteSideBar.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PagesPassengers/InviteSideBarPassageiro.dart';
+import 'package:fast_routes/views/PagesPassengers/PageHomePassenger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -107,6 +108,16 @@ class _PagePerfilState extends State<PagePerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      automaticallyImplyLeading: false,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Meu Perfil",),
+      ),),
       key: _globalKey,
       drawer: ChangeNotifierProvider(
         create: (_) => InviteProvider(),
@@ -117,12 +128,10 @@ class _PagePerfilState extends State<PagePerfil> {
           height: double.infinity,
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
-          padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
+          padding: const EdgeInsets.only(top: 15, right: 16, left: 16),
+           child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(
-                height: 15,
-              ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Align(
                   alignment: Alignment.bottomLeft,
@@ -146,7 +155,7 @@ class _PagePerfilState extends State<PagePerfil> {
                     },
                     icon: const Icon(
                       Icons.logout,
-                      color: Color.fromRGBO(51, 101, 229, 1),
+                      color: Colors.white,
                     ),
                     label: const Text(
                       "Deslogar",
@@ -157,7 +166,7 @@ class _PagePerfilState extends State<PagePerfil> {
                 ),
               ]),
               const SizedBox(
-                height: 40,
+                height: 15,
               ),
               GestureDetector(
                 onTap: () {
@@ -173,7 +182,7 @@ class _PagePerfilState extends State<PagePerfil> {
                         height: 100,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
-                          color: Colors.blue,
+                          color: Color.fromARGB(226, 95, 95, 110),
                           border: Border(
                             left: BorderSide(
                               color: Colors.green,
@@ -234,7 +243,7 @@ class _PagePerfilState extends State<PagePerfil> {
                 children: [
                   SizedBox(
                       height: 80,
-                      width: 180,
+                      width: 150,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
@@ -255,7 +264,7 @@ class _PagePerfilState extends State<PagePerfil> {
                       )),
                   SizedBox(
                       height: 80,
-                      width: 180,
+                      width: 150,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
@@ -265,7 +274,10 @@ class _PagePerfilState extends State<PagePerfil> {
                           ),
                           elevation: 0,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                         Navigator.push(context,
+            MaterialPageRoute(builder: (context) => PageHomePassenger()));
+                        },
                         child: Text(
                           "Pré - View",
                           style: TextStyle(
@@ -279,8 +291,9 @@ class _PagePerfilState extends State<PagePerfil> {
               const SizedBox(
                 height: 20,
               ),
-              Container(
-                height: 440,
+              SingleChildScrollView(
+              child: Container(
+                height: 400,
                 width: double.infinity,
                 child: Card(
                   color: const Color.fromRGBO(69, 69, 85, 1),
@@ -291,32 +304,67 @@ class _PagePerfilState extends State<PagePerfil> {
                       width: 2.0,
                     ),
                   ),
+                  
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
+                    
+                    
+                    children: [       
                       Consumer<TravelProvider>(
                           builder: (context, model, child) {
                         return Expanded(
                             child: ListView(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+                                child: Text('Minhas Viagens', textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Colors.white),),
+                              ),
                           ...model.travels.map(
-                            (travel) => Card(
-                                color: Color.fromRGBO(69, 69, 85, 0.8),
-                                child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12.0, left: 15.0),
-                                    child: ListTile(
-                                      title: Text(travel.nome),
-                                      subtitle: Text(travel.weekDays),
-                                    ))),
+                            (travel) => Padding(
+                              padding: const EdgeInsets.only(left: 15.0,right: 15),
+                              child: Card(                            
+                                   color: Color.fromARGB(228, 78, 78, 94),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    side: BorderSide(
+                      color: Color.fromRGBO(17, 17, 17, 0.2),
+                      width: 2.0,
+                    ),
+                  ),
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                           left: 15.0),
+                                      child: ListTile(
+                                        title: Text(travel.nome,style: TextStyle(color: Colors.white),),
+                                        subtitle: Text(travel.weekDays,style: TextStyle(color: Colors.white)),
+                                      ))),
+                            ),
+                                    
                           )
                         ]));
-                      })
-                    ],
-                  ),
-                ),
+                      }),
+                       
+                      Container(
+                        height: 45,
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: InkWell(
+                            child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
+                            child: Icon(Icons.add, color: Colors.white,),
+                          ),       
+                          onTap: (){},         
+                          ),
+                           ),
+                      ),              
+                    ],          
+                  ),          
+                ), 
+              ),
               ),
             ],
+            
           ),
+          
+        ),
         ),
       ),
     );
