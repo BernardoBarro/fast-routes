@@ -28,7 +28,6 @@ class TravelProvider extends ChangeNotifier {
       final allTravels =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
       keys.addAll(allTravels.keys);
-      print(allTravels);
       _travel = allTravels.values
           .map((travelAsJSON) =>
               Travel.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))

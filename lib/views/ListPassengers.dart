@@ -1,3 +1,4 @@
+import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/views/AddedPassengers.dart';
 import 'package:fast_routes/views/PageHome.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,9 +8,12 @@ import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import '../providers/TravelPassagerProvider.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ListPassengers extends StatefulWidget {
   final String chave;
+
   const ListPassengers(this.chave, {Key? key}) : super(key: key);
 
   @override
@@ -17,7 +21,9 @@ class ListPassengers extends StatefulWidget {
 }
 
 class _ListPassengersState extends State<ListPassengers> {
-
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
+  final db = FirebaseDatabase.instance.ref("usuarios");
+  bool participa = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -91,7 +97,17 @@ class _ListPassengersState extends State<ListPassengers> {
                                   textOff: "",
                                   textOn: "",
                                   animationDuration: Duration(milliseconds: 0),
-                                  onChanged: (bool state) {},
+                                  value: true,
+                                  onChanged: (bool state) {
+                                    db
+                                        .child(usuarioLogado!.uid)
+                                        .child("viagens")
+                                        .child(widget.chave)
+                                        .child("passageiros")
+                                        .child(passageiro.uid)
+                                        .child("participa")
+                                        .set(state);
+                                  },
                                   onSwipe: () {},
                                   onDoubleTap: () {},
                                   onTap: () {},
@@ -166,5 +182,21 @@ class _ListPassengersState extends State<ListPassengers> {
         ),
       ),
     );
+  }
+
+  getParticipa(Customer passageiro) {
+    bool alo = false;
+    db
+        .child(usuarioLogado!.uid)
+        .child("viagens")
+        .child(widget.chave)
+        .child("passageiros")
+        .child(passageiro.uid)
+        .child("participa")
+        .get()
+        .then((snapshot) => {
+          alo = (snapshot.value as dynamic),
+    });
+    return alo;
   }
 }

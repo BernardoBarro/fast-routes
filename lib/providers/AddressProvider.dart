@@ -38,6 +38,7 @@ class AddressProvider extends ChangeNotifier {
           .map((addressAsJSON) =>
               Passageiro.fromRTDB(Map<String, dynamic>.from(addressAsJSON)))
           .toList();
+      print(_address.first.participa);
       notifyListeners();
     });
   }

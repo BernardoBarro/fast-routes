@@ -24,6 +24,7 @@ class PageMaps extends StatefulWidget {
 }
 
 class _PageMapsState extends State<PageMaps> {
+  bool modalBottom = false;
   Set<Marker> _markersSet = {};
   Marker? _marker;
   late GoogleMapController _googleMapController;
@@ -194,24 +195,27 @@ class _PageMapsState extends State<PageMaps> {
   _addMarker() {
     Set<Marker> provisorio = {};
     provider.address.forEach((passageiro) => {
-          _marker = Marker(
-            markerId: MarkerId(passageiro.nome + " origem"),
-            infoWindow: InfoWindow(title: passageiro.nome),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueGreen),
-            position:
-                LatLng(passageiro.origemLatitude, passageiro.origemLongitude),
-          ),
-          provisorio.add(_marker!),
-          _marker = Marker(
-            markerId: MarkerId(passageiro.nome + " destino"),
-            infoWindow: InfoWindow(title: passageiro.nome),
-            icon: BitmapDescriptor.defaultMarkerWithHue(
-                BitmapDescriptor.hueGreen),
-            position:
-                LatLng(passageiro.destinoLatitude, passageiro.destinoLongitude),
-          ),
-          provisorio.add(_marker!)
+          if (passageiro.participa)
+            {
+              _marker = Marker(
+                markerId: MarkerId(passageiro.nome + " origem"),
+                infoWindow: InfoWindow(title: passageiro.nome),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueGreen),
+                position: LatLng(
+                    passageiro.origemLatitude, passageiro.origemLongitude),
+              ),
+              provisorio.add(_marker!),
+              _marker = Marker(
+                markerId: MarkerId(passageiro.nome + " destino"),
+                infoWindow: InfoWindow(title: passageiro.nome),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueGreen),
+                position: LatLng(
+                    passageiro.destinoLatitude, passageiro.destinoLongitude),
+              ),
+              provisorio.add(_marker!)
+            }
         });
     setState(() {
       _markersSet = provisorio;
@@ -219,21 +223,24 @@ class _PageMapsState extends State<PageMaps> {
   }
 
   void _getRoute(double? latitude, double? longitude) async {
-    final directions =
-        await DirectionsRepository().getDirections(address: provider.address, latitude: latitude, longitude: longitude);
-    // TODO alterar para enviar lista de LatLng
+    final directions = await DirectionsRepository().getDirections(
+        address: provider.address, latitude: latitude, longitude: longitude);
     setState(() => _info = directions);
-    showModalBottomSheet(context: context, builder: (context) {
-      return ListView(
-        children: [
-          ListTile(
-            title: Text(_info!.distance[0]),
-          ),
-          ListTile(
-            title: Text(_info!.distance[1]),
-          ),
-        ],
-      );
-    });
+    if (!modalBottom) {
+      modalBottom = true;
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ListView.builder(
+                itemCount: _info!.distance.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_info!.distance[index].nome +
+                        " - " +
+                        _info!.distance[index].distance),
+                  );
+                });
+          });
+    }
   }
 }
