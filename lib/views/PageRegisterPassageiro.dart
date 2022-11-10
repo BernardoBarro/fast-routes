@@ -56,7 +56,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'pcd': pcd,
       'isMotorista': motorista,
       'masculino': masculino,
-      'feminino': feminino
+      'feminino': feminino,
     };
 
     Map<String, dynamic> dataPassageiroReplica = {
@@ -78,12 +78,13 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
               db
                   .ref("usuarios")
                   .child(firebaseUser.user!.uid)
-                  .set(dataPassageiro),
-              db
+                  .set(dataPassageiro)
+                  .then((value) => db
                   .ref("usuarios")
                   .child(firebaseUser.user!.uid)
                   .child("endereco")
-                  .set(EnderecoPassageiro),
+                  .push()
+                  .set(EnderecoPassageiro),),
               db
                   .ref("passageiros")
                   .child(firebaseUser.user!.uid)
@@ -203,11 +204,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     },
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -258,11 +260,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -313,11 +316,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -366,15 +370,16 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     },
                     inputFormatters: [maskDate],
                     keyboardType: TextInputType.number,
-                    //validator: _validateDate,
+  
 
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -405,6 +410,86 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       hintText: "DD/MM/AAAA",
                     ),
                   ),
+
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  //TEXT ENDERECO
+                  TextFormField(
+                    controller: _controllerEndereco,
+                    validator: (endereco) {
+                      if (endereco == null || endereco.isEmpty) {
+                        return 'Digite seu endereço';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.streetAddress,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+
+                      //Labels
+                      labelText: "Endereço",
+                      hintText: "Rua, Número, Cidade",
+
+                      //Style Label
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+
+                      //Style Hint
+                      hintStyle: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 0.4),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
+
+                      //Style borders
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+
+                  //NECESSIDADE ESPECIAL
+                  Row(children: [
+                    Checkbox(
+                        side: BorderSide(color: Colors.white),
+                        value: pcd,
+                        onChanged: (bool? checked) {
+                          setState(() {
+                            pcd = !pcd;
+
+                            if (pcd == true) {
+                              fieldPCD = true;
+                            } else if (pcd == false) {
+                              fieldPCD = false;
+                            }
+                          });
+                        }),
+                    const Text(
+                      "PCD",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ]),
 
                   const SizedBox(
                     height: 20.0,
@@ -441,7 +526,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       hintStyle: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.4),
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
 
                       //Style borders
@@ -511,7 +596,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       hintStyle: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.4),
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
 
                       //Style borders
@@ -604,75 +689,6 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                           )),
                     ),
                     obscureText: _showRepeatedPassword == false ? true : false,
-                  ),
-
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-
-                  //NECESSIDADE ESPECIAL
-                  Row(children: [
-                    Checkbox(
-                        side: BorderSide(color: Colors.white),
-                        value: pcd,
-                        onChanged: (bool? checked) {
-                          setState(() {
-                            pcd = !pcd;
-
-                            if (pcd == true) {
-                              fieldPCD = true;
-                            } else if (pcd == false) {
-                              fieldPCD = false;
-                            }
-                          });
-                        }),
-                    const Text(
-                      "PCD",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ]),
-
-                  //TEXT ENDERECO
-                  TextFormField(
-                    controller: _controllerEndereco,
-                    validator: (endereco) {
-                      if (endereco == null || endereco.isEmpty) {
-                        return 'Digite seu endereço';
-                      }
-                      return null;
-                    },
-                    enabled: fieldPCD,
-                    keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-
-                      //Labels
-                      labelText: "Rua exemplo, Centro, Erechim",
-
-                      //Style Label
-                      labelStyle: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 0.4),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 18,
-                      ),
-
-                      //Style borders
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(20.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                          )),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(20.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                          )),
-                    ),
                   ),
 
                   const SizedBox(
