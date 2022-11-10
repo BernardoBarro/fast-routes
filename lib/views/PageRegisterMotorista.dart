@@ -97,6 +97,14 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Cadastro Motorista",),
+      ),
         leading: InkWell(
           onTap: () {
             Navigator.pushAndRemoveUntil(
@@ -112,8 +120,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
             ),
           ),
         ),
-        backgroundColor: Color.fromRGBO(69, 69, 85, 1),
-        elevation: 0,
+       
       ),
       body: SafeArea(
         child: Container(
@@ -143,6 +150,8 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       Padding(
                         padding: const EdgeInsets.only(left: 115.0),
                         child: Checkbox(
+                          
+                       
                             side: BorderSide(color: Colors.white),
                             value: passageiro,
                             onChanged: (bool? checked) {
@@ -634,39 +643,42 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     ),
                   ),
                   const SizedBox(
-                    height: 60.0,
+                    height: 8.0,
                   ),
                   //BUTTON
-                  SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromRGBO(51, 101, 229, 1),
-                          onPrimary: Colors.white,
-                          elevation: 0,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _mensagemErro = "";
-                          });
-                          if (formKey.currentState!.validate()) {
-                            _registerMotorista(
-                                _controllerNome.text,
-                                _controllerCPF.text,
-                                _controllerTelefone.text,
-                                _controllerDataNascimento.text,
-                                _controllerEmail.text,
-                                _controllerSenha.text);
-                          }
-                        },
-                        child: Text(
-                          "ENVIAR",
-                          style: TextStyle(
-                            fontFamily: 'InriaSans',
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 15.0),
+                    child: SizedBox(
+                        width: double.infinity,
+                        height: 50,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                            onPrimary: Colors.white,
+                            elevation: 0,
                           ),
-                        ),
-                      )),
+                          onPressed: () {
+                            setState(() {
+                              _mensagemErro = "";
+                            });
+                            if (formKey.currentState!.validate()) {
+                              _registerMotorista(
+                                  _controllerNome.text,
+                                  _controllerCPF.text,
+                                  _controllerTelefone.text,
+                                  _controllerDataNascimento.text,
+                                  _controllerEmail.text,
+                                  _controllerSenha.text);
+                            }
+                          },
+                          child: Text(
+                            "ENVIAR",
+                            style: TextStyle(
+                              fontFamily: 'InriaSans',
+                            ),
+                          ),
+                        )),
+                  ),
                 ],
               ))),
         ),
