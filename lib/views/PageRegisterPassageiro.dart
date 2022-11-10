@@ -35,14 +35,14 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   TextEditingController _controllerDataNascimento = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
-  TextEditingController _controllerPcdDesc = TextEditingController();
+  TextEditingController _controllerEndereco = TextEditingController();
   TextEditingController _controllerRepetirSenha = TextEditingController();
   String _mensagemErro = " ";
   final formKey = GlobalKey<FormState>();
 
   _registerPassageiro(String nome, String cpf, String telefone,
       String dataNascimento, String email, String senha,
-      [String? pcdDesc]) {
+      String endereco) {
     FirebaseDatabase db = FirebaseDatabase.instance;
     FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -54,7 +54,6 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'email': email,
       'senha': senha,
       'pcd': pcd,
-      'descricao PCD': pcdDesc,
       'isMotorista': motorista,
       'masculino': masculino,
       'feminino': feminino
@@ -67,7 +66,10 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'data_de_nascimento': dataNascimento,
       'email': email,
       'pcd': pcd,
-      'descricao PCD': pcdDesc,
+    };
+
+    Map<String, dynamic> EnderecoPassageiro = {
+      'endereco' : endereco,
     };
 
     auth
@@ -77,6 +79,11 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                   .ref("usuarios")
                   .child(firebaseUser.user!.uid)
                   .set(dataPassageiro),
+              db
+                  .ref("usuarios")
+                  .child(firebaseUser.user!.uid)
+                  .child("endereco")
+                  .set(EnderecoPassageiro),
               db
                   .ref("passageiros")
                   .child(firebaseUser.user!.uid)
@@ -625,12 +632,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     ),
                   ]),
 
-                  //TEXT DESCRICAO_PCD
+                  //TEXT ENDERECO
                   TextFormField(
-                    controller: _controllerPcdDesc,
-                    validator: (descPcd) {
-                      if (fieldPCD == true && (descPcd == null || descPcd.isEmpty)) {
-                        return 'escreva aqui seu tipo de doença';
+                    controller: _controllerEndereco,
+                    validator: (endereco) {
+                      if (endereco == null || endereco.isEmpty) {
+                        return 'Digite seu endereço';
                       }
                       return null;
                     },
@@ -641,7 +648,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       border: OutlineInputBorder(),
 
                       //Labels
-                      labelText: "Descreva aqui seu tipo de doença",
+                      labelText: "Rua exemplo, Centro, Erechim",
 
                       //Style Label
                       labelStyle: TextStyle(
@@ -746,7 +753,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                                 _controllerDataNascimento.text,
                                 _controllerEmail.text,
                                 _controllerSenha.text,
-                                _controllerPcdDesc.text);
+                                _controllerEndereco.text);
                             }
                           },
                           child: Text(
