@@ -40,7 +40,7 @@ class _LoginandRegisterState extends State<LoginandRegister> {
                             top: 50.0, left: 16.0, right: 16.0, bottom: 15.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(51, 101, 229, 1),
+                            primary: Colors.blue,
                             onPrimary: Colors.white,
                             elevation: 0,
                             fixedSize: Size(300.0, 50.0),
@@ -62,7 +62,7 @@ class _LoginandRegisterState extends State<LoginandRegister> {
                             top: 15.0, left: 16.0, right: 16.0, bottom: 0.0),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            primary: Color.fromRGBO(51, 101, 229, 1),
+                            primary: Colors.blue,
                             onPrimary: Colors.white,
                             elevation: 0,
                             fixedSize: Size(300.0, 50.0),

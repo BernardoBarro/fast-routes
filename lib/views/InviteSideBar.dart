@@ -20,49 +20,59 @@ class _InviteSideBarState extends State<InviteSideBar> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        child: Container(
+      child: Container(
       height: double.infinity,
       width: double.infinity,
       color: const Color.fromRGBO(69, 69, 85, 1),
-      padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
+      padding: const EdgeInsets.only(top: 0, right: 16, left: 16),
       child: Column(
-        children: [
+        children: [  
           Consumer<InviteProvider>(builder: (context, model, child) {
             return Expanded(
                 child: ListView(
               children: [
+                    SizedBox(
+                      height: 100,
+                      child: const DrawerHeader(
+        child: Padding(
+          padding: EdgeInsets.only(top: 18.0),
+          child: Text('Notificações',textAlign: TextAlign.center,style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+        ),
+      ),
+                    ),
                 ...model.invites.map(
                   (invite) => Card(
                     color: Color.fromRGBO(69, 69, 85, 0.8),
                     child: Padding(
                       padding: const EdgeInsets.only(top: 12.0, left: 15.0),
                       child: ListTile(
-                        title: Text(invite.travelName),
+                        title: Text(invite.travelName, ),
                         subtitle: Text(invite.passagerName),
                         onTap: () {
                           showDialog(
                               context: context,
                               builder: (ctx) {
                                 return AlertDialog(
-                                  title: const Text("Confirmação!"),
+                                  backgroundColor: Color.fromARGB(223, 69, 69, 85),
+                                  title: const Text("Confirmação!!",style: TextStyle(color: Colors.white),),
                                   content: Text("O " +
                                       invite.passagerName +
-                                      " gostaria de entrar na viagem " +
-                                      invite.travelName),
+                                      "gostaria de entrar na viagem " +
+                                      invite.travelName,style: TextStyle(color: Colors.white)),
                                   actions: [
                                     TextButton(
                                         onPressed: () {
                                           Navigator.of(ctx).pop();
                                           deleteInvite(invite);
                                         },
-                                        child: Text("Recusar")),
+                                        child: Text("Recusar",style: TextStyle(color: Colors.white))),
                                     TextButton(
                                         onPressed: () {
                                           Navigator.of(ctx).pop();
                                           Navigator.of(context).pop();
                                           _onButtonPressed(invite);
                                         },
-                                        child: Text("Aceitar")),
+                                        child: Text("Aceitar",style: TextStyle(color: Colors.white))),
                                   ],
                                 );
                               });
@@ -73,7 +83,10 @@ class _InviteSideBarState extends State<InviteSideBar> {
                 )
               ],
             ));
-          })
+            
+          }
+          
+          )
         ],
       ),
     ));

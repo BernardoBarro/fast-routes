@@ -107,6 +107,16 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      automaticallyImplyLeading: false,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Meu Perfil",),
+      ),),
       key: _globalKey,
       drawer: ChangeNotifierProvider(
         create: (_) => InviteProvider(),
@@ -118,12 +128,10 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           height: double.infinity,
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
-          padding: const EdgeInsets.only(top: 30, right: 16, left: 16),
+          padding: const EdgeInsets.only(top: 15, right: 16, left: 16),
+          child: SingleChildScrollView(
           child: Column(
             children: [
-              const SizedBox(
-                height: 15,
-              ),
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                 Align(
                   alignment: Alignment.bottomLeft,
@@ -147,7 +155,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                     },
                     icon: const Icon(
                       Icons.logout,
-                      color: Color.fromRGBO(51, 101, 229, 1),
+                      color: Colors.white,
                     ),
                     label: const Text(
                       "Deslogar",
@@ -158,7 +166,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                 ),
               ]),
               const SizedBox(
-                height: 20,
+                height: 15,
               ),
   
   GestureDetector(
@@ -226,10 +234,12 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
     ],
   ),
   ),
-  SizedBox(height: 20,),
-   
-  Container(
-    height: 560,
+  SizedBox(
+    height: 20,
+    ),
+  SingleChildScrollView(
+  child: Container(
+    height: 500,
     width: double.infinity,
      child: Card(
        color: Color.fromRGBO(69, 69, 85, 1),
@@ -241,62 +251,59 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
             ),
           ),
           child: Column(           
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Consumer<PassengersAddressProvider>(
+            children: [       
+                      Consumer<PassengersAddressProvider>(
                           builder: (context, model, child) {
                         return Expanded(
                             child: ListView(children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+                                child: Text('Meus Endereços', textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Colors.white),),
+                              ),
                           ...model.address.map(
-                            (address) => Card(
-                                color: Color.fromRGBO(69, 69, 85, 0.8),
-                                child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 12.0, left: 15.0),
-                                    child: ListTile(
-                                      title: Text(address.endereco),
-                                    ))),
+                            (address) => Padding(
+                              padding: const EdgeInsets.only(left: 15.0,right: 15),
+                              child: Card(                            
+                                   color: Color.fromARGB(227, 108, 108, 126),
+                                   elevation: 3,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    
+                  ),
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                           left: 15.0),
+                                      child: ListTile(
+                                        title: Text(address.endereco,style: TextStyle(color: Colors.white),),
+                                        
+                                      ))),
+                            ),
+                                    
                           )
                         ]));
                       }),
-              // -- parte para remover
-              //
-              // -- precisa ter um botao com onPressed na funcao _onButtonPressed
-              //
-              //
-              //  Padding(
-              //    padding: const EdgeInsets.only(left: 15.0, top: 15.0),
-              //    child: Text(
-              //     'Endereços',
-              //     style: TextStyle(fontSize: 18, color: Colors.white),
-              // ),       
-              //  ),    
-              //  Padding(
-              //    padding: const EdgeInsets.only(left: 15.0, top: 25),
-              //    child: Text(
-              //       'Endereço 1',
-              //       style: TextStyle(fontSize: 18, color: Colors.white),
-              // ),
-              //  ),
-            // Row(mainAxisAlignment: MainAxisAlignment.end,     
-            //   children: [InkWell(child: Padding(
-            //     padding: const EdgeInsets.only(right: 15.0),
-            //     child: FloatingActionButton(
-            //       onPressed: _onButtonPressed,
-            //       child: Icon(
-            //         Icons.add, color: Colors.white,
-            //         size: 50,
-            //       ),
-            //     ), 
-            //   ))],)
-            // -- parte para remover
-          ],
+                       
+                      Container(
+                        height: 45,
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: InkWell(
+                            child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
+                            child: Icon(Icons.add, color: Colors.blue,),
+                          ),       
+                          onTap: _onButtonPressed,         
+                          ),
+                           ),
+                      ),              
+                    ],          
           ),      
+          
     ),
    ),
-   
-            ],   
           ),
+            ],   
+          ),),
         ),
       ),
     );

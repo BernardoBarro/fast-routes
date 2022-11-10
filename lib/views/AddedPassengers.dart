@@ -40,9 +40,14 @@ class _AddedPassengersState extends State<AddedPassengers> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(69, 69, 85, 1),
-          elevation: 0,
-        ),
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Procurar Passageiros",),
+      ),),
         body: SafeArea(
           child: Container(
             height: double.infinity,
@@ -112,16 +117,17 @@ class _AddedPassengersState extends State<AddedPassengers> {
                                 context: context,
                                 builder: (ctx) {
                                   return AlertDialog(
-                                    title: const Text("Confirmação!"),
+                                    backgroundColor: Color.fromARGB(223, 69, 69, 85),
+                                    title: const Text("Confirmação!!", style: TextStyle(color: Colors.white),),
                                     content: Text("Realmente deseja convidar " +
                                         displayList[index].nome +
-                                        " para a sua viagem?"),
+                                        " para a sua viagem?",style: TextStyle(color: Colors.white),),
                                     actions: [
                                       TextButton(
                                           onPressed: () {
                                             Navigator.of(ctx).pop();
                                           },
-                                          child: Text("Não")),
+                                          child: Text("Não",style: TextStyle(color: Colors.white),)),
                                       TextButton(
                                           onPressed: () {
                                             db.ref("usuarios")
@@ -143,11 +149,11 @@ class _AddedPassengersState extends State<AddedPassengers> {
                                                         'travelKey': snapshot.key,
                                                         'driverName': nome,
                                                         'driverUid': usuarioLogado!.uid,
-                                                        'passagerUid': displayList[index]!.uid
+                                                        'passagerUid': displayList[index].uid
                                                       };
                                                       print(invite);
                                                     db.ref("usuarios")
-                                                        .child(displayList[index]!.uid)
+                                                        .child(displayList[index].uid)
                                                         .child("convites")
                                                         .push()
                                                         .set(invite);
@@ -155,7 +161,7 @@ class _AddedPassengersState extends State<AddedPassengers> {
                                             });
                                             Navigator.of(ctx)
                                                 .pop();
-                                          }, child: Text("Sim")),
+                                          }, child: Text("Sim",style: TextStyle(color: Colors.white),)),
                                     ],
                                   );
                                 });

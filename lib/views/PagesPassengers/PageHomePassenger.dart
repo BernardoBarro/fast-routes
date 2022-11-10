@@ -46,9 +46,9 @@ class _PageHomePassengerState extends State<PageHomePassenger> {
       body: _telas[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        backgroundColor: const Color.fromRGBO(69, 69, 85, 1),
-        unselectedItemColor: Color.fromARGB(57, 255, 255, 255),
-        selectedItemColor: Color.fromRGBO(255, 255, 255, 1),
+        backgroundColor: const Color.fromARGB(223, 69, 69, 85),
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Colors.blue,
         onTap: _onItemTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
