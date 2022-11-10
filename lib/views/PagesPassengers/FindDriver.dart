@@ -38,10 +38,15 @@ class _FindDriverState extends State<FindDriver> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Color.fromRGBO(69, 69, 85, 1),
-          elevation: 0,
-        ),
+      appBar: AppBar(
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Procurar Motorista",),
+      ),),
         body: SafeArea(
           child: Container(
             height: double.infinity,

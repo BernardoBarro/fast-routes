@@ -117,15 +117,20 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(69, 69, 85, 1),
-        elevation: 0,
-      ),
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Criar Viagem",),
+      ),),
       body: SafeArea(
         child: Container(
           height: double.infinity,
           width: double.infinity,
           color: const Color.fromRGBO(69, 69, 85, 1),
-          padding: const EdgeInsets.only(top: 40, right: 16, left: 16),
+          padding: const EdgeInsets.only(top: 20, right: 16, left: 16),
           child: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -587,7 +592,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                     height: 50,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromRGBO(51, 101, 229, 1),
+                        primary: Colors.blue,
                         onPrimary: Colors.white,
                         elevation: 0,
                       ),
