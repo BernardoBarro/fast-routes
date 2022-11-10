@@ -1,4 +1,5 @@
 import 'package:fast_routes/providers/AddressProvider.dart';
+import 'package:fast_routes/providers/PassengersAddressProvider.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/PageMaps.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _PageHomePassengerState extends State<PageHomePassenger> {
   int _selectedIndex = 1;
   final List<Widget> _telas = [
     ChangeNotifierProvider(
-      create: (_) => UserProvider(),
+      create: (_) => PassengersAddressProvider(),
       child: PagePerfilPassenger(),
     ),
     ChangeNotifierProvider(

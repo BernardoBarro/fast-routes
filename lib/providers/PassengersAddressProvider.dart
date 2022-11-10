@@ -1,42 +1,35 @@
 import 'dart:async';
 
+import 'package:fast_routes/models/Address.dart';
 import 'package:fast_routes/models/Passageiro.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class AddressProvider extends ChangeNotifier {
-  List<Passageiro> _address = [];
+class PassengersAddressProvider extends ChangeNotifier {
+  List<Address> _address = [];
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final _db = FirebaseDatabase.instance.ref("usuarios");
 
   // TODO alterar o id da viagem conforme a viagem do motorista
-  static const PASS_PATH = '/viagens/-NER-JZ617H9fgrKwDRR/passageiros';
+  static const PASS_PATH = '/endereco';
 
   late StreamSubscription<DatabaseEvent> _addressStream;
 
-  List<Passageiro> get address => _address;
+  List<Address> get address => _address;
 
-  AddressProvider({String? chave}) {
-    if (chave != null) {
-      _listenToAddress(chave);
-    }
+  PassengersAddressProvider() {
+    _listenToAddress();
   }
 
-  void _listenToAddress(String? chave) {
+  void _listenToAddress() {
     String uid = usuarioLogado!.uid;
-    _addressStream = _db
-        .child(uid)
-        .child("viagens")
-        .child(chave!)
-        .child("passageiros")
-        .onValue
-        .listen((event) {
+    _addressStream = _db.child(uid + PASS_PATH).onValue.listen((event) {
       final allAddress =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
+          print('ALL ADDRESSES: - $allAddress');
       _address = allAddress.values
-          .map((addressAsJSON) =>
-              Passageiro.fromRTDB(Map<String, dynamic>.from(addressAsJSON)))
+          .map((addressAsJSON) => Address.fromRTDB(Map<String, dynamic>.from(addressAsJSON)))
           .toList();
       notifyListeners();
     });

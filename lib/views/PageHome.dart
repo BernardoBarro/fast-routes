@@ -61,7 +61,7 @@ class _PageHomeState extends State<PageHome> {
           child: PagePerfil(),
         ),
         ChangeNotifierProvider(
-          create: (_) => AddressProvider(),
+          create: (_) => AddressProvider(chave: widget.chave),
           child: PageMaps(chave: widget.chave),
         ),
         ChangeNotifierProvider(
