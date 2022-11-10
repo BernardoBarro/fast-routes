@@ -306,9 +306,7 @@ class _PagePerfilState extends State<PagePerfil> {
                   ),
                   
                   child: Column(
-                    
-                    
-                    children: [       
+                     children: [       
                       Consumer<TravelProvider>(
                           builder: (context, model, child) {
                         return Expanded(
