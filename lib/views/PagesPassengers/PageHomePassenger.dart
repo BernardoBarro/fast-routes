@@ -7,7 +7,6 @@ import 'package:flutter/src/material/bottom_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:fast_routes/views/PagesPassengers/PagePerfilPassenger.dart';
 import 'package:fast_routes/views/PagesPassengers/PageMyAddress.dart';
-
 import '../../providers/TravelProvider.dart';
 
 class PageHomePassenger extends StatefulWidget {
