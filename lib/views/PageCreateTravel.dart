@@ -97,7 +97,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
 
       db
           .ref("usuarios")
-          .child(usuarioLogado!.uid)
+          .child(usuarioLogado.uid)
           .child("viagens")
           .push()
           .set(viagem)
