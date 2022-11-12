@@ -57,7 +57,7 @@ class _InviteSideBarState extends State<InviteSideBar> {
                                   title: const Text("Confirmação!!",style: TextStyle(color: Colors.white),),
                                   content: Text("O " +
                                       invite.passagerName +
-                                      "gostaria de entrar na viagem " +
+                                      " gostaria de entrar na viagem " +
                                       invite.travelName,style: TextStyle(color: Colors.white)),
                                   actions: [
                                     TextButton(
