@@ -46,6 +46,7 @@ dependencies:
   location: ^4.2.0
   flutter_speed_dial: ^6.2.0
   lite_rolling_switch: ^1.0.0
+  flutter_slidable: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

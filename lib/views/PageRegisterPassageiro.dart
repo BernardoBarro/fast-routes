@@ -35,14 +35,14 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
   TextEditingController _controllerDataNascimento = TextEditingController();
   TextEditingController _controllerEmail = TextEditingController();
   TextEditingController _controllerSenha = TextEditingController();
-  TextEditingController _controllerPcdDesc = TextEditingController();
+  TextEditingController _controllerEndereco = TextEditingController();
   TextEditingController _controllerRepetirSenha = TextEditingController();
   String _mensagemErro = " ";
   final formKey = GlobalKey<FormState>();
 
   _registerPassageiro(String nome, String cpf, String telefone,
       String dataNascimento, String email, String senha,
-      [String? pcdDesc]) {
+      String endereco) {
     FirebaseDatabase db = FirebaseDatabase.instance;
     FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -54,10 +54,9 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'email': email,
       'senha': senha,
       'pcd': pcd,
-      'descricao PCD': pcdDesc,
       'isMotorista': motorista,
       'masculino': masculino,
-      'feminino': feminino
+      'feminino': feminino,
     };
 
     Map<String, dynamic> dataPassageiroReplica = {
@@ -67,7 +66,10 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
       'data_de_nascimento': dataNascimento,
       'email': email,
       'pcd': pcd,
-      'descricao PCD': pcdDesc,
+    };
+
+    Map<String, dynamic> EnderecoPassageiro = {
+      'endereco' : endereco,
     };
 
     auth
@@ -76,7 +78,13 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
               db
                   .ref("usuarios")
                   .child(firebaseUser.user!.uid)
-                  .set(dataPassageiro),
+                  .set(dataPassageiro)
+                  .then((value) => db
+                  .ref("usuarios")
+                  .child(firebaseUser.user!.uid)
+                  .child("endereco")
+                  .push()
+                  .set(EnderecoPassageiro),),
               db
                   .ref("passageiros")
                   .child(firebaseUser.user!.uid)
@@ -196,11 +204,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     },
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -251,11 +260,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -306,11 +316,12 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -359,15 +370,16 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     },
                     inputFormatters: [maskDate],
                     keyboardType: TextInputType.number,
-                    //validator: _validateDate,
+  
 
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -398,6 +410,86 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       hintText: "DD/MM/AAAA",
                     ),
                   ),
+
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+
+                  //TEXT ENDERECO
+                  TextFormField(
+                    controller: _controllerEndereco,
+                    validator: (endereco) {
+                      if (endereco == null || endereco.isEmpty) {
+                        return 'Digite seu endereço';
+                      }
+                      return null;
+                    },
+                    keyboardType: TextInputType.streetAddress,
+                    style: const TextStyle(color: Colors.white),
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+
+                      //Labels
+                      labelText: "Endereço",
+                      hintText: "Rua, Número, Cidade",
+
+                      //Style Label
+                      labelStyle: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 18,
+                      ),
+
+                      //Style Hint
+                      hintStyle: TextStyle(
+                        color: Color.fromRGBO(255, 255, 255, 0.4),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15,
+                      ),
+
+                      //Style borders
+                      focusedBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                      enabledBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromRGBO(255, 255, 255, 1),
+                          )),
+                    ),
+                  ),
+
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+
+                  //NECESSIDADE ESPECIAL
+                  Row(children: [
+                    Checkbox(
+                        side: BorderSide(color: Colors.white),
+                        value: pcd,
+                        onChanged: (bool? checked) {
+                          setState(() {
+                            pcd = !pcd;
+
+                            if (pcd == true) {
+                              fieldPCD = true;
+                            } else if (pcd == false) {
+                              fieldPCD = false;
+                            }
+                          });
+                        }),
+                    const Text(
+                      "PCD",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ]),
 
                   const SizedBox(
                     height: 20.0,
@@ -434,7 +526,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       hintStyle: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.4),
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
 
                       //Style borders
@@ -504,7 +596,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                       hintStyle: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.4),
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
 
                       //Style borders
@@ -603,75 +695,6 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     height: 10.0,
                   ),
 
-                  //NECESSIDADE ESPECIAL
-                  Row(children: [
-                    Checkbox(
-                        side: BorderSide(color: Colors.white),
-                        value: pcd,
-                        onChanged: (bool? checked) {
-                          setState(() {
-                            pcd = !pcd;
-
-                            if (pcd == true) {
-                              fieldPCD = true;
-                            } else if (pcd == false) {
-                              fieldPCD = false;
-                            }
-                          });
-                        }),
-                    const Text(
-                      "PCD",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ]),
-
-                  //TEXT DESCRICAO_PCD
-                  TextFormField(
-                    controller: _controllerPcdDesc,
-                    validator: (descPcd) {
-                      if (fieldPCD == true && (descPcd == null || descPcd.isEmpty)) {
-                        return 'escreva aqui seu tipo de doença';
-                      }
-                      return null;
-                    },
-                    enabled: fieldPCD,
-                    keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-
-                      //Labels
-                      labelText: "Descreva aqui seu tipo de doença",
-
-                      //Style Label
-                      labelStyle: TextStyle(
-                        color: Color.fromRGBO(255, 255, 255, 0.4),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 18,
-                      ),
-
-                      //Style borders
-                      focusedBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(20.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                          )),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(
-                            const Radius.circular(20.0),
-                          ),
-                          borderSide: BorderSide(
-                            color: Color.fromRGBO(255, 255, 255, 1),
-                          )),
-                    ),
-                  ),
-
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-
                   //ROW MASC FEM
                   Row(
                     children: [
@@ -746,7 +769,7 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                                 _controllerDataNascimento.text,
                                 _controllerEmail.text,
                                 _controllerSenha.text,
-                                _controllerPcdDesc.text);
+                                _controllerEndereco.text);
                             }
                           },
                           child: Text(

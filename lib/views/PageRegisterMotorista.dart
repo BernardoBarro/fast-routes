@@ -186,11 +186,12 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     },
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -241,11 +242,12 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -296,11 +298,12 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -353,11 +356,12 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
 
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,
-                        fontSize: 15,
+                        fontSize: 18,
                       ),
 
                       //Style Hint
@@ -425,7 +429,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       hintStyle: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.4),
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
 
                       //Style borders
@@ -495,7 +499,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       hintStyle: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.4),
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
 
                       //Style borders
@@ -568,7 +572,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                       hintStyle: TextStyle(
                         color: Color.fromRGBO(255, 255, 255, 0.4),
                         fontWeight: FontWeight.w400,
-                        fontSize: 18,
+                        fontSize: 15,
                       ),
 
                       //Style borders
