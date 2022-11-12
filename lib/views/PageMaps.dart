@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ffi';
 
 import 'package:fast_routes/models/Directions.dart';
+import 'package:fast_routes/models/Passageiro.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -24,6 +25,7 @@ class PageMaps extends StatefulWidget {
 }
 
 class _PageMapsState extends State<PageMaps> {
+  List<Passageiro> passageiros = [];
   bool modalBottom = false;
   Set<Marker> _markersSet = {};
   Marker? _marker;
@@ -38,6 +40,10 @@ class _PageMapsState extends State<PageMaps> {
   Directions? _info;
 
   performingSingleFetch() {
+
+
+
+
     db
         .ref("usuarios")
         .child(usuarioLogado!.uid)
@@ -223,8 +229,11 @@ class _PageMapsState extends State<PageMaps> {
   }
 
   void _getRoute(double? latitude, double? longitude) async {
+    provider.address.forEach((element) {
+      passageiros.add(element);
+    });
     final directions = await DirectionsRepository().getDirections(
-        address: provider.address, latitude: latitude, longitude: longitude);
+        address: passageiros, latitude: latitude, longitude: longitude);
     setState(() => _info = directions);
     if (!modalBottom) {
       modalBottom = true;

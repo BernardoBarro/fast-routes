@@ -19,7 +19,7 @@ class DirectionsRepository {
     double? latitude,
     double? longitude,
   }) async {
-    address.removeWhere((element) => element.participa == true);
+    address.removeWhere((element) => element.participa == false);
     String destination = "";
     address.forEach((element) {
       destination += "${element.origemLatitude},${element.origemLongitude}|";
