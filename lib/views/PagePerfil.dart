@@ -11,7 +11,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
+import '../models/Travel.dart';
 import '../providers/InviteProvider.dart';
 import '../providers/TravelProvider.dart';
 
@@ -238,62 +240,9 @@ class _PagePerfilState extends State<PagePerfil> {
               SizedBox(
                 height: 20,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  SizedBox(
-                      height: 80,
-                      width: 150,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          elevation: 0,
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          "Iniciar Viagem",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'InriaSans',
-                          ),
-                        ),
-                      )),
-                  SizedBox(
-                      height: 80,
-                      width: 150,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          elevation: 0,
-                        ),
-                        onPressed: () {
-                         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => PageHomePassenger()));
-                        },
-                        child: Text(
-                          "Pré - View",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'InriaSans',
-                          ),
-                        ),
-                      )),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
               SingleChildScrollView(
               child: Container(
-                height: 400,
+                height: 500,
                 width: double.infinity,
                 child: Card(
                   color: const Color.fromRGBO(69, 69, 85, 1),
@@ -306,34 +255,47 @@ class _PagePerfilState extends State<PagePerfil> {
                   ),
                   
                   child: Column(
-                     children: [       
+                     children: [      
                       Consumer<TravelProvider>(
                           builder: (context, model, child) {
                         return Expanded(
-                            child: ListView(children: [
+                            child: ListView(children: [                       
                               Padding(
                                 padding: const EdgeInsets.only(top: 15.0, bottom: 15),
                                 child: Text('Minhas Viagens', textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Colors.white),),
                               ),
                           ...model.travels.map(
-                            (travel) => Padding(
-                              padding: const EdgeInsets.only(left: 15.0,right: 15),
-                              child: Card(                            
-                                   color: Color.fromARGB(227, 108, 108, 126),
-                                   elevation: 3,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    
-                  ),
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(
-                                           left: 15.0),
-                                      child: ListTile(
-                                        title: Text(travel.nome,style: TextStyle(color: Colors.white),),
-                                        subtitle: Text(travel.weekDays,style: TextStyle(color:Color.fromARGB(174, 255, 255, 255))),
-                                      ))),
-                            ),
+                            (travel) => 
+                                  Slidable(
+                                  child: BuildListTile(travel),
+                                  endActionPane: ActionPane(
+                                    motion: Padding(
+                                    padding: const EdgeInsets.only(left: 0, right: 20.0,bottom: 4,top: 4),
+                                    child: const ScrollMotion(),
                                     
+                                  ),
+                                  children: [
+        SlidableAction(                                 
+        onPressed: (context){},
+        backgroundColor: Color(0xFF21B7CA),
+        foregroundColor: Colors.white,
+        icon: Icons.remove_red_eye_outlined,
+        label: 'View',
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
+      SizedBox(width: 5),
+      SlidableAction(
+        
+        onPressed: (context){},
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+        icon: Icons.send_sharp,
+        label: 'Iniciar',
+         borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
+                                  ],)
+                                   
+                                  ),
                           )
                         ]));
                       }),
@@ -345,7 +307,7 @@ class _PagePerfilState extends State<PagePerfil> {
                           child: InkWell(
                             child: Padding(
                             padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
-                            child: Icon(Icons.add, color: Colors.blue,),
+                            child: Icon(Icons.add, color: Colors.white,),
                           ),       
                           onTap: (){},         
                           ),
@@ -364,8 +326,27 @@ class _PagePerfilState extends State<PagePerfil> {
         ),
       ),
     );
+    
   }
-
+      Widget BuildListTile(Travel travel) { return Padding(
+                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
+                              child: Card(                            
+                                   color: Color.fromARGB(227, 108, 108, 126),
+                                   elevation: 3,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    
+                  ),
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                           left: 15.0),
+                                      child: ListTile(
+                                        title: Text(travel.nome,style: TextStyle(color: Colors.white),),
+                                        subtitle: Text(travel.weekDays,style: TextStyle(color:Color.fromARGB(174, 255, 255, 255))),
+                                      ))),
+                            
+      
+      );}
   void _performingSingleFetch() {
     db.ref("usuarios").child(usuarioLogado!.uid).child("nome").get().then((snapshot) {
       setState(() {
