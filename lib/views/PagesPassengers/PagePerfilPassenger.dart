@@ -332,7 +332,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                 child: 
                                 
                                 Card(                            
-                                     color: Color.fromARGB(227, 108, 108, 126),
+                                     color: Color.fromARGB(255, 108, 108, 126),
                                      elevation: 3,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -360,7 +360,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                 child: 
                                 
                                 Card(                            
-                                     color: Color.fromARGB(227, 108, 108, 126),
+                                     color: Color.fromARGB(255, 108, 108, 126),
                                      elevation: 3,
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
