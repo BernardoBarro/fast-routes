@@ -13,8 +13,8 @@ import 'PagesPassengers/PageHomePassenger.dart';
 
 class PageHome extends StatefulWidget {
   final String? chave;
-
-  const PageHome({Key? key, this.chave}) : super(key: key);
+  final bool preview;
+  const PageHome(this.preview, {Key? key, this.chave}) : super(key: key);
 
   @override
   State<PageHome> createState() => _PageHomeState();
@@ -24,21 +24,6 @@ class _PageHomeState extends State<PageHome> {
   FirebaseDatabase db = FirebaseDatabase.instance;
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 1;
-
-  // final List<Widget> _telas = [
-  //   ChangeNotifierProvider(
-  //     create: (_) => UserProvider(),
-  //     child: PagePerfil(),
-  //   ),
-  //   ChangeNotifierProvider(
-  //     create: (_) => AddressProvider(),
-  //     child: PageMaps(chave: widget.chave),
-  //   ),
-  //   ChangeNotifierProvider(
-  //     create: (_) => TravelProvider(),
-  //     child: PageViagens(),
-  //   ),
-  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -62,7 +47,7 @@ class _PageHomeState extends State<PageHome> {
         ),
         ChangeNotifierProvider(
           create: (_) => AddressProvider(chave: widget.chave),
-          child: PageMaps(chave: widget.chave),
+          child: PageMaps(chave: widget.chave, widget.preview),
         ),
         ChangeNotifierProvider(
           create: (_) => TravelProvider(),

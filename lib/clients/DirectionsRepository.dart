@@ -22,7 +22,11 @@ class DirectionsRepository {
     address.removeWhere((element) => element.participa == false);
     String destination = "";
     address.forEach((element) {
-      destination += "${element.origemLatitude},${element.origemLongitude}|";
+      if(element.origem){
+        destination += "${element.origemLatitude},${element.origemLongitude}|";
+      }else{
+        destination += "${element.destinoLatitude},${element.destinoLongitude}|";
+      }
     });
     final response = await _dio.get(
       _baseUrl,

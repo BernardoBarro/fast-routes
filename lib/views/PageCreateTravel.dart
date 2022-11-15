@@ -107,7 +107,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => PageHome(),
+            builder: (context) => PageHome(false),
           ),
           (route) => false);
     }

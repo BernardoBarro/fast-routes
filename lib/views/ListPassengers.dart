@@ -24,18 +24,22 @@ class _ListPassengersState extends State<ListPassengers> {
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final db = FirebaseDatabase.instance.ref("usuarios");
   bool participa = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-      centerTitle: true,
-      toolbarHeight: 65,
-      backgroundColor: Color.fromARGB(223, 69, 69, 85),
-      elevation: 2,
-      title: Padding(
-        padding: const EdgeInsets.only(top: 0),
-        child: Text("Lista de Passageiros",),
-      ),),
+        centerTitle: true,
+        toolbarHeight: 65,
+        backgroundColor: Color.fromARGB(223, 69, 69, 85),
+        elevation: 2,
+        title: Padding(
+          padding: const EdgeInsets.only(top: 0),
+          child: Text(
+            "Lista de Passageiros",
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -102,7 +106,7 @@ class _ListPassengersState extends State<ListPassengers> {
                                   textOff: "",
                                   textOn: "",
                                   animationDuration: Duration(milliseconds: 0),
-                                  value: true,
+                                  value: passageiro.participa,
                                   onChanged: (bool state) {
                                     db
                                         .child(usuarioLogado!.uid)
@@ -154,7 +158,8 @@ class _ListPassengersState extends State<ListPassengers> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PageHome(chave: widget.chave)));
+                          builder: (context) =>
+                              PageHome(chave: widget.chave, false)));
                 },
               ),
               SpeedDialChild(
@@ -171,16 +176,6 @@ class _ListPassengersState extends State<ListPassengers> {
                       MaterialPageRoute(
                           builder: (context) => AddedPassengers(widget.chave)));
                 },
-              ),
-              SpeedDialChild(
-                child: Icon(
-                  Icons.save_rounded,
-                  color: Colors.white,
-                  size: 35,
-                ),
-                backgroundColor: Colors.blue,
-                label: 'Criar PDF',
-                onTap: () async {},
               ),
             ],
           ),
@@ -200,8 +195,8 @@ class _ListPassengersState extends State<ListPassengers> {
         .child("participa")
         .get()
         .then((snapshot) => {
-          alo = (snapshot.value as dynamic),
-    });
+              alo = (snapshot.value as dynamic),
+            });
     return alo;
   }
 }

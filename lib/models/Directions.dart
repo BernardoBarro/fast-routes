@@ -13,14 +13,18 @@ class Directions {
     // if((map['routes'] as List).isEmpty) return null;
     // TODO tratar exeções
     final data = Map<String, dynamic>.from((map['rows'][0]));
-    print("aqui");
-    print(data['elements'].length);
-    print(address);
     for (int i = 0; i < data['elements'].length; i++) {
       Teste teste = Teste(
-          distance: data['elements'][i]['distance']['text'],
-          nome: address[i].nome,
-          distanceValue: data['elements'][i]['distance']['value']);
+        distance: data['elements'][i]['distance']['text'],
+        nome: address[i].nome,
+        destinoLatitude: address[i].destinoLatitude,
+        destinoLongitude: address[i].destinoLongitude,
+        origemLatitude: address[i].origemLatitude,
+        origemLongitude: address[i].origemLongitude,
+        distanceValue: data['elements'][i]['distance']['value'],
+        origem: address[i].origem,
+        passagerUid: address[i].key,
+      );
       distance.add(teste);
     }
 

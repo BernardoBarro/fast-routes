@@ -25,7 +25,7 @@ class _PageHomePassengerState extends State<PageHomePassenger> {
     ),
     ChangeNotifierProvider(
       create: (_) => AddressProvider(),
-      child: PageMaps(),
+      child: PageMaps(false),
     ),
     ChangeNotifierProvider(
       create: (_) => TravelProvider(),

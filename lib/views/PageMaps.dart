@@ -17,8 +17,9 @@ import '../providers/AddressProvider.dart';
 
 class PageMaps extends StatefulWidget {
   final String? chave;
+  final bool preview;
 
-  const PageMaps({Key? key, this.chave}) : super(key: key);
+  const PageMaps(this.preview, {Key? key, this.chave}) : super(key: key);
 
   @override
   State<PageMaps> createState() => _PageMapsState();
@@ -40,10 +41,6 @@ class _PageMapsState extends State<PageMaps> {
   Directions? _info;
 
   performingSingleFetch() {
-
-
-
-
     db
         .ref("usuarios")
         .child(usuarioLogado!.uid)
@@ -97,6 +94,10 @@ class _PageMapsState extends State<PageMaps> {
     });
 
     if (widget.chave != null) {
+      setState(() {
+        _markersSet = {};
+      });
+      _addMarker();
       positionStream = location.onLocationChanged.listen((newLoc) {
         currentLocation = LatLng(newLoc.latitude!, newLoc.longitude!);
 
@@ -104,7 +105,6 @@ class _PageMapsState extends State<PageMaps> {
           'latitude': newLoc.latitude,
           'longitude': newLoc.longitude,
         };
-        _getRoute(newLoc.latitude, newLoc.longitude);
 
         db
             .ref("usuarios")
@@ -116,13 +116,15 @@ class _PageMapsState extends State<PageMaps> {
             .catchError((error) => print("Ocorreu um erro $error"));
 
         setState(() {
-          _addMarker();
-          _markersSet
-              .removeWhere((marker) => marker.markerId == "currentLocation");
-          _markersSet.add(Marker(
-              markerId: const MarkerId("currentLocation"),
-              position: LatLng(
-                  currentLocation!.latitude, currentLocation!.longitude)));
+          if (!widget.preview) {
+            _getRoute(newLoc.latitude, newLoc.longitude);
+            _markersSet
+                .removeWhere((marker) => marker.markerId == "currentLocation");
+            _markersSet.add(Marker(
+                markerId: const MarkerId("currentLocation"),
+                position: LatLng(
+                    currentLocation!.latitude, currentLocation!.longitude)));
+          }
         });
       });
     }
@@ -159,7 +161,8 @@ class _PageMapsState extends State<PageMaps> {
                         currentLocation!.latitude, currentLocation!.longitude),
                     zoom: 18,
                   ),
-                  myLocationEnabled: (!isMotorista || widget.chave == null),
+                  myLocationEnabled:
+                      (!isMotorista || widget.chave == null || widget.preview),
                   markers: _markersSet,
                   // polylines: {
                   //   if (_info != null)
@@ -204,7 +207,7 @@ class _PageMapsState extends State<PageMaps> {
           if (passageiro.participa)
             {
               _marker = Marker(
-                markerId: MarkerId(passageiro.nome + " origem"),
+                markerId: MarkerId(passageiro.nome),
                 infoWindow: InfoWindow(title: passageiro.nome),
                 icon: BitmapDescriptor.defaultMarkerWithHue(
                     BitmapDescriptor.hueGreen),
@@ -212,15 +215,20 @@ class _PageMapsState extends State<PageMaps> {
                     passageiro.origemLatitude, passageiro.origemLongitude),
               ),
               provisorio.add(_marker!),
+            }
+          else
+            {},
+          if (widget.preview)
+            {
               _marker = Marker(
-                markerId: MarkerId(passageiro.nome + " destino"),
+                markerId: MarkerId(passageiro.nome),
                 infoWindow: InfoWindow(title: passageiro.nome),
                 icon: BitmapDescriptor.defaultMarkerWithHue(
-                    BitmapDescriptor.hueGreen),
+                    BitmapDescriptor.hueBlue),
                 position: LatLng(
                     passageiro.destinoLatitude, passageiro.destinoLongitude),
               ),
-              provisorio.add(_marker!)
+              provisorio.add(_marker!),
             }
         });
     setState(() {
@@ -234,22 +242,87 @@ class _PageMapsState extends State<PageMaps> {
     });
     final directions = await DirectionsRepository().getDirections(
         address: passageiros, latitude: latitude, longitude: longitude);
-    setState(() => _info = directions);
+    setState(() {
+      _info = directions;
+      _addMarkerWithDistance(directions!);
+      _changeOrigem(directions!);
+    });
     if (!modalBottom) {
       modalBottom = true;
       showModalBottomSheet(
           context: context,
           builder: (context) {
-            return ListView.builder(
-                itemCount: _info!.distance.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_info!.distance[index].nome +
-                        " - " +
-                        _info!.distance[index].distance),
-                  );
-                });
+            return StatefulBuilder(builder: (context, state) {
+              state(() {
+                _info!.distance
+                    .forEach((element) => print(element.distanceValue));
+              });
+              return ListView.builder(
+                  itemCount: _info!.distance.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(_info!.distance[index].nome +
+                          " - " +
+                          _info!.distance[index].distance),
+                    );
+                  });
+            });
           });
     }
+  }
+
+  _addMarkerWithDistance(Directions directions) {
+    directions.distance.forEach((passageiro) => {
+          if (passageiro.origem)
+            {
+              _marker = Marker(
+                markerId: MarkerId(passageiro.nome),
+                infoWindow: InfoWindow(title: passageiro.nome),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueGreen),
+                position: LatLng(
+                    passageiro.origemLatitude, passageiro.origemLongitude),
+              ),
+              setState(() {
+                _markersSet.removeWhere(
+                    (marker) => marker.markerId == passageiro.nome);
+                _markersSet.add(_marker!);
+              }),
+            }
+          else
+            {
+              _marker = Marker(
+                markerId: MarkerId(passageiro.nome),
+                infoWindow: InfoWindow(title: passageiro.nome),
+                icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueBlue),
+                position: LatLng(
+                    passageiro.destinoLatitude, passageiro.destinoLongitude),
+              ),
+              setState(() {
+                _markersSet.removeWhere(
+                    (marker) => marker.markerId == passageiro.nome);
+                _markersSet.add(_marker!);
+              }),
+            }
+        });
+  }
+
+  void _changeOrigem(Directions directions) {
+    directions.distance.forEach((element) {
+      if (element.distanceValue <= 15) {
+        Map<String, dynamic> origem = {
+          'origem': false,
+        };
+        db
+            .ref("usuarios")
+            .child(usuarioLogado!.uid)
+            .child("viagens")
+            .child(widget.chave!)
+            .child("passageiros")
+            .child(element.passagerUid)
+            .update(origem);
+      }
+    });
   }
 }
