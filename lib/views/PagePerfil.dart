@@ -43,15 +43,28 @@ class _PagePerfilState extends State<PagePerfil> {
 
   //instacia Storage
   final FirebaseStorage storage = FirebaseStorage.instance;
+  User? usuarioLogado = FirebaseAuth.instance.currentUser;
 
+  //Upload to firebase storage method
+  //This method also creates an imagePath field 
+  //containing the image URL to the current user
   Future<void> upload(String path) async {
     File file = File(path);
     try {
-      String ref = 'images/img-${DateTime.now().toString()}.jpg';
+      String ref = 'images/${usuarioLogado!.uid.toString()}-${DateTime.now().toString()}.jpg';
       await storage.ref(ref).putFile(file);
+
+      Map <String, dynamic> imageURL = {
+        'profile_image': ref,
+      };
+
+      db.ref("usuarios")
+        .child(usuarioLogado!.uid)
+        .set(imageURL);
+
     } on FirebaseException catch (error) {
       throw Exception("Erro ao fazer upload: ${error.code}");
-    }
+    } 
   }
 
   
