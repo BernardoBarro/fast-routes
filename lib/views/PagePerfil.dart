@@ -33,6 +33,7 @@ class _PagePerfilState extends State<PagePerfil> {
   final double circleBorderWidth = 50.0;
 
   String changeName = 'Loading...';
+  String? profileURL;
 
   _logout() async {
     FirebaseAuth.instance.signOut();
@@ -42,6 +43,20 @@ class _PagePerfilState extends State<PagePerfil> {
           MaterialPageRoute(builder: (context) => const LoginandRegister()),
           (route) => false);
     });
+  }
+
+  fetchProfile() {
+    db.ref("usuarios")
+      .child(usuarioLogado!.uid)
+      .child("imagem_perfil")
+      .child("profile_image")
+      .get()
+      .then((snapshot) {
+        setState(() {
+          _image = (snapshot.value as dynamic);
+        });
+      }
+      );
   }
 
   final FirebaseStorage storage = FirebaseStorage.instance;
@@ -62,15 +77,17 @@ class _PagePerfilState extends State<PagePerfil> {
       db.ref("usuarios")
         .child(usuarioLogado!.uid)
         .child("imagem_perfil")
-        .set(imageURL);
+        .update(imageURL);
 
-    setState(() {
-      // DENRO DO BANCO A IMAGEM ESTÁ AQUI: usuarioLogado.uid.imagem_perfil.profile_image
+    fetchProfile();
+
+    // setState(() {
+    //   // DENRO DO BANCO A IMAGEM ESTÁ AQUI: usuarioLogado.uid.imagem_perfil.profile_image
       
-      // PRECISA PASSAR O PATH DENTRO DESSE File();
-      _image = File();
-      imageOK = true;
-    });
+    //   // PRECISA PASSAR O PATH DENTRO DESSE File();
+    //   _image = imageURL as String;
+    //   imageOK = true;
+    // });
 
     } on FirebaseException catch (error) {
       throw Exception("Erro ao fazer upload: ${error.code}");
@@ -89,12 +106,12 @@ class _PagePerfilState extends State<PagePerfil> {
     final pickedFile =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 30);
 
-    upload(pickedFile!.path);
+      setState(() {
+      _image = File(pickedFile!.path);
+      imageOK = true;
+    });
 
-    // setState(() {
-    //   _image = File(pickedFile!.path);
-    //   imageOK = true;
-    // });
+    upload(pickedFile!.path);
   }
 
   //mesma coisa só que com o album
@@ -102,12 +119,12 @@ class _PagePerfilState extends State<PagePerfil> {
     final pickedFile =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
 
-    upload(pickedFile!.path);
+      setState(() {
+      _image = File(pickedFile!.path);
+      imageOK = true;
+    });
 
-    // setState(() {
-    //   _image = File(pickedFile!.path);
-    //   imageOK = true;
-    // });
+    upload(pickedFile!.path);
   }
 
   void _showPicker(context) {
@@ -142,6 +159,7 @@ class _PagePerfilState extends State<PagePerfil> {
   @override
   void initState() {
     _performingSingleFetch();
+    fetchProfile();
     super.initState();
   }
 
@@ -392,4 +410,5 @@ class _PagePerfilState extends State<PagePerfil> {
       });
     });
   }
+
 }
