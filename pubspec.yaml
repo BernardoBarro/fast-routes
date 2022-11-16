@@ -60,6 +60,7 @@ dev_dependencies:
   firebase_auth: ^3.9.0
   firebase_database: ^9.1.4
   firebase_core: ^1.22.0
+  firebase_storage: ^11.0.5
   intl: ^0.17.0
   email_validator: ^2.1.17
   flutter_launcher_icons: ^0.10.0
