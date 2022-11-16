@@ -65,10 +65,12 @@ class _PagePerfilState extends State<PagePerfil> {
         .set(imageURL);
 
     setState(() {
-      _image = File(ref);
+      // DENRO DO BANCO A IMAGEM ESTÁ AQUI: usuarioLogado.uid.imagem_perfil.profile_image
+      
+      // PRECISA PASSAR O PATH DENTRO DESSE File();
+      _image = File();
       imageOK = true;
     });
-
 
     } on FirebaseException catch (error) {
       throw Exception("Erro ao fazer upload: ${error.code}");
@@ -89,10 +91,10 @@ class _PagePerfilState extends State<PagePerfil> {
 
     upload(pickedFile!.path);
 
-    setState(() {
-      _image = File(pickedFile!.path);
-      imageOK = true;
-    });
+    // setState(() {
+    //   _image = File(pickedFile!.path);
+    //   imageOK = true;
+    // });
   }
 
   //mesma coisa só que com o album
@@ -102,10 +104,10 @@ class _PagePerfilState extends State<PagePerfil> {
 
     upload(pickedFile!.path);
 
-    setState(() {
-      _image = File(pickedFile!.path);
-      imageOK = true;
-    });
+    // setState(() {
+    //   _image = File(pickedFile!.path);
+    //   imageOK = true;
+    // });
   }
 
   void _showPicker(context) {
