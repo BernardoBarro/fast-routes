@@ -144,42 +144,54 @@ class _PageMapsState extends State<PageMaps> {
 
   @override
   Widget build(BuildContext context) {
+    var largura = MediaQuery.of(context).size.width;
+    var alturaTotal = MediaQuery.of(context).size.height;
+    var alturaAppBar = AppBar().preferredSize.height;
+    var alturaLiquida = alturaTotal - alturaAppBar;
+
+    var alturaMapa = alturaLiquida * 0.70;
+    var alturaContainer = alturaLiquida * 0.30;
+
     provider = Provider.of<AddressProvider>(context, listen: true);
     return Scaffold(
         body: GetBuilder<MapsController>(
       init: controller,
-      builder: (value) => Stack(
-        alignment: Alignment.center,
+      builder: (value) => Column(
+        // alignment: Alignment.center,
         children: [
           currentLocation == null
               ? const Center(child: Text("Loading..."))
-              : GoogleMap(
-                  myLocationButtonEnabled: false,
-                  zoomControlsEnabled: false,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(
-                        currentLocation!.latitude, currentLocation!.longitude),
-                    zoom: 18,
+              : Container(
+                width: largura,
+                height: alturaMapa,
+                child: GoogleMap(
+                    myLocationButtonEnabled: false,
+                    zoomControlsEnabled: false,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(
+                          currentLocation!.latitude, currentLocation!.longitude),
+                      zoom: 18,
+                    ),
+                    myLocationEnabled:
+                        (!isMotorista || widget.chave == null || widget.preview),
+                    markers: _markersSet,
+                    // polylines: {
+                    //   if (_info != null)
+                    //     Polyline(
+                    //       polylineId: const PolylineId('overview_polyline'),
+                    //       color: Colors.red,
+                    //       width: 5,
+                    //       points: _info!.polylinePoints
+                    //           .map((e) => LatLng(e.latitude, e.longitude))
+                    //           .toList(),
+                    //     ),
+                    // },
+                    onMapCreated: (gmc) => {
+                      _googleMapController = gmc,
+                      controller.onMapsCreated(_googleMapController, isMotorista),
+                    },
                   ),
-                  myLocationEnabled:
-                      (!isMotorista || widget.chave == null || widget.preview),
-                  markers: _markersSet,
-                  // polylines: {
-                  //   if (_info != null)
-                  //     Polyline(
-                  //       polylineId: const PolylineId('overview_polyline'),
-                  //       color: Colors.red,
-                  //       width: 5,
-                  //       points: _info!.polylinePoints
-                  //           .map((e) => LatLng(e.latitude, e.longitude))
-                  //           .toList(),
-                  //     ),
-                  // },
-                  onMapCreated: (gmc) => {
-                    _googleMapController = gmc,
-                    controller.onMapsCreated(_googleMapController, isMotorista),
-                  },
-                ),
+              ),
           Align(
             alignment: Alignment.bottomRight,
             child: Container(
@@ -195,6 +207,10 @@ class _PageMapsState extends State<PageMaps> {
                 ),
               ),
             ),
+          ),
+          Container(
+            width: largura,
+            height: alturaContainer,
           ),
         ],
       ),
@@ -264,6 +280,9 @@ class _PageMapsState extends State<PageMaps> {
                       title: Text(_info!.distance[index].nome +
                           " - " +
                           _info!.distance[index].distance),
+                      onTap: () {
+                        state(() {});
+                      },
                     );
                   });
             });
