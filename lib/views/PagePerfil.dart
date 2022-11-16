@@ -60,7 +60,9 @@ class _PagePerfilState extends State<PagePerfil> {
 
       db.ref("usuarios")
         .child(usuarioLogado!.uid)
+        .child("imagem_perfil")
         .set(imageURL);
+
 
     } on FirebaseException catch (error) {
       throw Exception("Erro ao fazer upload: ${error.code}");
