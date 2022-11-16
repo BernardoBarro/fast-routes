@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 import '../models/Travel.dart';
 import '../providers/InviteProvider.dart';
@@ -43,6 +44,37 @@ class _PagePerfilState extends State<PagePerfil> {
     });
   }
 
+  final FirebaseStorage storage = FirebaseStorage.instance;
+
+  //Upload to firebase storage method
+  //This method also creates an imagePath field 
+  //containing the image URL to the current user
+  Future<void> upload(String path) async {
+    File file = File(path);
+    try {
+      String ref = 'images/${usuarioLogado!.uid.toString()}-${DateTime.now().toString()}.jpg';
+      await storage.ref(ref).putFile(file);
+
+      Map <String, dynamic> imageURL = {
+        'profile_image': ref,
+      };
+
+      db.ref("usuarios")
+        .child(usuarioLogado!.uid)
+        .child("imagem_perfil")
+        .set(imageURL);
+
+    setState(() {
+      _image = File(ref);
+      imageOK = true;
+    });
+
+
+    } on FirebaseException catch (error) {
+      throw Exception("Erro ao fazer upload: ${error.code}");
+    } 
+  }
+
   late File _image = File('/images/logo.png');
   bool imageOK = false;
 
@@ -55,6 +87,8 @@ class _PagePerfilState extends State<PagePerfil> {
     final pickedFile =
         await _picker.pickImage(source: ImageSource.camera, imageQuality: 30);
 
+    upload(pickedFile!.path);
+
     setState(() {
       _image = File(pickedFile!.path);
       imageOK = true;
@@ -65,6 +99,8 @@ class _PagePerfilState extends State<PagePerfil> {
   _imgFromLibrary() async {
     final pickedFile =
         await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
+
+    upload(pickedFile!.path);
 
     setState(() {
       _image = File(pickedFile!.path);
