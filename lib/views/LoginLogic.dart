@@ -17,7 +17,7 @@ class LoginLogic extends StatelessWidget {
           } else if (snapshot.hasError) {
             return Center(child: Text('Something went wrong!'));
           } else if (snapshot.hasData) {
-            return PageHome();
+            return PageHome(false);
           } else {
             return LoginandRegister();
           }

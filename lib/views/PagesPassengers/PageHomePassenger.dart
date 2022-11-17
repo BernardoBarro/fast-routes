@@ -10,7 +10,13 @@ import 'package:fast_routes/views/PagesPassengers/PageMyAddress.dart';
 import '../../providers/TravelProvider.dart';
 
 class PageHomePassenger extends StatefulWidget {
-  const PageHomePassenger({Key? key}) : super(key: key);
+  final String? chaveViagem;
+  final String? chaveMotorista;
+  final bool preview;
+
+  const PageHomePassenger(this.preview,
+      {Key? key, this.chaveViagem, this.chaveMotorista})
+      : super(key: key);
 
   @override
   State<PageHomePassenger> createState() => _PageHomePassengerState();
@@ -18,20 +24,21 @@ class PageHomePassenger extends StatefulWidget {
 
 class _PageHomePassengerState extends State<PageHomePassenger> {
   int _selectedIndex = 1;
-  final List<Widget> _telas = [
-    ChangeNotifierProvider(
-      create: (_) => PassengersAddressProvider(),
-      child: PagePerfilPassenger(),
-    ),
-    ChangeNotifierProvider(
-      create: (_) => AddressProvider(),
-      child: PageMaps(),
-    ),
-    ChangeNotifierProvider(
-      create: (_) => TravelProvider(),
-      child: PageMyAddress(),
-    ),
-  ];
+
+  // final List<Widget> _telas = [
+  //   ChangeNotifierProvider(
+  //     create: (_) => PassengersAddressProvider(),
+  //     child: PagePerfilPassenger(),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => AddressProvider(),
+  //     child: PageMaps(chaveViagem: widget.chaveViagem, chaveMotorista: widget.chaveMotorista ,false),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => TravelProvider(),
+  //     child: PageMyAddress(),
+  //   ),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -42,7 +49,23 @@ class _PageHomePassengerState extends State<PageHomePassenger> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _telas[_selectedIndex],
+      body: [
+        ChangeNotifierProvider(
+          create: (_) => PassengersAddressProvider(),
+          child: PagePerfilPassenger(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AddressProvider(),
+          child: PageMaps(
+              chaveViagem: widget.chaveViagem,
+              chaveMotorista: widget.chaveMotorista,
+              false),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TravelProvider(),
+          child: PageMyAddress(),
+        ),
+      ][_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         backgroundColor: const Color.fromARGB(223, 69, 69, 85),
