@@ -52,7 +52,7 @@ class _PageHomePassengerState extends State<PageHomePassenger> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              Icons.person_outline_outlined,
             ),
             label: 'Perfil',
           ),

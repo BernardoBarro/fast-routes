@@ -286,7 +286,8 @@ class _PagePerfilState extends State<PagePerfil> {
       SizedBox(width: 5),
       SlidableAction(
         
-        onPressed: (context){},
+        onPressed: (context){Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PageHomePassenger()));},
         backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         icon: Icons.send_sharp,
