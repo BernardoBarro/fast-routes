@@ -78,7 +78,7 @@ class _PageHomeState extends State<PageHome> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.person,
+              Icons.person_outline_outlined,
             ),
             label: 'Perfil',
           ),

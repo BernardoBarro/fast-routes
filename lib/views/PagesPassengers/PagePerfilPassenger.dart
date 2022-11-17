@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geocoding/geocoding.dart';
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 import '../../providers/InviteProvider.dart';
 
@@ -107,6 +107,21 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
     _performingSingleFetch();
     super.initState();
   }
+
+  List<DropdownMenuItem<String>> get dropdownItems{
+  List<DropdownMenuItem<String>> menuItems = [
+    DropdownMenuItem(child: Text("USA"),value: "USA"),
+    DropdownMenuItem(child: Text("Canada"),value: "Canada"),
+    DropdownMenuItem(child: Text("Brazil"),value: "Brazil"),
+    DropdownMenuItem(child: Text("England"),value: "England"),
+    DropdownMenuItem(child: Text("England"),value: "England"),
+    DropdownMenuItem(child: Text("England"),value: "England"),
+  ];
+  return menuItems;
+}
+String? selectedValue;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -262,23 +277,18 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                 padding: const EdgeInsets.only(top: 15.0, left: 25.0),
                 child: Text('Origem', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold )),
               ),
-              Draggable(           
-                child: ChildCardOrigin(),
-                axis: Axis.vertical,  
-                childWhenDragging: ChildDraggingOrigin(),
-                feedback: ChildFeedbackOrigin()
+  
+              Container(          
+                child: ChildCardOrigin(),    
                 ),
               SizedBox(height: 15,),
                Padding(
                 padding: const EdgeInsets.only(left: 25.0),
                 child: Text('Destino', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold )),
               ),
-              Draggable(           
+              Container(           
                 child: ChildCardDestiny(),
-                axis: Axis.vertical,  
-                childWhenDragging: ChildDraggingDestiny(),
-                feedback: ChildFeedbackDestiny()
-                ),
+              ),
               Padding(
                                 padding: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 110),
                                 child: Text('Meus Endereços', textAlign: TextAlign.center,style: TextStyle(fontSize: 18,fontWeight: FontWeight.bold, color: Colors.white),),
@@ -289,10 +299,8 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                             child: ListView(children: [                         
                           ...model.address.map(
                             (address) =>                        
-                            LongPressDraggable(child: ChildMyAddress(address),                         
-                            feedback: ChildMyAddressFeedback(address),
-                            axis: Axis.vertical,  
-                            childWhenDragging: Container(),
+                            Container(child: ChildMyAddress(address),                         
+                            
                             ),       
                           )
                         ]));
@@ -325,33 +333,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
     );
   }
   
-  Widget ChildMyAddressFeedback (Address address){return Container(
-                              height: 65,
-                              width: 355,
-                              child: Padding( padding: const EdgeInsets.only(left: 15.0,right: 15),
-                                child: 
-                                
-                                Card(                            
-                                     color: Color.fromARGB(255, 108, 108, 126),
-                                     elevation: 3,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    
-                  ),
-                  
-                                    child: Padding(
-                                        padding: const EdgeInsets.only(
-                                             left: 15.0),
-                                        child: ListTile(
-                                          title: Text(address.endereco,style: TextStyle(color: Colors.white),),
-                                          
-                                        )),
-                                        
-                                        
-                                        ),
-                              ),
-                            );}
-
+  
   Widget ChildMyAddress (Address address) {return Container(
                               height:65,
                               width: double.infinity,
@@ -379,88 +361,113 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                         ),
                               ),
                             );}
-
-  Widget ChildFeedbackOrigin () {return Container(height: 65.0, width: 350.0,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Card(
-                  shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                         side: BorderSide(
-              color: Color.fromARGB(227, 108, 108, 126),
-              width: 2.0,
-            ),),),
-                ),);}
-
-
-  Widget ChildDraggingOrigin () {return Container(height: 65.0, width: 350.0, 
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Card(
-                  shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                         side: BorderSide(
-              color: Color.fromARGB(227, 108, 108, 126),
-              width: 2.0,
-            ),),),
-                ),);}
-
-  Widget ChildCardOrigin () {return Container(
-                height: 65.0, width: double.infinity, 
+  Widget ChildCardOrigin () {return   
+     Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 5.0, left:18.0, right: 18.0),
+        child: Container(
+          height: 65.0,
+          width: double.infinity,
+          child: DropdownButtonFormField2(
+            isExpanded: true,
+              hint: const Text(
+                'Selecione sua Origem',
+                style: TextStyle(fontSize: 14),
+              ),
+              buttonPadding: const EdgeInsets.only(bottom: 8),
+                          dropdownWidth: 300,       
+                          dropdownMaxHeight: 200,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                            border: OutlineInputBorder(                       
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        validator: (value) {
                 
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 15.0, left: 15.0),
-                  child: Card(
-                  shape: const RoundedRectangleBorder(
-                    
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                         side: BorderSide(
-              color: Color.fromARGB(227, 108, 108, 126),
-              width: 2.0,
-            ),
-                      ),),
-                ),); }
-
-Widget ChildFeedbackDestiny () {return Container(height: 65.0, width: 350.0,
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Card(
-                  shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                         side: BorderSide(
-              color: Color.fromARGB(227, 108, 108, 126),
-              width: 2.0,
-            ),),),
-                ),);}
-
-
-  Widget ChildDraggingDestiny () {return Container(height: 65.0, width: 350.0, 
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 15.0, right: 15.0),
-                  child: Card(
-                  shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                         side: BorderSide(
-              color: Color.fromARGB(227, 108, 108, 126),
-              width: 2.0,
-            ),),),
-                ),);}
-
-  Widget ChildCardDestiny () {return Container(
-                height: 65.0, width: double.infinity, 
+              },
+              onChanged: (value) {
+                //Do something when changing the item if you want.
+              },
+              onSaved: (value) {
                 
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 13.0, left: 15.0),
-                  child: Card(
-                  shape: const RoundedRectangleBorder(
-                    
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                         side: BorderSide(
-              color: Color.fromARGB(227, 108, 108, 126),
-              width: 2.0,
-            ),
-                      ),),
-                ),); }
+              },
+            
+                          
+                       
+                         
+                          items: dropdownItems),
+        ),
+      ),
+    ],
+  );  }
+
+                
+Widget ChildCardDestiny () {return   
+     Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 5.0, left:18.0, right: 18.0),
+        child: Container(
+          height: 65.0,
+          width: double.infinity,
+          child: DropdownButtonFormField2(
+            isExpanded: true,
+              hint: const Text(
+                'Selecione seu Destino',
+                style: TextStyle(fontSize: 14),
+              ),
+              buttonPadding: const EdgeInsets.only(bottom: 8),
+                          dropdownWidth: 300,       
+                          dropdownMaxHeight: 200,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                            border: OutlineInputBorder(                       
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        validator: (value) {
+                
+              },
+              onChanged: (value) {
+                //Do something when changing the item if you want.
+              },
+              onSaved: (value) {
+                
+              },
+            
+                          
+                       
+                         
+                          items: dropdownItems),
+        ),
+      ),
+    ],
+  ); 
+}
   void _performingSingleFetch() {
     db.ref("usuarios").child(usuarioLogado!.uid).child("nome").get().then((snapshot) {
       setState(() {
