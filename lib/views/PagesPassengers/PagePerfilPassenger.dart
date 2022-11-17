@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geocoding/geocoding.dart';
 
+
 import '../../providers/InviteProvider.dart';
 
 class PagePerfilPassenger extends StatefulWidget {
@@ -315,7 +316,44 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                 ),
                                 onTap: _onButtonPressed,
                               ),
+                          ...model.address.map(
+                            (address) => Padding(
+                              padding: const EdgeInsets.only(left: 15.0,right: 15),
+                              child: Card(                            
+                                   color: Color.fromARGB(227, 108, 108, 126),
+                                   elevation: 3,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    
+                  ),
+                  
+                                  child: Padding(
+                                      padding: const EdgeInsets.only(
+                                           left: 15.0),
+                                      child: ListTile(
+                                        title: Text(address.endereco,style: TextStyle(color: Colors.white),),
+                                        
+                                      )),
+                                      
+                                      
+                                      ),
                             ),
+                                    
+                          )
+                        ]));
+                        
+                      }),
+                       
+                      Container(
+                        height: 45,
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: InkWell(
+                            child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
+                            child: Icon(Icons.add, color: Colors.blue,),
+                          ),       
+                          onTap: _onButtonPressed,  
                           ),
                         ],
                       ),
