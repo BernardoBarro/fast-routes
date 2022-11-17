@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:ui';
 import 'package:fast_routes/models/Address.dart';
@@ -42,7 +43,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           (route) => false);
     });
   }
-
+  
 
   late File _image = File('/images/logo.png');
   bool imageOK = false;
@@ -72,6 +73,8 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       imageOK = true;
     });
   }
+
+   
 
   void _showPicker(context) {
     showModalBottomSheet(
@@ -108,6 +111,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
     super.initState();
   }
 
+
   List<DropdownMenuItem<String>> get dropdownItems{
   List<DropdownMenuItem<String>> menuItems = [
     DropdownMenuItem(child: Text("USA"),value: "USA"),
@@ -120,6 +124,8 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   return menuItems;
 }
 String? selectedValue;
+late bool activekeyboard;
+
 
 
 
@@ -361,6 +367,15 @@ String? selectedValue;
                                         ),
                               ),
                             );}
+
+
+
+
+
+
+
+
+                            
   Widget ChildCardOrigin () {return   
      Column(
     children: [
@@ -378,6 +393,7 @@ String? selectedValue;
               buttonPadding: const EdgeInsets.only(bottom: 8),
                           dropdownWidth: 300,       
                           dropdownMaxHeight: 200,
+                          
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
@@ -414,7 +430,8 @@ String? selectedValue;
     ],
   );  }
 
-                
+
+     
 Widget ChildCardDestiny () {return   
      Column(
     children: [
@@ -457,12 +474,9 @@ Widget ChildCardDestiny () {return
               },
               onSaved: (value) {
                 
-              },
-            
-                          
-                       
+              },       
                          
-                          items: dropdownItems),
+              items: dropdownItems),
         ),
       ),
     ],
@@ -478,30 +492,111 @@ Widget ChildCardDestiny () {return
 
   TextEditingController _controllerAddress = TextEditingController();
 
-  void _onButtonPressed() {
-    showModalBottomSheet(context: context, builder: (context) {
-      return Column(
-        children: [
-          TextFormField(
-            controller: _controllerAddress,
-          ),
-          ElevatedButton(onPressed: () async {
-            String descEndereco = await _controllerAddress.text;
-                  Map<String, dynamic> endereco = {
-                    'endereco': descEndereco,
-                  };
-                  db.ref("usuarios")
-                    .child(usuarioLogado!.uid)
-                    .child("endereco")
-                    .push()
-                    .set(endereco);
-                    Navigator.of(context).pop();
 
-          }, child: Text("Save")),
-          ElevatedButton(onPressed: () {
-            Navigator.of(context).pop();}, child: Text("Sair"))
-        ],
-      );
-    });
+
+  
+  void _onButtonPressed() {
+    showModalBottomSheet(context: context,isScrollControlled: true, builder: (context) => Padding(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom),         
+      child: SingleChildScrollView(
+      
+      child: Container(
+        height: 200,
+        color: Color.fromARGB(223, 69, 69, 85),
+        child: Column(
+          children: [       
+            
+            Container(
+                  
+              width: 300,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 30.0),
+                    child: Container(
+                 
+                      height: 60,
+                      child: TextFormField(
+                        controller: _controllerAddress,
+                        style: const TextStyle(color: Colors.white),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Digite seu endereço",
+                          hintText: "Ex: Rua P, 202, Erechim",
+                          labelStyle: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                          ),
+                          hintStyle: TextStyle(
+                            color: Color.fromRGBO(255, 255, 255, 0.4),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(20.0),
+                              ),
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(255, 255, 255, 1),
+                              )),
+                          enabledBorder: OutlineInputBorder(
+                              borderRadius: const BorderRadius.all(
+                                const Radius.circular(20.0),
+                              ),
+                              borderSide: BorderSide(
+                                color: Color.fromRGBO(255, 255, 255, 1),
+                              )),
+                        ),
+                      ),
+                    ),
+                  ),           
+              SizedBox(height: 20,),
+              Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 120,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                    
+                    String descEndereco = await _controllerAddress.text;
+                          Map<String, dynamic> endereco = {
+                            'endereco': descEndereco,
+                          };
+                          db.ref("usuarios")
+                            .child(usuarioLogado!.uid)
+                            .child("endereco")
+                            .push()
+                            .set(endereco);
+                            Navigator.of(context).pop();
+                        
+                  }, child: Text("Salvar",style: TextStyle(fontSize: 14),)
+                  
+                  ),
+                ),
+
+                Container(
+                  width: 120,
+                  height: 50,
+                  child: ElevatedButton(onPressed: () {
+                  Navigator.of(context).pop();}, child: Text("Sair")),
+                )
+              ],
+            ),
+          ],
+            ),
+            ),
+          ],
+          
+        ),
+      ), ),
+    ),
+    );
+    
   }
+  
+  
 }
