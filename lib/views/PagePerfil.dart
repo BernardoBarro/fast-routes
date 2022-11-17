@@ -261,7 +261,8 @@ class _PagePerfilState extends State<PagePerfil> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         PageHome(
-                                                            chaveViagem: travel.key,
+                                                            chaveViagem:
+                                                                travel.key,
                                                             true)));
                                           },
                                           backgroundColor: Color(0xFF21B7CA),
@@ -279,7 +280,8 @@ class _PagePerfilState extends State<PagePerfil> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         PageHome(
-                                                            chaveViagem: travel.key,
+                                                            chaveViagem:
+                                                                travel.key,
                                                             false)));
                                           },
                                           backgroundColor: Colors.blue,
@@ -390,17 +392,12 @@ class _PagePerfilState extends State<PagePerfil> {
       
       );}
   void _performingSingleFetch() {
-    db
-        .child(usuarioLogado!.uid)
-        .child("nome")
-        .get()
-        .then((snapshot) {
+    db.child(usuarioLogado!.uid).child("nome").get().then((snapshot) {
       setState(() {
         changeName = (snapshot.value as dynamic);
       });
     });
   }
-
 
   updatePassagers(String key) {
     db
@@ -411,7 +408,7 @@ class _PagePerfilState extends State<PagePerfil> {
         .onValue
         .listen((event) {
       final allTravels =
-      Map<String, dynamic>.from(event.snapshot.value as dynamic);
+          Map<String, dynamic>.from(event.snapshot.value as dynamic);
       allTravels.keys.forEach((element) {
         db
             .child(element)
