@@ -10,8 +10,6 @@ class Directions {
   factory Directions.fromMap(
       Map<String, dynamic> map, List<Passageiro> address) {
     List<Teste> distance = [];
-    // if((map['routes'] as List).isEmpty) return null;
-    // TODO tratar exeções
     final data = Map<String, dynamic>.from((map['rows'][0]));
     for (int i = 0; i < data['elements'].length; i++) {
       Teste teste = Teste(
@@ -27,15 +25,8 @@ class Directions {
       );
       distance.add(teste);
     }
+    distance.sort((a, b) => a.distanceValue.compareTo(b.distanceValue));
 
-    List<Teste> response = [];
-    // List<PointLatLng> polylinePoints = [];
-    // listMap.forEach((map) {
-    //   final data = Map<String, dynamic>.from((map['routes'][0]));
-    //   PolylinePoints()
-    //       .decodePolyline(data['overview_polyline']['points'])
-    //       .forEach((polyline) => polylinePoints.add(polyline));
-    // });
     return Directions(distance: distance);
   }
 }

@@ -48,7 +48,7 @@ class _PageLoginState extends State<PageLogin> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PageHomePassenger()));
+                            builder: (context) => PageHomePassenger(false)));
                   }
                 });
               }),

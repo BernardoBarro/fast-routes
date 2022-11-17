@@ -108,11 +108,7 @@ class _ListPassengersState extends State<ListPassengers> {
                                   animationDuration: Duration(milliseconds: 0),
                                   value: passageiro.participa,
                                   onChanged: (bool state) {
-                                    db
-                                        .child(usuarioLogado!.uid)
-                                        .child("viagens")
-                                        .child(widget.chave)
-                                        .child("passageiros")
+                                    updatePassagers()
                                         .child(passageiro.uid)
                                         .child("participa")
                                         .set(state);
@@ -155,11 +151,20 @@ class _ListPassengersState extends State<ListPassengers> {
                 backgroundColor: Colors.blue,
                 label: 'Inciar rota',
                 onTap: () {
+                  db
+                      .child(usuarioLogado!.uid)
+                      .child("viagens")
+                      .child(widget.chave)
+                      .child("viagemIniciada")
+                      .set(true);
+
+                  updatePassagers();
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              PageHome(chave: widget.chave, false)));
+                              PageHome(chaveViagem: widget.chave, false)));
                 },
               ),
               SpeedDialChild(
@@ -184,13 +189,30 @@ class _ListPassengersState extends State<ListPassengers> {
     );
   }
 
-  getParticipa(Customer passageiro) {
-    bool alo = false;
+  updatePassagers() {
     db
         .child(usuarioLogado!.uid)
         .child("viagens")
         .child(widget.chave)
         .child("passageiros")
+        .onValue
+        .listen((event) {
+      final allTravels =
+          Map<String, dynamic>.from(event.snapshot.value as dynamic);
+      allTravels.keys.forEach((element) {
+        db
+            .child(element)
+            .child("viagens")
+            .child(widget.chave)
+            .child("viagemIniciada")
+            .set(true);
+      });
+    });
+  }
+
+  getParticipa(Customer passageiro) {
+    bool alo = false;
+    updatePassagers()
         .child(passageiro.uid)
         .child("participa")
         .get()

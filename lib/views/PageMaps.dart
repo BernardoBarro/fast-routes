@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:fast_routes/models/Directions.dart';
 import 'package:fast_routes/models/Passageiro.dart';
@@ -16,10 +15,13 @@ import '../controllers/MapsController.dart';
 import '../providers/AddressProvider.dart';
 
 class PageMaps extends StatefulWidget {
-  final String? chave;
+  final String? chaveViagem;
+  final String? chaveMotorista;
   final bool preview;
 
-  const PageMaps(this.preview, {Key? key, this.chave}) : super(key: key);
+  const PageMaps(this.preview,
+      {Key? key, this.chaveViagem, this.chaveMotorista})
+      : super(key: key);
 
   @override
   State<PageMaps> createState() => _PageMapsState();
@@ -60,12 +62,13 @@ class _PageMapsState extends State<PageMaps> {
         currentLocation = LatLng(location.latitude!, location.longitude!);
       });
     });
-    if (widget.chave != null) {
+
+    if (widget.chaveViagem != null && widget.chaveMotorista != null) {
       positionStream = db
           .ref("usuarios")
-          .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
+          .child(widget.chaveMotorista!)
           .child("viagens")
-          .child(widget.chave!)
+          .child(widget.chaveViagem!)
           .child("location")
           .onValue
           .listen((event) {
@@ -93,11 +96,10 @@ class _PageMapsState extends State<PageMaps> {
       });
     });
 
-    if (widget.chave != null) {
+    if (widget.chaveViagem != null) {
       setState(() {
         _markersSet = {};
       });
-      _addMarker();
       positionStream = location.onLocationChanged.listen((newLoc) {
         currentLocation = LatLng(newLoc.latitude!, newLoc.longitude!);
 
@@ -110,7 +112,7 @@ class _PageMapsState extends State<PageMaps> {
             .ref("usuarios")
             .child(usuarioLogado!.uid)
             .child("viagens")
-            .child(widget.chave!)
+            .child(widget.chaveViagem!)
             .child("location")
             .set(position)
             .catchError((error) => print("Ocorreu um erro $error"));
@@ -124,6 +126,8 @@ class _PageMapsState extends State<PageMaps> {
                 markerId: const MarkerId("currentLocation"),
                 position: LatLng(
                     currentLocation!.latitude, currentLocation!.longitude)));
+          } else {
+            _addMarker();
           }
         });
       });
@@ -156,64 +160,100 @@ class _PageMapsState extends State<PageMaps> {
     return Scaffold(
         body: GetBuilder<MapsController>(
       init: controller,
-      builder: (value) => Column(
-        // alignment: Alignment.center,
-        children: [
-          currentLocation == null
-              ? const Center(child: Text("Loading..."))
-              : Container(
-                width: largura,
-                height: alturaMapa,
-                child: GoogleMap(
-                    myLocationButtonEnabled: false,
-                    zoomControlsEnabled: false,
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(
-                          currentLocation!.latitude, currentLocation!.longitude),
-                      zoom: 18,
+      builder: (value) => _info == null
+          ? Stack(
+              alignment: Alignment.center,
+              children: [
+                currentLocation == null
+                    ? const Center(child: Text("Loading..."))
+                    : GoogleMap(
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(currentLocation!.latitude,
+                              currentLocation!.longitude),
+                          zoom: 18,
+                        ),
+                        myLocationEnabled: (!isMotorista ||
+                            widget.chaveViagem == null ||
+                            widget.preview),
+                        markers: _markersSet,
+                        onMapCreated: (gmc) => {
+                          _googleMapController = gmc,
+                          controller.onMapsCreated(
+                              _googleMapController,
+                              isMotorista,
+                              widget.chaveMotorista,
+                              widget.chaveViagem),
+                        },
+                      ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Container(
+                    height: 60.0,
+                    width: 60.0,
+                    child: FloatingActionButton(
+                      backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                      onPressed: () => controller.onMapsCreated(
+                          _googleMapController,
+                          isMotorista,
+                          widget.chaveMotorista,
+                          widget.chaveViagem),
+                      child: Icon(
+                        Icons.center_focus_strong_outlined,
+                        size: 50,
+                      ),
                     ),
-                    myLocationEnabled:
-                        (!isMotorista || widget.chave == null || widget.preview),
-                    markers: _markersSet,
-                    // polylines: {
-                    //   if (_info != null)
-                    //     Polyline(
-                    //       polylineId: const PolylineId('overview_polyline'),
-                    //       color: Colors.red,
-                    //       width: 5,
-                    //       points: _info!.polylinePoints
-                    //           .map((e) => LatLng(e.latitude, e.longitude))
-                    //           .toList(),
-                    //     ),
-                    // },
-                    onMapCreated: (gmc) => {
-                      _googleMapController = gmc,
-                      controller.onMapsCreated(_googleMapController, isMotorista),
-                    },
                   ),
-              ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Container(
-              height: 60.0,
-              width: 60.0,
-              child: FloatingActionButton(
-                backgroundColor: Color.fromARGB(0, 255, 255, 255),
-                onPressed: () =>
-                    controller.onMapsCreated(_googleMapController, isMotorista),
-                child: Icon(
-                  Icons.center_focus_strong_outlined,
-                  size: 50,
                 ),
-              ),
+              ],
+            )
+          : Column(
+              children: [
+                currentLocation == null
+                    ? const Center(child: Text("Loading..."))
+                    : Container(
+                        width: largura,
+                        height: alturaMapa,
+                        child: GoogleMap(
+                          myLocationButtonEnabled: false,
+                          zoomControlsEnabled: false,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(currentLocation!.latitude,
+                                currentLocation!.longitude),
+                            zoom: 18,
+                          ),
+                          myLocationEnabled: (!isMotorista ||
+                              widget.chaveViagem == null ||
+                              widget.preview),
+                          markers: _markersSet,
+                          onMapCreated: (gmc) => {
+                            _googleMapController = gmc,
+                            controller.onMapsCreated(
+                                _googleMapController,
+                                isMotorista,
+                                widget.chaveMotorista,
+                                widget.chaveViagem),
+                          },
+                        ),
+                      ),
+                _info == null
+                    ? const Center(child: Text("Loading..."))
+                    : Container(
+                        width: largura,
+                        height: alturaContainer,
+                        child: ListView.builder(
+                            itemCount: _info!.distance.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(_info!.distance[index].nome +
+                                    " - " +
+                                    _info!.distance[index].distance),
+                              );
+                            }),
+                      ),
+              ],
             ),
-          ),
-          Container(
-            width: largura,
-            height: alturaContainer,
-          ),
-        ],
-      ),
     ));
   }
 
@@ -253,6 +293,7 @@ class _PageMapsState extends State<PageMaps> {
   }
 
   void _getRoute(double? latitude, double? longitude) async {
+    passageiros = [];
     provider.address.forEach((element) {
       passageiros.add(element);
     });
@@ -263,31 +304,6 @@ class _PageMapsState extends State<PageMaps> {
       _addMarkerWithDistance(directions!);
       _changeOrigem(directions!);
     });
-    if (!modalBottom) {
-      modalBottom = true;
-      showModalBottomSheet(
-          context: context,
-          builder: (context) {
-            return StatefulBuilder(builder: (context, state) {
-              state(() {
-                _info!.distance
-                    .forEach((element) => print(element.distanceValue));
-              });
-              return ListView.builder(
-                  itemCount: _info!.distance.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(_info!.distance[index].nome +
-                          " - " +
-                          _info!.distance[index].distance),
-                      onTap: () {
-                        state(() {});
-                      },
-                    );
-                  });
-            });
-          });
-    }
   }
 
   _addMarkerWithDistance(Directions directions) {
@@ -337,7 +353,7 @@ class _PageMapsState extends State<PageMaps> {
             .ref("usuarios")
             .child(usuarioLogado!.uid)
             .child("viagens")
-            .child(widget.chave!)
+            .child(widget.chaveViagem!)
             .child("passageiros")
             .child(element.passagerUid)
             .update(origem);

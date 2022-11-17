@@ -27,7 +27,7 @@ class PagePerfil extends StatefulWidget {
 
 class _PagePerfilState extends State<PagePerfil> {
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-  FirebaseDatabase db = FirebaseDatabase.instance;
+  final db = FirebaseDatabase.instance.ref("usuarios");
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final double circleRadius = 120.0;
   final double circleBorderWidth = 50.0;
@@ -293,12 +293,19 @@ class _PagePerfilState extends State<PagePerfil> {
                                       children: [
                                         SlidableAction(
                                           onPressed: (context) {
+                                            db
+                                                .child(usuarioLogado!.uid)
+                                                .child("viagens")
+                                                .child(travel.key)
+                                                .child("viagemIniciada")
+                                                .set(true);
+                                            updatePassagers(travel.key);
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         PageHome(
-                                                            chave: travel.key,
+                                                            chaveViagem: travel.key,
                                                             true)));
                                           },
                                           backgroundColor: Color(0xFF21B7CA),
@@ -316,7 +323,7 @@ class _PagePerfilState extends State<PagePerfil> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         PageHome(
-                                                            chave: travel.key,
+                                                            chaveViagem: travel.key,
                                                             false)));
                                           },
                                           backgroundColor: Colors.blue,
@@ -386,13 +393,34 @@ class _PagePerfilState extends State<PagePerfil> {
 
   void _performingSingleFetch() {
     db
-        .ref("usuarios")
         .child(usuarioLogado!.uid)
         .child("nome")
         .get()
         .then((snapshot) {
       setState(() {
         changeName = (snapshot.value as dynamic);
+      });
+    });
+  }
+
+
+  updatePassagers(String key) {
+    db
+        .child(usuarioLogado!.uid)
+        .child("viagens")
+        .child(key)
+        .child("passageiros")
+        .onValue
+        .listen((event) {
+      final allTravels =
+      Map<String, dynamic>.from(event.snapshot.value as dynamic);
+      allTravels.keys.forEach((element) {
+        db
+            .child(element)
+            .child("viagens")
+            .child(key)
+            .child("viagemIniciada")
+            .set(true);
       });
     });
   }

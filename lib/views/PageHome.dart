@@ -12,9 +12,9 @@ import 'PagePerfil.dart';
 import 'PagesPassengers/PageHomePassenger.dart';
 
 class PageHome extends StatefulWidget {
-  final String? chave;
+  final String? chaveViagem;
   final bool preview;
-  const PageHome(this.preview, {Key? key, this.chave}) : super(key: key);
+  const PageHome(this.preview, {Key? key, this.chaveViagem}) : super(key: key);
 
   @override
   State<PageHome> createState() => _PageHomeState();
@@ -46,8 +46,8 @@ class _PageHomeState extends State<PageHome> {
           child: PagePerfil(),
         ),
         ChangeNotifierProvider(
-          create: (_) => AddressProvider(chave: widget.chave),
-          child: PageMaps(chave: widget.chave, widget.preview),
+          create: (_) => AddressProvider(chave: widget.chaveViagem),
+          child: PageMaps(chaveViagem: widget.chaveViagem, widget.preview),
         ),
         ChangeNotifierProvider(
           create: (_) => TravelProvider(),
@@ -94,7 +94,7 @@ class _PageHomeState extends State<PageHome> {
       bool isMotorista = (snapshot.value as dynamic);
       if (!isMotorista) {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => PageHomePassenger()));
+            MaterialPageRoute(builder: (context) => PageHomePassenger(false)));
       }
     });
   }
