@@ -505,10 +505,8 @@ Widget ChildCardDestiny () {return
         height: 200,
         color: Color.fromARGB(223, 69, 69, 85),
         child: Column(
-          children: [       
-            
-            Container(
-                  
+          children: [           
+            Container(                
               width: 300,
               child: Column(
                 children: [
