@@ -1,17 +1,19 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:fast_routes/models/Address.dart';
 import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/PassengersAddressProvider.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
 import 'package:fast_routes/views/PagesPassengers/InviteSideBarPassageiro.dart';
+import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:geocoding/geocoding.dart';
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 
 import '../../providers/InviteProvider.dart';
 
@@ -40,6 +42,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
           (route) => false);
     });
   }
+
 
   late File _image = File('/images/logo.png');
   bool imageOK = false;
@@ -104,6 +107,21 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
     _performingSingleFetch();
     super.initState();
   }
+
+  List<DropdownMenuItem<String>> get dropdownItems{
+  List<DropdownMenuItem<String>> menuItems = [
+    DropdownMenuItem(child: Text("USA"),value: "USA"),
+    DropdownMenuItem(child: Text("Canada"),value: "Canada"),
+    DropdownMenuItem(child: Text("Brazil"),value: "Brazil"),
+    DropdownMenuItem(child: Text("England"),value: "England"),
+    DropdownMenuItem(child: Text("England"),value: "England"),
+    DropdownMenuItem(child: Text("England"),value: "England"),
+  ];
+  return menuItems;
+}
+String? selectedValue;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -317,28 +335,10 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                 onTap: _onButtonPressed,
                               ),
                           ...model.address.map(
-                            (address) => Padding(
-                              padding: const EdgeInsets.only(left: 15.0,right: 15),
-                              child: Card(                            
-                                   color: Color.fromARGB(227, 108, 108, 126),
-                                   elevation: 3,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    
-                  ),
-                  
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(
-                                           left: 15.0),
-                                      child: ListTile(
-                                        title: Text(address.endereco,style: TextStyle(color: Colors.white),),
-                                        
-                                      )),
-                                      
-                                      
-                                      ),
-                            ),
-                                    
+                            (address) =>                        
+                            Container(child: ChildMyAddress(address),                         
+                            
+                            ),       
                           )
                         ]));
                         
@@ -351,7 +351,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                           child: InkWell(
                             child: Padding(
                             padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
-                            child: Icon(Icons.add, color: Colors.blue,),
+                            child: Icon(Icons.add, color: Colors.white,),
                           ),       
                           onTap: _onButtonPressed,  
                           ),
@@ -367,7 +367,142 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       ),
     );
   }
+  
+  
+  Widget ChildMyAddress (Address address) {return Container(
+                              height:65,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15.0,right: 15),
+                                child: 
+                                
+                                Card(                            
+                                     color: Color.fromARGB(255, 108, 108, 126),
+                                     elevation: 3,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    
+                  ),
+                  
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                             left: 15.0),
+                                        child: ListTile(
+                                          title: Text(address.endereco,style: TextStyle(color: Colors.white),),
+                                          
+                                        )),
+                                        
+                                        
+                                        ),
+                              ),
+                            );}
+  Widget ChildCardOrigin () {return   
+     Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 5.0, left:18.0, right: 18.0),
+        child: Container(
+          height: 65.0,
+          width: double.infinity,
+          child: DropdownButtonFormField2(
+            isExpanded: true,
+              hint: const Text(
+                'Selecione sua Origem',
+                style: TextStyle(fontSize: 14),
+              ),
+              buttonPadding: const EdgeInsets.only(bottom: 8),
+                          dropdownWidth: 300,       
+                          dropdownMaxHeight: 200,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                            border: OutlineInputBorder(                       
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        validator: (value) {
+                
+              },
+              onChanged: (value) {
+                //Do something when changing the item if you want.
+              },
+              onSaved: (value) {
+                
+              },
+            
+                          
+                       
+                         
+                          items: dropdownItems),
+        ),
+      ),
+    ],
+  );  }
 
+                
+Widget ChildCardDestiny () {return   
+     Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 5.0, left:18.0, right: 18.0),
+        child: Container(
+          height: 65.0,
+          width: double.infinity,
+          child: DropdownButtonFormField2(
+            isExpanded: true,
+              hint: const Text(
+                'Selecione seu Destino',
+                style: TextStyle(fontSize: 14),
+              ),
+              buttonPadding: const EdgeInsets.only(bottom: 8),
+                          dropdownWidth: 300,       
+                          dropdownMaxHeight: 200,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                            border: OutlineInputBorder(                       
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        validator: (value) {
+                
+              },
+              onChanged: (value) {
+                //Do something when changing the item if you want.
+              },
+              onSaved: (value) {
+                
+              },
+            
+                          
+                       
+                         
+                          items: dropdownItems),
+        ),
+      ),
+    ],
+  ); 
+}
   void _performingSingleFetch() {
     db
         .ref("usuarios")
