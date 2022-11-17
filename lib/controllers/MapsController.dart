@@ -20,14 +20,15 @@ class MapsController extends GetxController {
 
   get position => _position;
 
-  onMapsCreated(GoogleMapController gmc, bool isMotorista) async {
+  onMapsCreated(GoogleMapController gmc, bool isMotorista,
+      String? chaveMotorista, String? chaveViagem) async {
     watchPositionFlag = !watchPositionFlag;
     _mapsController = gmc;
     if (watchPositionFlag) {
-      if(isMotorista){
+      if (isMotorista) {
         watchYourselfPosition();
-      }else{
-        watchDriverPosition();
+      } else {
+        watchDriverPosition(chaveMotorista, chaveViagem);
       }
     } else {
       positionStream.cancel();
@@ -56,13 +57,12 @@ class MapsController extends GetxController {
       return Future.error('Autorize o acesso à localização nas configurações.');
     }
     positionStream = Geolocator.getPositionStream().listen((Position position) {
-
       _mapsController.animateCamera(CameraUpdate.newLatLng(
           LatLng(position.latitude, position.longitude)));
     });
   }
 
-  watchDriverPosition() async {
+  watchDriverPosition(String? chaveMotorista, String? chaveViagem) async {
     LocationPermission permission;
     bool ativado = await Geolocator.isLocationServiceEnabled();
 
@@ -82,19 +82,21 @@ class MapsController extends GetxController {
     if (permission == LocationPermission.deniedForever) {
       return Future.error('Autorize o acesso à localização nas configurações.');
     }
-    positionStream = db
-        .ref("usuarios")
-        .child("mHWJoMG77UWtaehzJkLTgGLoB4K3")
-        .child("viagens")
-        .child("-NER-JZ617H9fgrKwDRR")
-        .child("location")
-        .onValue
-        .listen((event) {
-      final position =
-      Map<String, dynamic>.from(event.snapshot.value as dynamic);
-      _mapsController.animateCamera(CameraUpdate.newLatLng(
-          LatLng(position['latitude'], position['longitude'])));
-    });
+    if (chaveViagem != null && chaveMotorista != null) {
+      positionStream = db
+          .ref("usuarios")
+          .child(chaveMotorista)
+          .child("viagens")
+          .child(chaveViagem)
+          .child("location")
+          .onValue
+          .listen((event) {
+        final position =
+            Map<String, dynamic>.from(event.snapshot.value as dynamic);
+        _mapsController.animateCamera(CameraUpdate.newLatLng(
+            LatLng(position['latitude'], position['longitude'])));
+      });
+    }
   }
 
   void getPosition() async {
