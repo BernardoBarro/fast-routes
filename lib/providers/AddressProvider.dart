@@ -24,7 +24,6 @@ class AddressProvider extends ChangeNotifier {
   }
 
   void _listenToAddress(String? chave) {
-    List<String> keys = [];
     String uid = usuarioLogado!.uid;
     _addressStream = _db
         .child(uid)
@@ -35,15 +34,10 @@ class AddressProvider extends ChangeNotifier {
         .listen((event) {
       final allAddress =
           Map<String, dynamic>.from(event.snapshot.value as dynamic);
-      keys.addAll(allAddress.keys);
       _address = allAddress.values
           .map((addressAsJSON) =>
               Passageiro.fromRTDB(Map<String, dynamic>.from(addressAsJSON)))
           .toList();
-      for(int i = 0;i<_address.length;i++){
-        Passageiro travel = _address[i];
-        travel.setKeys(keys[i]);
-      }
       notifyListeners();
     });
   }

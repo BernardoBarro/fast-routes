@@ -1,6 +1,5 @@
 import 'package:fast_routes/models/Travel.dart';
 import 'package:fast_routes/views/PagesPassengers/FindDriver.dart';
-import 'package:fast_routes/views/PagesPassengers/PageHomePassenger.dart';
 import 'package:flutter/material.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +16,7 @@ class PageMyAddress extends StatefulWidget {
 }
 
 class _PageMyAddressState extends State<PageMyAddress> {
-  final db = FirebaseDatabase.instance.ref("usuarios");
+  FirebaseDatabase db = FirebaseDatabase.instance;
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
 
   @override
@@ -55,28 +54,13 @@ class _PageMyAddressState extends State<PageMyAddress> {
                               width: 250,
                               height: 80,
                               child: Card(
-                                color: travel.viagemIniciada
-                                    ? Colors.blue
-                                    : Color.fromARGB(227, 108, 108, 126),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(12)),
-                                ),
+                                 color: Color.fromARGB(227, 108, 108, 126),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(12)),
+                          ),
                                 child: InkWell(
                                   splashColor: Colors.blue.withAlpha(30),
-                                  onTap: () {
-                                    if (travel.viagemIniciada) {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PageHomePassenger(
-                                                      chaveViagem: travel.key,
-                                                      chaveMotorista:
-                                                          travel.driverUid,
-                                                      false)));
-                                    }
-                                  },
+                                  onTap: () {},
                                   child: SizedBox(
                                     width: 350,
                                     height: 100,
@@ -85,10 +69,7 @@ class _PageMyAddressState extends State<PageMyAddress> {
                                         trailing: Builder(
                                           builder: (BuildContext context) {
                                             return IconButton(
-                                              icon: const Icon(
-                                                Icons.delete,
-                                                color: Colors.white,
-                                              ),
+                                              icon: const Icon(Icons.delete, color: Colors.white,),
                                               onPressed: () {
                                                 showAlertDialog(
                                                     context, travel);
@@ -129,16 +110,7 @@ class _PageMyAddressState extends State<PageMyAddress> {
                                 textOff: "",
                                 textOn: "",
                                 animationDuration: Duration(milliseconds: 0),
-                                onChanged: (bool state) {
-                                  db
-                                      .child(travel.driverUid)
-                                      .child("viagens")
-                                      .child(travel.key)
-                                      .child("passageiros")
-                                      .child(usuarioLogado!.uid)
-                                      .child("participa")
-                                      .set(state);
-                                },
+                                onChanged: (bool state) {},
                                 onSwipe: () {},
                                 onDoubleTap: () {},
                                 onTap: () {},
@@ -162,8 +134,11 @@ class _PageMyAddressState extends State<PageMyAddress> {
           child: FloatingActionButton(
             backgroundColor: Colors.blue,
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => FindDriver()));
+
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => FindDriver()));
             },
             child: Icon(
               Icons.add,
@@ -181,14 +156,10 @@ class _PageMyAddressState extends State<PageMyAddress> {
         builder: (ctx) {
           return AlertDialog(
             backgroundColor: Color.fromARGB(223, 69, 69, 85),
-            title: const Text("Confirmação!!",
-                style: TextStyle(color: Colors.white)),
-            content: Text(
-              "Você tem certeza que deseja sair da viagem: " +
-                  travel.nome +
-                  "?",
-              style: TextStyle(color: Colors.white),
-            ),
+            title: const Text("Confirmação!!", style: TextStyle(color: Colors.white)),
+            content: Text("Você tem certeza que deseja sair da viagem: " +
+                travel.nome +
+                "?", style: TextStyle(color: Colors.white),),
             actions: [
               TextButton(
                   onPressed: () {
@@ -208,8 +179,14 @@ class _PageMyAddressState extends State<PageMyAddress> {
 
   void removeTravel(Travel travel) {
     print(travel.driverUid);
-    db.child(usuarioLogado!.uid).child('viagens').child(travel.key).remove();
     db
+        .ref("usuarios")
+        .child(usuarioLogado!.uid)
+        .child('viagens')
+        .child(travel.key)
+        .remove();
+    db
+        .ref("usuarios")
         .child(travel.driverUid)
         .child('viagens')
         .child(travel.key)

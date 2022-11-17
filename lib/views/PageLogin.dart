@@ -43,12 +43,12 @@ class _PageLoginState extends State<PageLogin> {
                 setState(() {
                   if (isMotorista) {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PageHome(false)));
+                        MaterialPageRoute(builder: (context) => PageHome()));
                   } else {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PageHomePassenger(false)));
+                            builder: (context) => PageHomePassenger()));
                   }
                 });
               }),

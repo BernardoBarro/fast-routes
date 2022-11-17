@@ -1,4 +1,3 @@
-import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/views/AddedPassengers.dart';
 import 'package:fast_routes/views/PageHome.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,12 +7,9 @@ import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 import '../providers/TravelPassagerProvider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 
 class ListPassengers extends StatefulWidget {
   final String chave;
-
   const ListPassengers(this.chave, {Key? key}) : super(key: key);
 
   @override
@@ -21,25 +17,19 @@ class ListPassengers extends StatefulWidget {
 }
 
 class _ListPassengersState extends State<ListPassengers> {
-  User? usuarioLogado = FirebaseAuth.instance.currentUser;
-  final db = FirebaseDatabase.instance.ref("usuarios");
-  bool participa = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        toolbarHeight: 65,
-        backgroundColor: Color.fromARGB(223, 69, 69, 85),
-        elevation: 2,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 0),
-          child: Text(
-            "Lista de Passageiros",
-          ),
-        ),
-      ),
+      centerTitle: true,
+      toolbarHeight: 65,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Lista de Passageiros",),
+      ),),
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -106,13 +96,7 @@ class _ListPassengersState extends State<ListPassengers> {
                                   textOff: "",
                                   textOn: "",
                                   animationDuration: Duration(milliseconds: 0),
-                                  value: passageiro.participa,
-                                  onChanged: (bool state) {
-                                    updatePassagers()
-                                        .child(passageiro.uid)
-                                        .child("participa")
-                                        .set(state);
-                                  },
+                                  onChanged: (bool state) {},
                                   onSwipe: () {},
                                   onDoubleTap: () {},
                                   onTap: () {},
@@ -151,20 +135,10 @@ class _ListPassengersState extends State<ListPassengers> {
                 backgroundColor: Colors.blue,
                 label: 'Inciar rota',
                 onTap: () {
-                  db
-                      .child(usuarioLogado!.uid)
-                      .child("viagens")
-                      .child(widget.chave)
-                      .child("viagemIniciada")
-                      .set(true);
-
-                  updatePassagers();
-
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              PageHome(chaveViagem: widget.chave, false)));
+                          builder: (context) => PageHome(chave: widget.chave)));
                 },
               ),
               SpeedDialChild(
@@ -182,43 +156,20 @@ class _ListPassengersState extends State<ListPassengers> {
                           builder: (context) => AddedPassengers(widget.chave)));
                 },
               ),
+              SpeedDialChild(
+                child: Icon(
+                  Icons.save_rounded,
+                  color: Colors.white,
+                  size: 35,
+                ),
+                backgroundColor: Colors.blue,
+                label: 'Criar PDF',
+                onTap: () async {},
+              ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  updatePassagers() {
-    db
-        .child(usuarioLogado!.uid)
-        .child("viagens")
-        .child(widget.chave)
-        .child("passageiros")
-        .onValue
-        .listen((event) {
-      final allTravels =
-          Map<String, dynamic>.from(event.snapshot.value as dynamic);
-      allTravels.keys.forEach((element) {
-        db
-            .child(element)
-            .child("viagens")
-            .child(widget.chave)
-            .child("viagemIniciada")
-            .set(true);
-      });
-    });
-  }
-
-  getParticipa(Customer passageiro) {
-    bool alo = false;
-    updatePassagers()
-        .child(passageiro.uid)
-        .child("participa")
-        .get()
-        .then((snapshot) => {
-              alo = (snapshot.value as dynamic),
-            });
-    return alo;
   }
 }

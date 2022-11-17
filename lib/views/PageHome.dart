@@ -12,9 +12,9 @@ import 'PagePerfil.dart';
 import 'PagesPassengers/PageHomePassenger.dart';
 
 class PageHome extends StatefulWidget {
-  final String? chaveViagem;
-  final bool preview;
-  const PageHome(this.preview, {Key? key, this.chaveViagem}) : super(key: key);
+  final String? chave;
+
+  const PageHome({Key? key, this.chave}) : super(key: key);
 
   @override
   State<PageHome> createState() => _PageHomeState();
@@ -24,6 +24,21 @@ class _PageHomeState extends State<PageHome> {
   FirebaseDatabase db = FirebaseDatabase.instance;
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   int _selectedIndex = 1;
+
+  // final List<Widget> _telas = [
+  //   ChangeNotifierProvider(
+  //     create: (_) => UserProvider(),
+  //     child: PagePerfil(),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => AddressProvider(),
+  //     child: PageMaps(chave: widget.chave),
+  //   ),
+  //   ChangeNotifierProvider(
+  //     create: (_) => TravelProvider(),
+  //     child: PageViagens(),
+  //   ),
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -46,8 +61,8 @@ class _PageHomeState extends State<PageHome> {
           child: PagePerfil(),
         ),
         ChangeNotifierProvider(
-          create: (_) => AddressProvider(chave: widget.chaveViagem),
-          child: PageMaps(chaveViagem: widget.chaveViagem, widget.preview),
+          create: (_) => AddressProvider(chave: widget.chave),
+          child: PageMaps(chave: widget.chave),
         ),
         ChangeNotifierProvider(
           create: (_) => TravelProvider(),
@@ -94,7 +109,7 @@ class _PageHomeState extends State<PageHome> {
       bool isMotorista = (snapshot.value as dynamic);
       if (!isMotorista) {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => PageHomePassenger(false)));
+            MaterialPageRoute(builder: (context) => PageHomePassenger()));
       }
     });
   }

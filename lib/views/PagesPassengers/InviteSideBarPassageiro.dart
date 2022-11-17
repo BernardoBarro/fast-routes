@@ -111,8 +111,6 @@ class _InviteSideBarPassageiroState extends State<InviteSideBarPassageiro> {
       String nome = (snapshot.value as dynamic);
       Map<String, dynamic> passageiro = {
         'nome': nome,
-        'origem': true,
-        'participa': true,
       };
 
       Map<String, dynamic> viagem = {

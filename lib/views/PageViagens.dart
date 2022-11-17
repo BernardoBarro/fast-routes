@@ -29,18 +29,15 @@ class _PageViagensState extends State<PageViagens> {
     final db = FirebaseDatabase.instance.ref("usuarios");
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        toolbarHeight: 65,
-        automaticallyImplyLeading: false,
-        backgroundColor: Color.fromARGB(223, 69, 69, 85),
-        elevation: 2,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 0),
-          child: Text(
-            "Minhas Viagens",
-          ),
-        ),
-      ),
+      centerTitle: true,
+      toolbarHeight: 65,
+      automaticallyImplyLeading: false,
+      backgroundColor: Color.fromARGB(223, 69, 69, 85),
+      elevation: 2,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 0),
+        child: Text("Minhas Viagens",),
+      ),),
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -54,9 +51,7 @@ class _PageViagensState extends State<PageViagens> {
                     child: ListView(
                   children: [
                     ...model.travels.map((travel) => Card(
-                          color: travel.viagemIniciada
-                              ? Colors.blue
-                              : Color.fromARGB(227, 108, 108, 126),
+                          color: Color.fromARGB(227, 108, 108, 126),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(12)),
                           ),
@@ -82,10 +77,7 @@ class _PageViagensState extends State<PageViagens> {
                                   trailing: Builder(
                                     builder: (BuildContext context) {
                                       return IconButton(
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
-                                        ),
+                                        icon: const Icon(Icons.delete, color: Colors.white,),
                                         onPressed: () {
                                           showAlertDialog(context, travel, db,
                                               usuarioLogado);
@@ -97,6 +89,8 @@ class _PageViagensState extends State<PageViagens> {
                                   title: Text(
                                     travel.nome,
                                     style: TextStyle(fontSize: 18),
+                                    
+                                    
                                   ),
                                   subtitle: Text(
                                     travel.weekDays,
@@ -142,25 +136,22 @@ class _PageViagensState extends State<PageViagens> {
         builder: (ctx) {
           return AlertDialog(
             backgroundColor: Color.fromARGB(223, 69, 69, 85),
-            title: const Text("Confirmação!!",
-                style: TextStyle(color: Colors.white)),
-            content: Text(
-                "Você tem certeza que deseja excluir a viagem: " +
-                    travel.nome +
-                    "?",
-                style: TextStyle(color: Colors.white)),
+            title: const Text("Confirmação!!", style: TextStyle(color: Colors.white)),
+            content: Text("Você tem certeza que deseja excluir a viagem: " +
+                travel.nome +
+                "?",style: TextStyle(color: Colors.white)),
             actions: [
               TextButton(
                   onPressed: () {
                     Navigator.of(ctx).pop();
                   },
-                  child: Text("Não", style: TextStyle(color: Colors.white))),
+                  child: Text("Não",style: TextStyle(color: Colors.white))),
               TextButton(
                   onPressed: () {
                     removeTravel(db, usuarioLogado, travel);
                     Navigator.of(ctx).pop();
                   },
-                  child: Text("Sim", style: TextStyle(color: Colors.white))),
+                  child: Text("Sim",style: TextStyle(color: Colors.white))),
             ],
           );
         });
