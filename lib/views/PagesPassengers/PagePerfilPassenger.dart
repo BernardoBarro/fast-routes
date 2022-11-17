@@ -44,6 +44,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
     });
   }
 
+
   late File _image = File('/images/logo.png');
   bool imageOK = false;
 
@@ -334,7 +335,26 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                 ),
                                 onTap: _onButtonPressed,
                               ),
-                            ),
+                          ...model.address.map(
+                            (address) =>                        
+                            Container(child: ChildMyAddress(address),                         
+                            
+                            ),       
+                          )
+                        ]));
+                        
+                      }),
+                       
+                      Container(
+                        height: 45,
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: InkWell(
+                            child: Padding(
+                            padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
+                            child: Icon(Icons.add, color: Colors.white,),
+                          ),       
+                          onTap: _onButtonPressed,  
                           ),
                         ],
                       ),
@@ -348,6 +368,87 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       ),
     );
   }
+  
+  
+  Widget ChildMyAddress (Address address) {return Container(
+                              height:65,
+                              width: double.infinity,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 15.0,right: 15),
+                                child: 
+                                
+                                Card(                            
+                                     color: Color.fromARGB(255, 108, 108, 126),
+                                     elevation: 3,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    
+                  ),
+                  
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                             left: 15.0),
+                                        child: ListTile(
+                                          title: Text(address.endereco,style: TextStyle(color: Colors.white),),
+                                          
+                                        )),
+                                        
+                                        
+                                        ),
+                              ),
+                            );}
+  Widget ChildCardOrigin () {return   
+     Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.only(top: 5.0, left:18.0, right: 18.0),
+        child: Container(
+          height: 65.0,
+          width: double.infinity,
+          child: DropdownButtonFormField2(
+            isExpanded: true,
+              hint: const Text(
+                'Selecione sua Origem',
+                style: TextStyle(fontSize: 14),
+              ),
+              buttonPadding: const EdgeInsets.only(bottom: 8),
+                          dropdownWidth: 300,       
+                          dropdownMaxHeight: 200,
+                          decoration: InputDecoration(
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            ),
+                            border: OutlineInputBorder(                       
+                              borderSide: BorderSide(
+                       color: Color.fromARGB(227, 108, 108, 126),
+                        width: 2.0,),
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                            
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                        validator: (value) {
+                
+              },
+              onChanged: (value) {
+                //Do something when changing the item if you want.
+              },
+              onSaved: (value) {
+                
+              },
+            
+                          
+                       
+                         
+                          items: dropdownItems),
+        ),
+      ),
+    ],
+  );  }
 
   Widget ChildMyAddress(Address address) {
     return Container(
