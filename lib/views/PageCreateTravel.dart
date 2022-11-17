@@ -92,7 +92,8 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
         'data': dataFormatada,
         'weekDays': days,
         "ida": {'horario': horarioIda, 'origem': origemIda},
-        "volta": {'horario': horarioVolta, 'origem': origemVolta}
+        "volta": {'horario': horarioVolta, 'origem': origemVolta},
+        'viagemIniciada': false,
       };
 
       db
@@ -107,7 +108,7 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => PageHome(),
+            builder: (context) => PageHome(false),
           ),
           (route) => false);
     }
