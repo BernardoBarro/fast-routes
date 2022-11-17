@@ -594,9 +594,6 @@ Widget ChildCardDestiny () {return
         ),
       ), ),
     ),
-    );
-    
+    ); 
   }
-  
-  
 }
