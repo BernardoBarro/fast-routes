@@ -16,6 +16,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
+import '../../models/Travel.dart';
 import '../../providers/InviteProvider.dart';
 
 class PagePerfilPassenger extends StatefulWidget {
@@ -26,8 +27,11 @@ class PagePerfilPassenger extends StatefulWidget {
 }
 
 class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
+  late PassengersAddressProvider provider;
+  String origem = 'Selecione sua Origem';
+  String destino = 'Selecione seu Destino';
   GlobalKey<ScaffoldState> _globalKey = GlobalKey<ScaffoldState>();
-  FirebaseDatabase db = FirebaseDatabase.instance;
+  final db = FirebaseDatabase.instance.ref("usuarios");
   User? usuarioLogado = FirebaseAuth.instance.currentUser;
   final double circleRadius = 120.0;
   final double circleBorderWidth = 50.0;
@@ -40,7 +44,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const LoginandRegister()),
-              (route) => false);
+          (route) => false);
     });
   }
 
@@ -54,7 +58,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   //para posteriormente ser recuperada e mostrada
   _imgFromCamera() async {
     final pickedFile =
-    await _picker.pickImage(source: ImageSource.camera, imageQuality: 30);
+        await _picker.pickImage(source: ImageSource.camera, imageQuality: 30);
 
     setState(() {
       _image = File(pickedFile!.path);
@@ -65,7 +69,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   //mesma coisa só que com o album
   _imgFromLibrary() async {
     final pickedFile =
-    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
 
     setState(() {
       _image = File(pickedFile!.path);
@@ -109,14 +113,11 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   }
 
   List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("USA"), value: "USA"),
-      DropdownMenuItem(child: Text("Canada"), value: "Canada"),
-      DropdownMenuItem(child: Text("Brazil"), value: "Brazil"),
-      DropdownMenuItem(child: Text("England"), value: "England"),
-      DropdownMenuItem(child: Text("England"), value: "England"),
-      DropdownMenuItem(child: Text("England"), value: "England"),
-    ];
+    List<DropdownMenuItem<String>> menuItems = [];
+    provider.address.forEach((element) {
+      menuItems.add(DropdownMenuItem(
+          child: Text(element.endereco), value: element.endereco));
+    });
     return menuItems;
   }
 
@@ -125,6 +126,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
 
   @override
   Widget build(BuildContext context) {
+    provider = Provider.of<PassengersAddressProvider>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -183,7 +185,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                           label: const Text(
                             "Deslogar",
                             style:
-                            TextStyle(color: Colors.white, fontSize: 13.0),
+                                TextStyle(color: Colors.white, fontSize: 13.0),
                           ),
                           padding: EdgeInsets.only(left: 0),
                         ),
@@ -226,24 +228,24 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                               height: circleRadius,
                               child: imageOK != (false)
                                   ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(100),
-                                  child: Container(
-                                      color: Colors.grey,
-                                      height: 300,
-                                      width: 300,
-                                      child: Image.file(_image)))
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: Container(
+                                          color: Colors.grey,
+                                          height: 300,
+                                          width: 300,
+                                          child: Image.file(_image)))
                                   : Container(
-                                decoration: BoxDecoration(
-                                    color: Colors.grey[200],
-                                    borderRadius:
-                                    BorderRadius.circular(100)),
-                                width: 300,
-                                height: 300,
-                                child: Icon(
-                                  Icons.camera_alt,
-                                  color: Colors.grey[800],
-                                ),
-                              ),
+                                      decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          borderRadius:
+                                              BorderRadius.circular(100)),
+                                      width: 300,
+                                      height: 300,
+                                      child: Icon(
+                                        Icons.camera_alt,
+                                        color: Colors.grey[800],
+                                      ),
+                                    ),
                             ),
                             Padding(
                               padding: const EdgeInsets.only(left: 15.0),
@@ -276,49 +278,57 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                         ),
                       ),
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 15.0, left: 25.0),
+                            child: Text('Origem',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          Container(
+                            child: ChildCardOrigin(),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 25.0),
+                            child: Text('Destino',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                          Container(
+                            child: ChildCardDestiny(),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                top: 15.0, bottom: 15.0, left: 110),
+                            child: Text(
+                              'Meus Endereços',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
                           Consumer<PassengersAddressProvider>(
                               builder: (context, model, child) {
-                                return Expanded(
-                                    child: ListView(children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 15.0, bottom: 15),
-                                        child: Text(
-                                          'Meus Endereços',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                      ...model.address.map(
-                                            (address) => Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 15.0, right: 15),
-                                          child: Card(
-                                            color: Color.fromARGB(227, 108, 108, 126),
-                                            elevation: 3,
-                                            shape: const RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius.all(Radius.circular(10)),
-                                            ),
-                                            child: Padding(
-                                                padding:
-                                                const EdgeInsets.only(left: 15.0),
-                                                child: ListTile(
-                                                  title: Text(
-                                                    address.endereco,
-                                                    style:
-                                                    TextStyle(color: Colors.white),
-                                                  ),
-                                                )),
-                                          ),
-                                        ),
-                                      )
-                                    ]));
-                              }),
+                            return Expanded(
+                                child: ListView(children: [
+                              ...model.address.map(
+                                (address) => Container(
+                                  child: ChildMyAddress(address),
+                                ),
+                              )
+                            ]));
+                          }),
                           Container(
                             height: 45,
                             child: Align(
@@ -329,7 +339,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                       right: 20.0, bottom: 12.0),
                                   child: Icon(
                                     Icons.add,
-                                    color: Colors.blue,
+                                    color: Colors.white,
                                   ),
                                 ),
                                 onTap: _onButtonPressed,
@@ -384,8 +394,8 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
             width: double.infinity,
             child: DropdownButtonFormField2(
                 isExpanded: true,
-                hint: const Text(
-                  'Selecione sua Origem',
+                hint: Text(
+                  origem,
                   style: TextStyle(fontSize: 14),
                 ),
                 buttonPadding: const EdgeInsets.only(bottom: 8),
@@ -411,7 +421,29 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                 ),
                 validator: (value) {},
                 onChanged: (value) {
-                  //Do something when changing the item if you want.
+                  List<String> keys = [];
+                  db.child(usuarioLogado!.uid).child("viagens").get().then((snapshot) async {
+                    final allTravels =
+                    Map<String, dynamic>.from(snapshot.value as dynamic);
+                    keys.addAll(allTravels.keys);
+                    List<Travel> _travel = allTravels.values
+                        .map((travelAsJSON) =>
+                        Travel.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))
+                        .toList();
+                    for(int i = 0;i<_travel.length;i++){
+                      Travel travel = _travel[i];
+                      travel.setKeys(keys[i]);
+                    }
+                    List<Location> locations = await locationFromAddress(value.toString());
+                    Map<String, dynamic> origem = {
+                      'origemLatitude' : "${locations[0].latitude}",
+                      'origemLongitude': "${locations[0].longitude}",
+                    };
+                    _travel.forEach((element) {
+                      db.child(element.driverUid).child("viagens").child(element.key).child("passageiros").child(usuarioLogado!.uid).update(origem);
+                    });
+                  });
+
                 },
                 onSaved: (value) {},
                 items: dropdownItems),
@@ -431,8 +463,8 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
             width: double.infinity,
             child: DropdownButtonFormField2(
                 isExpanded: true,
-                hint: const Text(
-                  'Selecione seu Destino',
+                hint: Text(
+                  destino,
                   style: TextStyle(fontSize: 14),
                 ),
                 buttonPadding: const EdgeInsets.only(bottom: 8),
@@ -458,7 +490,28 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                 ),
                 validator: (value) {},
                 onChanged: (value) {
-                  //Do something when changing the item if you want.
+                  List<String> keys = [];
+                  db.child(usuarioLogado!.uid).child("viagens").get().then((snapshot) async {
+                    final allTravels =
+                    Map<String, dynamic>.from(snapshot.value as dynamic);
+                    keys.addAll(allTravels.keys);
+                    List<Travel> _travel = allTravels.values
+                        .map((travelAsJSON) =>
+                        Travel.fromRTDB(Map<String, dynamic>.from(travelAsJSON)))
+                        .toList();
+                    for(int i = 0;i<_travel.length;i++){
+                      Travel travel = _travel[i];
+                      travel.setKeys(keys[i]);
+                    }
+                    List<Location> locations = await locationFromAddress(value.toString());
+                    Map<String, dynamic> origem = {
+                      'destinoLatitude' : "${locations[0].latitude}",
+                      'destinoLongitude': "${locations[0].longitude}",
+                    };
+                    _travel.forEach((element) {
+                      db.child(element.driverUid).child("viagens").child(element.key).child("passageiros").child(usuarioLogado!.uid).update(origem);
+                    });
+                  });
                 },
                 onSaved: (value) {},
                 items: dropdownItems),
@@ -470,7 +523,6 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
 
   void _performingSingleFetch() {
     db
-        .ref("usuarios")
         .child(usuarioLogado!.uid)
         .child("nome")
         .get()
@@ -489,7 +541,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
       isScrollControlled: true,
       builder: (context) => Padding(
         padding:
-        EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
         child: SingleChildScrollView(
           child: Container(
             height: 200,
@@ -551,12 +603,11 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                             child: ElevatedButton(
                                 onPressed: () async {
                                   String descEndereco =
-                                  await _controllerAddress.text;
+                                      await _controllerAddress.text;
                                   Map<String, dynamic> endereco = {
                                     'endereco': descEndereco,
                                   };
                                   db
-                                      .ref("usuarios")
                                       .child(usuarioLogado!.uid)
                                       .child("endereco")
                                       .push()
