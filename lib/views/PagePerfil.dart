@@ -40,7 +40,7 @@ class _PagePerfilState extends State<PagePerfil> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => const LoginandRegister()),
-          (route) => false);
+              (route) => false);
     });
   }
 
@@ -54,7 +54,7 @@ class _PagePerfilState extends State<PagePerfil> {
   //para posteriormente ser recuperada e mostrada
   _imgFromCamera() async {
     final pickedFile =
-        await _picker.pickImage(source: ImageSource.camera, imageQuality: 30);
+    await _picker.pickImage(source: ImageSource.camera, imageQuality: 30);
 
     setState(() {
       _image = File(pickedFile!.path);
@@ -65,7 +65,7 @@ class _PagePerfilState extends State<PagePerfil> {
   //mesma coisa só que com o album
   _imgFromLibrary() async {
     final pickedFile =
-        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
+    await _picker.pickImage(source: ImageSource.gallery, imageQuality: 30);
 
     setState(() {
       _image = File(pickedFile!.path);
@@ -155,147 +155,191 @@ class _PagePerfilState extends State<PagePerfil> {
                           padding: EdgeInsets.only(right: 40),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: circleRadius,
-                            height: circleRadius,
-                            child: imageOK != (false)
-                                ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: Container(
-                                        color: Colors.grey,
-                                        height: 300,
-                                        width: 300,
-                                        child: Image.file(_image)))
-                                : Container(
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius:
-                                            BorderRadius.circular(100)),
-                                    width: 300,
-                                    height: 300,
-                                    child: Icon(
-                                      Icons.camera_alt,
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: FlatButton.icon(
+                          onPressed: () {
+                            _logout();
+                          },
+                          icon: const Icon(
+                            Icons.logout,
+                            color: Colors.white,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: Text(
-                              changeName,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 18),
-                            ),
-                          )
-                        ],
+                          label: const Text(
+                            "Deslogar",
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 13.0),
+                          ),
+                          padding: EdgeInsets.only(left: 0),
+                        ),
                       ),
-                    ),
-                  ],
+                    ]),
+                const SizedBox(
+                  height: 15,
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              SingleChildScrollView(
-              child: Container(
-                height: 500,
-                width: double.infinity,
-                child: Card(
-                  color: const Color.fromRGBO(69, 69, 85, 1),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    side: BorderSide(
-                      color: Colors.white,
-                      width: 2.0,
-                    ),
-                  ),
-                  
-                  child: Column(
-                     children: [      
-                      Consumer<TravelProvider>(
-                          builder: (context, model, child) {
-                        return Expanded(
-                            child: ListView(children: [ 
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    top: 15.0, bottom: 15),
-                                child: Text(
-                                  'Minhas Viagens',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
+                GestureDetector(
+                  onTap: () {
+                    _showPicker(context);
+                  },
+                  child: Stack(
+                    alignment: Alignment.topCenter,
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.only(top: circleRadius / 10.0),
+                        child: Container(
+                          width: double.infinity,
+                          height: 100,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blue,
+                            border: Border(
+                              left: BorderSide(
+                                color: Colors.green,
+                                width: 3,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 15.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: circleRadius,
+                              height: circleRadius,
+                              child: imageOK != (false)
+                                  ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: Container(
+                                      color: Colors.grey,
+                                      height: 300,
+                                      width: 300,
+                                      child: Image.file(_image)))
+                                  : Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius:
+                                    BorderRadius.circular(100)),
+                                width: 300,
+                                height: 300,
+                                child: Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.grey[800],
                                 ),
                               ),
-                              ...model.travels.map(
-                                (travel) => Slidable(
-                                    child: BuildListTile(travel),
-                                    endActionPane: ActionPane(
-                                      motion: Padding(
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 15.0),
+                              child: Text(
+                                changeName,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                SingleChildScrollView(
+                  child: Container(
+                    height: 500,
+                    width: double.infinity,
+                    child: Card(
+                      color: const Color.fromRGBO(69, 69, 85, 1),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        side: BorderSide(
+                          color: Colors.white,
+                          width: 2.0,
+                        ),
+                      ),
+                      child: Column(
+                        children: [
+                          Consumer<TravelProvider>(
+                              builder: (context, model, child) {
+                                return Expanded(
+                                    child: ListView(children: [
+                                      Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 0,
-                                            right: 20.0,
-                                            bottom: 4,
-                                            top: 4),
-                                        child: const ScrollMotion(),
+                                            top: 15.0, bottom: 15),
+                                        child: Text(
+                                          'Minhas Viagens',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white),
+                                        ),
                                       ),
-                                      children: [
-                                        SlidableAction(
-                                          onPressed: (context) {
-                                            db
-                                                .child(usuarioLogado!.uid)
-                                                .child("viagens")
-                                                .child(travel.key)
-                                                .child("viagemIniciada")
-                                                .set(true);
-                                            updatePassagers(travel.key);
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        PageHome(
-                                                            chaveViagem:
-                                                                travel.key,
-                                                            true)));
-                                          },
-                                          backgroundColor: Color(0xFF21B7CA),
-                                          foregroundColor: Colors.white,
-                                          icon: Icons.remove_red_eye_outlined,
-                                          label: 'View',
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
-                                        ),
-                                        SizedBox(width: 5),
-                                        SlidableAction(
-                                          onPressed: (context) {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        PageHome(
-                                                            chaveViagem:
-                                                                travel.key,
-                                                            false)));
-                                          },
-                                          backgroundColor: Colors.blue,
-                                          foregroundColor: Colors.white,
-                                          icon: Icons.send_sharp,
-                                          label: 'Iniciar',
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
-                                        ),
-                                      ],
-                                    )),
-                              )
-                            ]));
-                          }),
+                                      ...model.travels.map(
+                                            (travel) => Slidable(
+                                            child: BuildListTile(travel),
+                                            endActionPane: ActionPane(
+                                              motion: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 0,
+                                                    right: 20.0,
+                                                    bottom: 4,
+                                                    top: 4),
+                                                child: const ScrollMotion(),
+                                              ),
+                                              children: [
+                                                SlidableAction(
+                                                  onPressed: (context) {
+                                                    db
+                                                        .child(usuarioLogado!.uid)
+                                                        .child("viagens")
+                                                        .child(travel.key)
+                                                        .child("viagemIniciada")
+                                                        .set(true);
+                                                    updatePassagers(travel.key);
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                PageHome(
+                                                                    chaveViagem:
+                                                                    travel.key,
+                                                                    true)));
+                                                  },
+                                                  backgroundColor: Color(0xFF21B7CA),
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.remove_red_eye_outlined,
+                                                  label: 'View',
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(15)),
+                                                ),
+                                                SizedBox(width: 5),
+                                                SlidableAction(
+                                                  onPressed: (context) {
+                                                    Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                PageHome(
+                                                                    chaveViagem:
+                                                                    travel.key,
+                                                                    false)));
+                                                  },
+                                                  backgroundColor: Colors.blue,
+                                                  foregroundColor: Colors.white,
+                                                  icon: Icons.send_sharp,
+                                                  label: 'Iniciar',
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(15)),
+                                                ),
+                                              ],
+                                            )),
+                                      )
+                                    ]));
+                              }),
                           Container(
                             height: 45,
                             child: Align(
@@ -311,53 +355,7 @@ class _PagePerfilState extends State<PagePerfil> {
                                 ),
                                 onTap: () {},
                               ),
-                          ...model.travels.map(
-                            (travel) => 
-                                  Slidable(
-                                  child: BuildListTile(travel),
-                                  endActionPane: ActionPane(
-                                    motion: Padding(
-                                    padding: const EdgeInsets.only(left: 0, right: 20.0,bottom: 4,top: 4),
-                                    child: const ScrollMotion(),
-                                    
-                                  ),
-                                  children: [
-        SlidableAction(                                 
-        onPressed: (context){},
-        backgroundColor: Color(0xFF21B7CA),
-        foregroundColor: Colors.white,
-        icon: Icons.remove_red_eye_outlined,
-        label: 'View',
-        borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-      SizedBox(width: 5),
-      SlidableAction(
-        
-        onPressed: (context){Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PageHomePassenger()));},
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
-        icon: Icons.send_sharp,
-        label: 'Iniciar',
-         borderRadius: BorderRadius.all(Radius.circular(15)),
-      ),
-                                  ],)
-                                   
-                                  ),
-                          )
-                        ]));
-                      }),
-                       
-                      Container(
-                        height: 45,
-                        child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: InkWell(
-                            child: Padding(
-                            padding: const EdgeInsets.only(right: 20.0, bottom: 12.0),
-                            child: Icon(Icons.add, color: Colors.white,),
-                          ),       
-                          onTap: (){},    
+                            ),
                           ),
                         ],
                       ),
@@ -370,27 +368,31 @@ class _PagePerfilState extends State<PagePerfil> {
         ),
       ),
     );
-    
   }
-      Widget BuildListTile(Travel travel) { return Padding(
-                              padding: const EdgeInsets.only(left: 15.0,right: 15.0),
-                              child: Card(                            
-                                   color: Color.fromARGB(227, 108, 108, 126),
-                                   elevation: 3,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    
-                  ),
-                                  child: Padding(
-                                      padding: const EdgeInsets.only(
-                                           left: 15.0),
-                                      child: ListTile(
-                                        title: Text(travel.nome,style: TextStyle(color: Colors.white),),
-                                        subtitle: Text(travel.weekDays,style: TextStyle(color:Color.fromARGB(174, 255, 255, 255))),
-                                      ))),
-                            
-      
-      );}
+
+  Widget BuildListTile(Travel travel) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 15.0, right: 15.0),
+      child: Card(
+          color: Color.fromARGB(227, 108, 108, 126),
+          elevation: 3,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          child: Padding(
+              padding: const EdgeInsets.only(left: 15.0),
+              child: ListTile(
+                title: Text(
+                  travel.nome,
+                  style: TextStyle(color: Colors.white),
+                ),
+                subtitle: Text(travel.weekDays,
+                    style:
+                    TextStyle(color: Color.fromARGB(174, 255, 255, 255))),
+              ))),
+    );
+  }
+
   void _performingSingleFetch() {
     db.child(usuarioLogado!.uid).child("nome").get().then((snapshot) {
       setState(() {
@@ -408,7 +410,7 @@ class _PagePerfilState extends State<PagePerfil> {
         .onValue
         .listen((event) {
       final allTravels =
-          Map<String, dynamic>.from(event.snapshot.value as dynamic);
+      Map<String, dynamic>.from(event.snapshot.value as dynamic);
       allTravels.keys.forEach((element) {
         db
             .child(element)
