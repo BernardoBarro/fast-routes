@@ -159,7 +159,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                       color: Colors.white,
                     ),
                     label: const Text(
-                      "Deslogar",
+                      "Sair",
                       style: TextStyle(color: Colors.white, fontSize: 13.0),
                     ),
                     padding: EdgeInsets.only(left: 0),
