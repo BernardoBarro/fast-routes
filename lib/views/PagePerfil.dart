@@ -293,13 +293,6 @@ class _PagePerfilState extends State<PagePerfil> {
                                               children: [
                                                 SlidableAction(
                                                   onPressed: (context) {
-                                                    db
-                                                        .child(usuarioLogado!.uid)
-                                                        .child("viagens")
-                                                        .child(travel.key)
-                                                        .child("viagemIniciada")
-                                                        .set(true);
-                                                    updatePassagers(travel.key);
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
@@ -319,6 +312,13 @@ class _PagePerfilState extends State<PagePerfil> {
                                                 SizedBox(width: 5),
                                                 SlidableAction(
                                                   onPressed: (context) {
+                                                    db
+                                                        .child(usuarioLogado!.uid)
+                                                        .child("viagens")
+                                                        .child(travel.key)
+                                                        .child("viagemIniciada")
+                                                        .set(true);
+                                                    updatePassagers(travel.key);
                                                     Navigator.push(
                                                         context,
                                                         MaterialPageRoute(

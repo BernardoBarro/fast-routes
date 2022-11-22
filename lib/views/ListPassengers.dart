@@ -108,7 +108,11 @@ class _ListPassengersState extends State<ListPassengers> {
                                   animationDuration: Duration(milliseconds: 0),
                                   value: passageiro.participa,
                                   onChanged: (bool state) {
-                                    updatePassagers()
+                                    db
+                                        .child(usuarioLogado!.uid)
+                                        .child("viagens")
+                                        .child(widget.chave)
+                                        .child("passageiros")
                                         .child(passageiro.uid)
                                         .child("participa")
                                         .set(state);

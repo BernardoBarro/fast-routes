@@ -129,6 +129,7 @@ class _PageMyAddressState extends State<PageMyAddress> {
                                 textOff: "",
                                 textOn: "",
                                 animationDuration: Duration(milliseconds: 0),
+                                value: true,
                                 onChanged: (bool state) {
                                   db
                                       .child(travel.driverUid)

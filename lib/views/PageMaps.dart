@@ -259,6 +259,9 @@ class _PageMapsState extends State<PageMaps> {
 
   _addMarker() {
     Set<Marker> provisorio = {};
+    setState(() {
+      _markersSet = {};
+    });
     provider.address.forEach((passageiro) => {
           if (passageiro.participa)
             {
