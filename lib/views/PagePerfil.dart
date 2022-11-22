@@ -33,7 +33,8 @@ class _PagePerfilState extends State<PagePerfil> {
   final double circleBorderWidth = 50.0;
 
   String changeName = 'Loading...';
-  String? profileURL;
+  String url = "";
+  String urlUserImage = "";
 
   _logout() async {
     FirebaseAuth.instance.signOut();
@@ -46,17 +47,27 @@ class _PagePerfilState extends State<PagePerfil> {
   }
 
   fetchProfile() {
-    db.ref("usuarios")
-      .child(usuarioLogado!.uid)
-      .child("imagem_perfil")
-      .child("profile_image")
-      .get()
-      .then((snapshot) {
-        setState(() {
-          _image = (snapshot.value as dynamic);
-        });
-      }
-      );
+
+    url = "gs://fastroutes-db.appspot.com/images/J7MsejzlqJYqQvHyqFz4RXVLJik1-2022-11-17 00:49:10.002571.jpg";
+
+    // db.ref("usuarios")
+    //   .child(usuarioLogado!.uid)
+    //   .child("imagem_perfil")
+    //   .child("profile_image")
+    //   .get()
+    //   .then((snapshot) {
+    //       urlUserImage = (snapshot.value as dynamic);
+    //       setState(() {
+    //         url = "gs://fastroutes-db.appspot.com/${urlUserImage}";
+    //         imageOK = true;
+    //       });
+
+    //       _image = File(url);
+    //   }
+    //   );
+
+    //gs://fastroutes-db.appspot.com/images/BS3N86GjZkMa0X4nvcYn3pGpIBB2-2022-11-16 04:22:05.088979.jpg
+    print("URL DA IMAGEM É IGUAL A: " + url);
   }
 
   final FirebaseStorage storage = FirebaseStorage.instance;
@@ -108,6 +119,7 @@ class _PagePerfilState extends State<PagePerfil> {
 
       setState(() {
       _image = File(pickedFile!.path);
+      print("PICKED PATH = " + pickedFile.path);
       imageOK = true;
     });
 
@@ -265,7 +277,7 @@ class _PagePerfilState extends State<PagePerfil> {
                                         color: Colors.grey,
                                         height: 300,
                                         width: 300,
-                                        child: Image.file(_image)))
+                                        child: Image.network(url)))
                                 : Container(
                                     decoration: BoxDecoration(
                                         color: Colors.grey[200],
