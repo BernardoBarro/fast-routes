@@ -46,8 +46,8 @@ class _InviteSideBarState extends State<InviteSideBar> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 12.0, left: 15.0),
                       child: ListTile(
-                        title: Text(invite.travelName, ),
-                        subtitle: Text(invite.passagerName),
+                        title: Text(invite.travelName,style: TextStyle(color: Colors.white),),
+                        subtitle: Text(invite.passagerName, style: TextStyle(color: Color.fromARGB(174, 255, 255, 255)),),
                         onTap: () {
                           showDialog(
                               context: context,
@@ -57,7 +57,7 @@ class _InviteSideBarState extends State<InviteSideBar> {
                                   title: const Text("Confirmação!!",style: TextStyle(color: Colors.white),),
                                   content: Text("O " +
                                       invite.passagerName +
-                                      "gostaria de entrar na viagem " +
+                                      " gostaria de entrar na viagem " +
                                       invite.travelName,style: TextStyle(color: Colors.white)),
                                   actions: [
                                     TextButton(

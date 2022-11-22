@@ -19,16 +19,23 @@ class DirectionsRepository {
     double? latitude,
     double? longitude,
   }) async {
+    address.removeWhere((element) => element.participa == false);
+    String destination = "";
+    address.forEach((element) {
+      if(element.origem){
+        destination += "${element.origemLatitude},${element.origemLongitude}|";
+      }else{
+        destination += "${element.destinoLatitude},${element.destinoLongitude}|";
+      }
+    });
     final response = await _dio.get(
       _baseUrl,
       queryParameters: {
         'origins': '${latitude},${longitude}',
-        'destinations':
-            '${address.first.origemLatitude},${address.first.origemLongitude}|${address.first.destinoLatitude},${address.first.destinoLongitude}',
+        'destinations': destination,
         'key': googleAPIKey,
       },
     );
-
-    return Directions.fromMap(response.data);
+    return Directions.fromMap(response.data, address);
   }
 }
