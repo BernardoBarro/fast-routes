@@ -4,6 +4,7 @@ import 'package:fast_routes/models/Customer.dart';
 import 'package:fast_routes/providers/UserProvider.dart';
 import 'package:fast_routes/views/InviteSideBar.dart';
 import 'package:fast_routes/views/LoginandRegister.dart';
+import 'package:fast_routes/views/PageCreateTravel.dart';
 import 'package:fast_routes/views/PagesPassengers/InviteSideBarPassageiro.dart';
 import 'package:fast_routes/views/PagesPassengers/PageHomePassenger.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -353,7 +354,12 @@ class _PagePerfilState extends State<PagePerfil> {
                                     color: Colors.white,
                                   ),
                                 ),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PageCreateTravel()));
+                                },
                               ),
                             ),
                           ),

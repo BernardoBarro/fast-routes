@@ -239,19 +239,40 @@ class _PageMapsState extends State<PageMaps> {
                       ),
                 _info == null
                     ? const Center(child: Text("Loading..."))
-                    : Container(
+                    : SingleChildScrollView(
+                    child: Container(
+                        decoration: new BoxDecoration(
+                        color: Color.fromARGB(255, 250, 242, 242),
+                        borderRadius: BorderRadius.only(
+                        topLeft: const Radius.circular(30.0),
+                        topRight: const Radius.circular(30.0),
+                      )),
                         width: largura,
                         height: alturaContainer,
                         child: ListView.builder(
                             itemCount: _info!.distance.length,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                title: Text(_info!.distance[index].nome +
-                                    " - " +
-                                    _info!.distance[index].distance),
+                                title: Padding(
+                                  padding: const EdgeInsets.only(top:10,right: 180.0),
+                                  child: Container(
+                                    height: 30,
+                                    decoration: new BoxDecoration(
+                                      color: Color.fromARGB(255, 221, 216, 216),
+                                      borderRadius: BorderRadius.circular(10)
+                                            ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 5.0, left: 8.0),
+                                        child: Text(_info!.distance[index].nome +
+                                          " - " +
+                                          _info!.distance[index].distance),
+                                      ),
+                                  ),
+                                ),
                               );
                             }),
                       ),
+                    ),   
               ],
             ),
     ));
@@ -302,7 +323,7 @@ class _PageMapsState extends State<PageMaps> {
     setState(() {
       _info = directions;
       _addMarkerWithDistance(directions!);
-      _changeOrigem(directions!);
+      _changeOrigem(directions);
     });
   }
 
