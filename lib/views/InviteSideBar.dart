@@ -95,12 +95,19 @@ class _InviteSideBarState extends State<InviteSideBar> {
   void _onButtonPressed(Invite invite) {
     Map<String, dynamic> passageiro = {
       'nome': invite.passagerName,
+      'destinoLatitude': "",
+      'destinoLongitude': "",
+      'origemLatitude': "",
+      'origemLongitude': "",
+      'origem': true,
+      'participa': true,
     };
 
     Map<String, dynamic> viagem = {
       'weekDays': invite.travelWeekDays,
       'nome': invite.travelName,
-      'driverUid': invite.driverUid
+      'driverUid': invite.driverUid,
+      'viagemIniciada': false
     };
     db
         .ref("usuarios")

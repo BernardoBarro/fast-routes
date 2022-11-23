@@ -113,12 +113,17 @@ class _InviteSideBarPassageiroState extends State<InviteSideBarPassageiro> {
         'nome': nome,
         'origem': true,
         'participa': true,
+        'destinoLatitude': "",
+        'destinoLongitude': "",
+        'origemLatitude': "",
+        'origemLongitude': "",
       };
 
       Map<String, dynamic> viagem = {
         'weekDays': invite.travelWeekDays,
         'nome': invite.travelName,
-        'driverUid': invite.driverUid
+        'driverUid': invite.driverUid,
+        'viagemIniciada': false
       };
       db
           .ref("usuarios")
