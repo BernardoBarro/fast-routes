@@ -53,7 +53,7 @@ class _PageMyAddressState extends State<PageMyAddress> {
                         children: [
                           Container(
                               width: 250,
-                              height: 80,
+                              height: 90,
                               child: Card(
                                 color: travel.viagemIniciada
                                     ? Colors.blue
