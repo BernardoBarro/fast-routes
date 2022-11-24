@@ -53,7 +53,7 @@ class _InviteSideBarState extends State<InviteSideBar> {
                               context: context,
                               builder: (ctx) {
                                 return AlertDialog(
-                                  backgroundColor: Color.fromARGB(223, 69, 69, 85),
+                                  backgroundColor: Color.fromARGB(227, 108, 108, 126),
                                   title: const Text("Confirmação!!",style: TextStyle(color: Colors.white),),
                                   content: Text("O " +
                                       invite.passagerName +
