@@ -65,25 +65,25 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
     } else {
       String days = '';
       if (dom) {
-        days += 'Dom,';
+        days += 'Dom ';
       }
       if (seg) {
-        days += 'Seg,';
+        days += 'Seg ';
       }
       if (ter) {
-        days += 'Ter,';
+        days += 'Ter ';
       }
       if (qua) {
-        days += 'Qua,';
+        days += 'Qua ';
       }
       if (qui) {
-        days += 'Qui,';
+        days += 'Qui ';
       }
       if (sex) {
-        days += 'Sex,';
+        days += 'Sex ';
       }
       if (sab) {
-        days += 'Sab,';
+        days += 'Sab ';
       }
       Map<String, dynamic> viagem = {
         'driverUid': usuarioLogado!.uid,

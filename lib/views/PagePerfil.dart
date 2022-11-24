@@ -167,7 +167,7 @@ class _PagePerfilState extends State<PagePerfil> {
                             color: Colors.white,
                           ),
                           label: const Text(
-                            "Deslogar",
+                            "Sair",
                             style:
                             TextStyle(color: Colors.white, fontSize: 13.0),
                           ),
