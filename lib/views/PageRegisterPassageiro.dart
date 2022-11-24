@@ -204,6 +204,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     },
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
@@ -260,6 +274,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
@@ -316,6 +344,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.number,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
@@ -374,6 +416,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
 
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
                       //Style Label
                       labelStyle: TextStyle(
@@ -427,6 +483,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.streetAddress,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
 
                       //Labels
@@ -509,6 +579,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.emailAddress,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
 
                       //Labels E-mail
@@ -565,6 +649,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.streetAddress,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
 
                       //Label Senha
@@ -638,6 +736,20 @@ class _PageRegisterPassageiroState extends State<PageRegisterPassageiro> {
                     keyboardType: TextInputType.streetAddress,
                     style: const TextStyle(color: Colors.white),
                     decoration: InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       border: OutlineInputBorder(),
 
                       //Label Senha

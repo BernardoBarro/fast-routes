@@ -242,7 +242,7 @@ class _PageMapsState extends State<PageMaps> {
                     : SingleChildScrollView(
                     child: Container(
                         decoration: new BoxDecoration(
-                        color: Color.fromARGB(255, 250, 242, 242),
+                        color: Color.fromARGB(255, 240, 234, 234),
                         borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(30.0),
                         topRight: const Radius.circular(30.0),
@@ -252,21 +252,15 @@ class _PageMapsState extends State<PageMaps> {
                         child: ListView.builder(
                             itemCount: _info!.distance.length,
                             itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Padding(
-                                  padding: const EdgeInsets.only(top:10,right: 180.0),
-                                  child: Container(
-                                    height: 30,
-                                    decoration: new BoxDecoration(
-                                      color: Color.fromARGB(255, 221, 216, 216),
-                                      borderRadius: BorderRadius.circular(10)
-                                            ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(top: 5.0, left: 8.0),
-                                        child: Text(_info!.distance[index].nome +
-                                          " - " +
-                                          _info!.distance[index].distance),
-                                      ),
+                              return Padding(
+                                padding: const EdgeInsets.only(top: 8.0, left: 8.0),
+                                child: Container(
+                                  height: 30,
+                                  child: ListTile(
+                                    title: 
+                                        Text(_info!.distance[index].nome +
+                                        " - " +
+                                        _info!.distance[index].distance),                                  
                                   ),
                                 ),
                               );

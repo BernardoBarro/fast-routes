@@ -153,6 +153,20 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                       autocorrect: false,
                       style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
+                         errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                         //Style Label
                         labelStyle: TextStyle(
                           color: Colors.white,
@@ -339,6 +353,20 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                     autocorrect: false,
                     style: const TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
+                       errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                       //Style Label
                       labelStyle: TextStyle(
                         color: Colors.white,
@@ -408,6 +436,20 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                               inputFormatters: [maskTime],
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
+                                 errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                                 //Style Hint
                                 hintStyle: const TextStyle(
                                   color:
@@ -514,6 +556,20 @@ class _PageCreateTravelState extends State<PageCreateTravel> {
                               keyboardType: TextInputType.visiblePassword,
                               style: const TextStyle(color: Colors.white),
                               decoration: const InputDecoration(
+                                 errorStyle: TextStyle(color: Color.fromARGB(255, 240, 101, 92),),
+                      focusedErrorBorder: OutlineInputBorder(borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                           borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
+                           errorBorder: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(20.0),
+                          ),
+                          borderSide: BorderSide(
+                            color: Color.fromARGB(255, 240, 101, 92),
+                          )),
                                 //Style Hint
                                 hintStyle: const TextStyle(
                                   color:
