@@ -641,7 +641,7 @@ class _PageRegisterMotoristaState extends State<PageRegisterMotorista> {
                     child: Text(
                       _mensagemErro,
                       style: TextStyle(
-                        color: Colors.red,
+                        color: Color.fromARGB(255, 240, 101, 92),
                         fontSize: 16,
                       ),
                     ),

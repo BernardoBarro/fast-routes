@@ -46,7 +46,7 @@ class _PagePerfilState extends State<PagePerfil> {
   }
 
   late File _image = File('/images/logo.png');
-  bool imageOK = false;
+  bool imageOK = true;
 
   //instancia do objeto picker utilizado para acessar a camera e album do dispositivo
   final ImagePicker _picker = ImagePicker();
@@ -217,7 +217,7 @@ class _PagePerfilState extends State<PagePerfil> {
                                       color: Colors.grey,
                                       height: 300,
                                       width: 300,
-                                      child: Image.file(_image)))
+                                      child: Image.asset("assets/images/Motorista.jpg")))
                                   : Container(
                                 decoration: BoxDecoration(
                                     color: Colors.grey[200],

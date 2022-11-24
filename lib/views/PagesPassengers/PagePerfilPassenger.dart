@@ -49,7 +49,7 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
   }
 
   late File _image = File('/images/logo.png');
-  bool imageOK = false;
+  bool imageOK = true;
 
   //instancia do objeto picker utilizado para acessar a camera e album do dispositivo
   final ImagePicker _picker = ImagePicker();
@@ -233,7 +233,8 @@ class _PagePerfilPassengerState extends State<PagePerfilPassenger> {
                                           color: Colors.grey,
                                           height: 300,
                                           width: 300,
-                                          child: Image.file(_image)))
+                                          //child: Image.file(_image)))
+                                          child: Image.asset("assets/images/Passageiro.jpg")))
                                   : Container(
                                       decoration: BoxDecoration(
                                           color: Colors.grey[200],
