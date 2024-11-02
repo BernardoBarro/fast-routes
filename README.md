@@ -1,16 +1,32 @@
-# fast_routes
+# Description
+It is a Flutter application to help bus drivers find the best route to pick up passengers, and for passengers to have contact with the bus that will be picked up
 
-A new Flutter project.
+# How it works
+There are two types of passengers:
+ - Drivers
+   - Invite passengers
+   - Based on the stops, define the best route, or show the distance to the stopping point
+ - Passengers
+   - Participate in bus trips
+   - You are fully aware of where the bus is and where it is going
 
-## Getting Started
+# Version
+```
+sdk: >=2.17.6 <3.0.0
+```
 
-This project is a starting point for a Flutter application.
+# Get the dependencies
+```
+$ flutter pub get
+```
 
-A few resources to get you started if this is your first Flutter project:
+# Running the app
+```
+$ flutter run
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Status
+> ### Paused for now, but I’ll be working on it again soon. 🛑🔄🛠️
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# To do
+- Improve UI/UX
